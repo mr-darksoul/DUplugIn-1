@@ -12,18 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
-import com.cocodev.myapplication.data.FetchDataTask;
-import com.cocodev.myapplication.notices.allNotices;
-import com.cocodev.myapplication.notices.classNotices;
-import com.cocodev.myapplication.notices.collegeNotices;
+import com.cocodev.myapplication.notices.Notices;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NoticeBoard extends Fragment {
 
 
@@ -48,30 +42,36 @@ public class NoticeBoard extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notice_board, container, false);
 
         initViewPager(view);
-       /// initTabHost(view);
+
 
         return view;
     }
 
-    private void initTabHost(View view) {
-        tabhost = (TabHost) view.findViewById(android.R.id.tabhost);
-        tabhost.setup();
-        String[] tabNames = {"Class Notices","College Notices","All Notices"};
 
-    }
 
     private void initViewPager(View view) {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_notices);
-        List<Fragment> listfragmetns = new ArrayList<Fragment>();
-        List<String> titles = new ArrayList<String>();
-        listfragmetns.add(new classNotices());
-        titles.add("Class Notices");
-        listfragmetns.add(new collegeNotices());
-        titles.add("College Notices");
-        listfragmetns.add(new allNotices());
-        titles.add("All Notices");
+        List<Notices> listfragmetns = new ArrayList<Notices>();
 
-        MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listfragmetns,titles);
+
+
+        Notices classNotices = new Notices();
+        classNotices.setType(Notices.TYPE_CLASS);
+        listfragmetns.add(classNotices);
+
+        Notices collegeNotices = new Notices();
+        collegeNotices.setType(Notices.TYPE_COLLEGE);
+        listfragmetns.add(collegeNotices);
+
+
+        Notices allNotices = new Notices();
+        allNotices.setType(Notices.TYPE_ALL);
+        listfragmetns.add(allNotices);
+
+
+
+
+        MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listfragmetns);
 
         viewPager.setAdapter(fragmentPageAdapter);
 

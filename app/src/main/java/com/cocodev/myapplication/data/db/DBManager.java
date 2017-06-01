@@ -1,4 +1,4 @@
-package com.cocodev.myapplication;
+package com.cocodev.myapplication.data.db;
 
 import android.content.ContentValues;
 import android.content.Context;

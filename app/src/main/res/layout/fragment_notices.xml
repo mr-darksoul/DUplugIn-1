@@ -2,24 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cocodev.myapplication.notices.classNotices">
+    tools:context="com.cocodev.myapplication.notices.allNotices">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Class Notices"
-        android:id="@+id/title_classNotices"
+        android:text="Title"
+        android:id="@+id/title_notices"
         android:textStyle="bold"
-        android:layout_below="@+id/title_noticeBoard"
-        android:layout_alignStart="@+id/listview_classnotices" />
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/listview_notices" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listview_classnotices"
-        android:layout_below="@+id/title_classNotices"
+        android:id="@+id/listview_notices"
+        android:layout_below="@+id/title_notices"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
