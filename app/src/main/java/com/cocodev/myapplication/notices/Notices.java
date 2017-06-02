@@ -1,18 +1,23 @@
 package com.cocodev.myapplication.notices;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.TextViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cocodev.myapplication.R;
+import com.cocodev.myapplication.data.Contract;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,33 +53,33 @@ public class Notices extends Fragment {
         String title = getTypeString();
         textView.setText(title);
 
-        String[] noticesArray = {
-                "this is college notice 0",
-                "this is  college notice 1",
-                "this is college  notice 2",
-                "this is  college notice 3",
-                "this is college  notice 4",
-                "this is college notice 0",
-                "this is  college notice 1",
-                "this is college  notice 2",
-                "this is  college notice 3",
-                "this is college  notice 4",
-                "this is college  notice 4",
-                "this is college notice 0",
-                "this is  college notice 1",
-                "this is college  notice 2",
-                "this is  college notice 3",
-                "this is college  notice 4",
-                "this is college  notice 5"
+
+        String from[] = new String[]{
+                Contract.NoticeEntry.COLUMN_DESCRIPTION
         };
 
-        List<String> notices = new ArrayList<String>(
-                Arrays.asList(noticesArray)
+        int to[] = new int[]{
+             R.id.noticeText
+        };
+
+        Cursor cursor;
+        cursor = getContext().getContentResolver().query(
+                Contract.NoticeEntry.buildNoticeDepartment(getTypeString()),
+                new String[] {"*"}
+                ,null
+                ,null
+                ,null);
+
+
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getContext(),
+                R.layout.adapter_notice,
+                cursor,
+                from,
+                to
         );
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.adapter_notice,R.id.noticeText,notices);
         ListView listViewNotices = (ListView) view.findViewById(R.id.listview_notices);
-        listViewNotices.setAdapter(adapter);
+        listViewNotices.setAdapter(cursorAdapter);
 
         return view;
     }

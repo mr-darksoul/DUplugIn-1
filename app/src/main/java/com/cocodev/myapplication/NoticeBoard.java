@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
+import com.cocodev.myapplication.data.FetchDataTask;
 import com.cocodev.myapplication.notices.Notices;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class NoticeBoard extends Fragment {
 
     public NoticeBoard() {
         // Required empty public constructor
+
     }
 
     ViewPager viewPager;
@@ -32,6 +35,9 @@ public class NoticeBoard extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FetchDataTask fetchDataTask = new FetchDataTask(getContext());
+        fetchDataTask.execute();
+        Toast.makeText(getContext(),"Exected fetch data task ", Toast.LENGTH_SHORT).show();
 
     }
 

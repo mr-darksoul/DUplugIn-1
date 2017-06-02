@@ -14,7 +14,7 @@ import com.cocodev.myapplication.data.Contract;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "kmv.db";
+    public static final String DATABASE_NAME = "kmv.db";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Contract.NoticeEntry.COLUMN_TIME+ " TEXT NOT NULL," +
                 Contract.NoticeEntry.COLUMN_DEADLINE + " TEXT NOT NULL, " +
                 Contract.NoticeEntry.COLUMN_DESCRIPTION +" TEXT NOT NULL, " +
-                Contract.NoticeEntry.COLUMN_CHECK + "INTEGER DEFAULT 0, " +
+                Contract.NoticeEntry.COLUMN_CHECK + " INTEGER NOT NULL, " +
 
                 " FOREIGN KEY (" + Contract.NoticeEntry.COLUMN_DEPARTMENT + ") REFERENCES " +
                 Contract.DepartmentEntry.TABLE_NAME + " (" + Contract.DepartmentEntry._ID + ") " +

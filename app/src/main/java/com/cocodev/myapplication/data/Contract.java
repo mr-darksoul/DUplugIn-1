@@ -73,7 +73,7 @@ public class Contract {
         public static final String COLUMN_TIME = "time";
         public static final String COLUMN_DEADLINE = "deadline";
         public static final String COLUMN_DESCRIPTION = "description";
-        public static final String COLUMN_CHECK = "check";
+        public static final String COLUMN_CHECK = "complete";
 
 
 
@@ -85,11 +85,11 @@ public class Contract {
         /*
             Student: This is the buildArticleDepartment function you filled in.
          */
-        public static Uri buildArticleDepartment(String departmentSetting) {
+        public static Uri buildNoticeDepartment(String departmentSetting) {
             return CONTENT_URI.buildUpon().appendPath(departmentSetting).build();
         }
 
-        public static Uri buildArticledDepartmenWithStartTime(
+        public static Uri buildNoticeDepartmenWithStartTime(
                 String locationSetting, long startDate) {
             long normalizedDate = /*normalizeDate(*/startDate;
             return CONTENT_URI.buildUpon().appendPath(locationSetting)

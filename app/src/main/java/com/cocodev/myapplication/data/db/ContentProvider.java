@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.cocodev.myapplication.data.Contract;
 import com.cocodev.myapplication.notices.Notices;
@@ -55,7 +57,7 @@ public class ContentProvider extends android.content.ContentProvider {
                         Contract.DepartmentEntry.TABLE_NAME +
                         " ON " + Contract.NoticeEntry.TABLE_NAME +
                         "." + Contract.NoticeEntry.COLUMN_DEPARTMENT +
-                        " + " + Contract.DepartmentEntry.TABLE_NAME +
+                        " = " + Contract.DepartmentEntry.TABLE_NAME +
                         "." + Contract.DepartmentEntry._ID
         );
     }
@@ -91,8 +93,10 @@ public class ContentProvider extends android.content.ContentProvider {
                     "." + Contract.DepartmentEntry._ID + " = ? ";
 
 
+    @Nullable
     private Cursor getArticleWithDepartment(Uri uri, String[] projection, String sortOrder){
         String department = Contract.ArticleEntry.getDepartmentSettingFromUri(uri);
+        Log.e("his",department);
         String selection;
         String selectionArgs[];
 
@@ -106,6 +110,7 @@ public class ContentProvider extends android.content.ContentProvider {
                 null,
                 null,
                 sortOrder);
+
     }
 
     private Cursor getNoticeWithDepartmentAndStartTime(Uri uri, String[] projection, String sortOrder){
@@ -124,6 +129,7 @@ public class ContentProvider extends android.content.ContentProvider {
                 null,
                 null,
                 sortOrder);
+
     }
 
     private Cursor getNoticeWithDepartment(Uri uri, String[] projection, String sortOrder){
@@ -155,7 +161,8 @@ public class ContentProvider extends android.content.ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
-        Cursor retCursor;
+        Cursor retCursor= null;
+
         switch (sUriMatcher.match(uri)) {
 
             // "article/*"
@@ -165,6 +172,7 @@ public class ContentProvider extends android.content.ContentProvider {
             }
             // "article"
             case ARTICLE: {
+
                 retCursor = mDBHelper.getReadableDatabase().query(
                         Contract.ArticleEntry.TABLE_NAME,
                         projection,
@@ -180,10 +188,13 @@ public class ContentProvider extends android.content.ContentProvider {
             // notice/*/#
             case NOTICE_WITH_DEPARTMENT_AND_START_TIME: {
                 retCursor = getNoticeWithDepartmentAndStartTime(uri,projection,sortOrder);
+                break;
             }
 
             case NOTICE_WITH_DEPARTMENT: {
+
                 retCursor = getNoticeWithDepartment(uri,projection,sortOrder);
+                break;
             }
 
             // "Notice"
@@ -217,7 +228,7 @@ public class ContentProvider extends android.content.ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+//        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
     }
 
