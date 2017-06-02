@@ -73,6 +73,7 @@ public class Contract {
         public static final String COLUMN_TIME = "time";
         public static final String COLUMN_DEADLINE = "deadline";
         public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_CHECK = "check";
 
 
 

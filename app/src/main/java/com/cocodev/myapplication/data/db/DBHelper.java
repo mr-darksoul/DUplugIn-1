@@ -33,7 +33,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Contract.NoticeEntry.COLUMN_DEPARTMENT + " INTEGER NOT NULL, " +
                 Contract.NoticeEntry.COLUMN_TIME+ " TEXT NOT NULL," +
                 Contract.NoticeEntry.COLUMN_DEADLINE + " TEXT NOT NULL, " +
-                Contract.NoticeEntry.COLUMN_DESCRIPTION +" TEXT NOT NULL " +
+                Contract.NoticeEntry.COLUMN_DESCRIPTION +" TEXT NOT NULL, " +
+                Contract.NoticeEntry.COLUMN_CHECK + "INTEGER DEFAULT 0, " +
 
                 " FOREIGN KEY (" + Contract.NoticeEntry.COLUMN_DEPARTMENT + ") REFERENCES " +
                 Contract.DepartmentEntry.TABLE_NAME + " (" + Contract.DepartmentEntry._ID + ") " +
@@ -49,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Contract.ArticleEntry.COLUMN_LONG_DESC +  " TEXT NOT NULL, " +
                 Contract.ArticleEntry.COLUMN_AUTHOR +     " TEXT NOT NULL, " +
                 Contract.ArticleEntry.COLUMN_DEPARTMENT +  " INTEGER NOT NULL, " +
-                Contract.ArticleEntry.COLUMN_IMAGE +      " TEXT " +
+                Contract.ArticleEntry.COLUMN_IMAGE +      " TEXT, " +
 
                 " FOREIGN KEY (" + Contract.ArticleEntry.COLUMN_DEPARTMENT + ") REFERENCES " +
                 Contract.DepartmentEntry.TABLE_NAME + " (" + Contract.DepartmentEntry._ID + ") " +
