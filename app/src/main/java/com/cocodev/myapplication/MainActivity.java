@@ -16,14 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentManager;
 
-import com.cocodev.myapplication.data.db.DBManager;
+import com.cocodev.myapplication.data.db.DBHelper;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
 
-    DBManager db;
+    DBHelper db;
 
     public static final String TAG = "check";
 

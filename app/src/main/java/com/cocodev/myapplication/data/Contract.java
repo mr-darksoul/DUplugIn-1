@@ -47,6 +47,7 @@ public class Contract {
         public static final String TABLE_NAME = "department";
 
         public static final String COLUMN_DEPARTMENT_NAME = "department_name";
+        public static final String COLUMN_TEACHER_INCHARGE = "teacher_incharge";
 
 
         public static Uri buildLocationUri(long id) {
