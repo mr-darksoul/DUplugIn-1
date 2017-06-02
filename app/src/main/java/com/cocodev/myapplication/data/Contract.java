@@ -50,7 +50,7 @@ public class Contract {
         public static final String COLUMN_TEACHER_INCHARGE = "teacher_incharge";
 
 
-        public static Uri buildLocationUri(long id) {
+        public static Uri buildDepartmentUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
@@ -78,7 +78,7 @@ public class Contract {
 
 
 
-        public static Uri buildWeatherUri(long id) {
+        public static Uri buildNoticeUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
@@ -102,12 +102,12 @@ public class Contract {
         }
 
 
-        public static long getStartTimeFromUri(Uri uri) {
+        public static String getStartTimeFromUri(Uri uri) {
             String dateString = uri.getQueryParameter(COLUMN_TIME);
             if (null != dateString && dateString.length() > 0)
-                return Long.parseLong(dateString);
+                return dateString;
             else
-                return 0;
+                return null;
         }
     }
 

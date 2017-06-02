@@ -17,8 +17,6 @@ import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.cocodev.myapplication.data.db.DBAdapter;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +24,7 @@ import com.cocodev.myapplication.data.db.DBAdapter;
 public class Home extends Fragment {
 
 
-    DBAdapter dbAdapter;
+    //DBAdapter dbAdapter;
 
     public Home() {
         // Required empty public constructor
@@ -59,8 +57,8 @@ public class Home extends Fragment {
             }
         });
 
-        dbAdapter=new DBAdapter(getContext());
-        dbAdapter.open();
+//        dbAdapter=new DBAdapter(getContext());
+//        dbAdapter.open();
         //dbAdapter.insertRow("i am the fucking title","I am the fucking description, i dont give a fuck");
         populateArticleList();
 
@@ -99,33 +97,33 @@ public class Home extends Fragment {
     }
 
     public void populateArticleList(){
-        Cursor cursor = dbAdapter.getAllRows();
-
-        // Allow activity to manage lifetime of the cursor.
-        // DEPRECATED! Runs on the UI thread, OK for small/short queries.
-        //startManagingCursor(cursor); see what to do with this
-
-        // Setup mapping from cursor to view fields:
-        String[] fromFieldNames = new String[]
-                {DBAdapter.ARTICLE_TITLE, DBAdapter.ARTICLE_LONGDESC};
-        int[] toViewIDs = new int[]
-                {R.id.article_title,     R.id.article_shortdesc};
-
-        // Create adapter to may columns of the DB onto elemesnt in the UI.
-        SimpleCursorAdapter myCursorAdapter =
-                new SimpleCursorAdapter(
-                        getContext(),		// Context
-                        R.layout.article_layout,	// Row layout template
-                        cursor,					// cursor (set of DB records to map)
-                        fromFieldNames,			// DB Column names
-                        toViewIDs				// View IDs to put information in
-                );
-
-
-        // Set the adapter for the list view
-        GridView myList = (GridView)  getView().findViewById(R.id.article_collegeupdates_gridView);
-
-        myList.setAdapter(myCursorAdapter);
+//        Cursor cursor = dbAdapter.getAllRows();
+//
+//        // Allow activity to manage lifetime of the cursor.
+//        // DEPRECATED! Runs on the UI thread, OK for small/short queries.
+//        //startManagingCursor(cursor); see what to do with this
+//
+//        // Setup mapping from cursor to view fields:
+//        String[] fromFieldNames = new String[]
+//                {DBAdapter.ARTICLE_TITLE, DBAdapter.ARTICLE_LONGDESC};
+//        int[] toViewIDs = new int[]
+//                {R.id.article_title,     R.id.article_shortdesc};
+//
+//        // Create adapter to may columns of the DB onto elemesnt in the UI.
+//        SimpleCursorAdapter myCursorAdapter =
+//                new SimpleCursorAdapter(
+//                        getContext(),		// Context
+//                        R.layout.article_layout,	// Row layout template
+//                        cursor,					// cursor (set of DB records to map)
+//                        fromFieldNames,			// DB Column names
+//                        toViewIDs				// View IDs to put information in
+//                );
+//
+//
+//        // Set the adapter for the list view
+//        GridView myList = (GridView)  getView().findViewById(R.id.article_collegeupdates_gridView);
+//
+//        myList.setAdapter(myCursorAdapter);
 
 
     }
