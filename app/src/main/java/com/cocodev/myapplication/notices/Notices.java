@@ -48,11 +48,6 @@ public class Notices extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notices, container, false);
 
-        TextView textView = (TextView) view.findViewById(R.id.title_notices);
-        String title = getTypeString();
-        textView.setText(title);
-
-
         String from[] = new String[]{
                 Contract.NoticeEntry.COLUMN_DESCRIPTION
         };
@@ -68,7 +63,7 @@ public class Notices extends Fragment {
                 ,null
                 ,null
                 ,null);
-
+        Log.e("his", Integer.toString(cursor.getCount()));
 
         SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getContext(),
                 R.layout.adapter_notice,

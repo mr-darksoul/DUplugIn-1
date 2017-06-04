@@ -4,16 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.cocodev.myapplication.notices.allNotices">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Title"
-        android:id="@+id/title_notices"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/listview_notices" />
 
     <ListView
         android:layout_width="match_parent"

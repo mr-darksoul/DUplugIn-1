@@ -149,7 +149,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
     @Nullable
     private Void[] getNoticesFromJSON(String noticeJsonString)throws JSONException{
         try{
-
+            Log.e("his","getNoticesFromJSON");
             JSONObject noticeJSON = new JSONObject(noticeJsonString);
 
             JSONArray noticeArray = noticeJSON.getJSONArray("list");
@@ -162,7 +162,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
                 String description = notice.getString("description");
                 String name = notice.getString("name");
                 String incharge = notice.getString("incharge");
-
+                Log.e("his",id + " " + description);
                 long departmentID = addDepartment(name,incharge);
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(Contract.NoticeEntry.COLUMN_TIME,time);

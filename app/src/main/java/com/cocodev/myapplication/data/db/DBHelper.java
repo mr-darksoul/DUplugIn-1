@@ -14,7 +14,7 @@ import com.cocodev.myapplication.data.Contract;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "test.db";
+    public static final String DATABASE_NAME = "com.cocodev.myApplication.db";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
