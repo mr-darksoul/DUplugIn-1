@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cocodev.myapplication.R;
+import com.cocodev.myapplication.adapter.CustomNoticeCursorAdapter;
 import com.cocodev.myapplication.data.Contract;
 
 import java.util.ArrayList;
@@ -38,23 +39,10 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     private final int NOTICE_LOADER =1;
 
-    SimpleCursorAdapter mSimpleCursorAdapter;
+    CustomNoticeCursorAdapter mSimpleCursorAdapter;
     Cursor mCursor;
-    public Notices() {
-        // Required empty public constructor
-        Uri uri = Contract.NoticeEntry.buildNoticeDepartment(getTypeString());
+    public Notices() {}
 
-        Log.e("his",uri.toString() );
-        uri = Contract.NoticeEntry.CONTENT_URI;
-        Log.e("his",uri.toString() );
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(NOTICE_LOADER,null,this);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +54,7 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
                 ,null
                 ,null
                 ,null);
-        Log.e("his", Integer.toString(mCursor.getCount()));
+
     }
 
     @Override
@@ -75,25 +63,18 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notices, container, false);
 
-        String from[] = new String[]{
-                Contract.NoticeEntry.COLUMN_DESCRIPTION
-        };
 
-        int to[] = new int[]{
-             R.id.noticeText
-        };
-
-        mSimpleCursorAdapter  = new SimpleCursorAdapter(getContext(),
-                R.layout.adapter_notice,
-                mCursor,
-                from,
-                to
-        );
+        mSimpleCursorAdapter  = new CustomNoticeCursorAdapter(getActivity(),mCursor,false);
 
         ListView listViewNotices = (ListView) view.findViewById(R.id.listview_notices);
         listViewNotices.setAdapter(mSimpleCursorAdapter);
-
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(NOTICE_LOADER,null,this);
     }
 
     public void setType(int type){
