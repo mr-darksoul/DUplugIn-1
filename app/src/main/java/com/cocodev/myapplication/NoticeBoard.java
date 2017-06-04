@@ -79,7 +79,7 @@ public class NoticeBoard extends Fragment {
         MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listFragmetns);
 
         viewPager.setAdapter(fragmentPageAdapter);
-
+        viewPager.setOffscreenPageLimit(3);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout_notice);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);

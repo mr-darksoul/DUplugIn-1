@@ -20,10 +20,6 @@ public class CustomViewPager extends ViewPager {
                 super(context, attrs);
     }
 
-    @Override
-    public int getOffscreenPageLimit() {
-        return 0;
-    }
 
 
 }

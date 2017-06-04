@@ -34,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Contract.NoticeEntry.COLUMN_TIME+ " TEXT NOT NULL," +
                 Contract.NoticeEntry.COLUMN_DEADLINE + " TEXT NOT NULL, " +
                 Contract.NoticeEntry.COLUMN_DESCRIPTION +" TEXT NOT NULL, " +
-                Contract.NoticeEntry.COLUMN_CHECK + " INTEGER, " +
+                Contract.NoticeEntry.COLUMN_CHECK + " INTEGER DEFAULT 0, " +
 
                 " FOREIGN KEY (" + Contract.NoticeEntry.COLUMN_DEPARTMENT + ") REFERENCES " +
                 Contract.DepartmentEntry.TABLE_NAME + " (" + Contract.DepartmentEntry._ID + ") " +
