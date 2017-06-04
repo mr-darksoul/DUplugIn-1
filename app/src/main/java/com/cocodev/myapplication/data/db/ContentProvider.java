@@ -105,8 +105,8 @@ public class ContentProvider extends android.content.ContentProvider {
 
         return sArticleByDepartmentQueryBuilder.query(mDBHelper.getReadableDatabase(),
                 projection,
-                selection,
-                selectionArgs,
+                null,
+                null,
                 null,
                 null,
                 sortOrder);

@@ -26,7 +26,7 @@ import java.net.URL;
  * Created by Sudarshan on 01-06-2017.
  */
 
-public class FetchDataTask extends AsyncTask<Void, Void, String[]> {
+public class FetchDataTask extends AsyncTask<Void, Void, Void> {
 
     Context mContext;
     public FetchDataTask(Context context) {
@@ -34,8 +34,14 @@ public class FetchDataTask extends AsyncTask<Void, Void, String[]> {
         mContext=context;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        Toast.makeText(mContext,"onPostExecute FetchDataTask",Toast.LENGTH_SHORT).show();
 
-    long addDepartment(String name,String incharge){
+    }
+
+    long addDepartment(String name, String incharge){
         long departmentID;
         Cursor departmentCursor = mContext.getContentResolver().query(
                 Contract.DepartmentEntry.CONTENT_URI,
@@ -61,7 +67,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, String[]> {
     }
 
     @Override
-    protected String[] doInBackground(Void... params) {
+    protected Void doInBackground(Void... params) {
         String LOG_TAG = "log_tag";
         Log.d(LOG_TAG, "Starting sync");
 
@@ -117,7 +123,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, String[]> {
                 return null;
             }
             noticeString = buffer.toString();
-            return getNoticesFromJSON(noticeString);
+            getNoticesFromJSON(noticeString);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
@@ -141,13 +147,13 @@ public class FetchDataTask extends AsyncTask<Void, Void, String[]> {
     }
 
     @Nullable
-    private String[] getNoticesFromJSON(String noticeJsonString)throws JSONException{
+    private Void[] getNoticesFromJSON(String noticeJsonString)throws JSONException{
         try{
 
             JSONObject noticeJSON = new JSONObject(noticeJsonString);
 
             JSONArray noticeArray = noticeJSON.getJSONArray("list");
-            String[] strings = new String[noticeArray.length()];
+
             for(int i=0; i <noticeArray.length();i++){
                 JSONObject notice = noticeArray.getJSONObject(i);
                 String id = notice.getString("id");
@@ -168,7 +174,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, String[]> {
                 long id_insertedNOTICE = ContentUris.parseId(uri);
 
             }
-            return strings;
+
         } catch (JSONException e) {
             Log.e("TAG", e.getMessage(), e);
             e.printStackTrace();

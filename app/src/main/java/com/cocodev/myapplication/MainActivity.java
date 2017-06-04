@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentManager;
+import android.widget.Toast;
 
 import com.cocodev.myapplication.data.FetchDataTask;
 import com.cocodev.myapplication.data.db.DBHelper;
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         }else if(id == R.id.action_refresh){
             FetchDataTask fetchDataTask = new FetchDataTask(this);
             fetchDataTask.execute();
+            Toast.makeText(this,"Called FetchDataTask",Toast.LENGTH_SHORT).show();
         }
 
         return true;
