@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentManager;
 
+import com.cocodev.myapplication.data.FetchDataTask;
 import com.cocodev.myapplication.data.db.DBHelper;
 
 
@@ -91,6 +92,9 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this,SettingsActivity.class);
             startActivity(intent);
             return true;
+        }else if(id == R.id.action_refresh){
+            FetchDataTask fetchDataTask = new FetchDataTask(this);
+            fetchDataTask.execute();
         }
 
         return true;

@@ -35,9 +35,7 @@ public class NoticeBoard extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FetchDataTask fetchDataTask = new FetchDataTask(getContext());
-        fetchDataTask.execute();
-        Toast.makeText(getContext(),"Exected fetch data task ", Toast.LENGTH_SHORT).show();
+
 
     }
 
