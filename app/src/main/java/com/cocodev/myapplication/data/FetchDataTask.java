@@ -162,7 +162,9 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
                 String description = notice.getString("description");
                 String name = notice.getString("name");
                 String incharge = notice.getString("incharge");
+
                 Log.e("his",id + " " + description);
+
                 long departmentID = addDepartment(name,incharge);
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(Contract.NoticeEntry.COLUMN_TIME,time);
@@ -179,6 +181,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
             Log.e("TAG", e.getMessage(), e);
             e.printStackTrace();
         }
+
         return null;
     }
 }

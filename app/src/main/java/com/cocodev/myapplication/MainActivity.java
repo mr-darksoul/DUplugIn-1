@@ -1,10 +1,15 @@
 package com.cocodev.myapplication;
 
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 
 
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,18 +20,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentManager;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.cocodev.myapplication.data.Contract;
 import com.cocodev.myapplication.data.FetchDataTask;
 import com.cocodev.myapplication.data.db.DBHelper;
 
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     DBHelper db;
-
+    SimpleCursorAdapter simpleCursorAdapter;
     public static final String TAG = "check";
 
 
@@ -49,10 +55,8 @@ public class MainActivity extends AppCompatActivity
         //to set the main activity as home page
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().findItem(R.id.home).setChecked(true);
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.home));
 
-
+        ListView listView = (ListView) findViewById(R.id.list_view);
 
 
     }
@@ -144,4 +148,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

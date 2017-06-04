@@ -89,7 +89,7 @@ public class Contract {
             return CONTENT_URI.buildUpon().appendPath(departmentSetting).build();
         }
 
-        public static Uri buildNoticeDepartmenWithStartTime(
+        public static Uri buildNoticeDepartmentWithStartTime(
                 String locationSetting, long startDate) {
             long normalizedDate = /*normalizeDate(*/startDate;
             return CONTENT_URI.buildUpon().appendPath(locationSetting)
