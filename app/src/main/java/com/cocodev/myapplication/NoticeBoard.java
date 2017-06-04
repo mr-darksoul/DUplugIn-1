@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.cocodev.myapplication.adapter.CustomViewPager;
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
 import com.cocodev.myapplication.data.FetchDataTask;
 import com.cocodev.myapplication.notices.Notices;
@@ -28,7 +29,7 @@ public class NoticeBoard extends Fragment {
 
     }
 
-    ViewPager viewPager;
+    CustomViewPager viewPager;
     TabHost tabhost;
 
     @Override
@@ -54,28 +55,28 @@ public class NoticeBoard extends Fragment {
 
 
     private void initViewPager(View view) {
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager_notices);
-        List<Notices> listfragmetns = new ArrayList<Notices>();
+        viewPager = (CustomViewPager) view.findViewById(R.id.viewPager_notices);
+        List<Notices> listFragmetns = new ArrayList<Notices>();
 
 
 
         Notices classNotices = new Notices();
         classNotices.setType(Notices.TYPE_CLASS);
-        listfragmetns.add(classNotices);
+        listFragmetns.add(classNotices);
 
         Notices collegeNotices = new Notices();
         collegeNotices.setType(Notices.TYPE_COLLEGE);
-        listfragmetns.add(collegeNotices);
+        listFragmetns.add(collegeNotices);
 
 
         Notices allNotices = new Notices();
         allNotices.setType(Notices.TYPE_ALL);
-        listfragmetns.add(allNotices);
+        listFragmetns.add(allNotices);
 
 
 
 
-        MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listfragmetns);
+        MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listFragmetns);
 
         viewPager.setAdapter(fragmentPageAdapter);
 
