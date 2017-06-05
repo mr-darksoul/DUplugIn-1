@@ -13,6 +13,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.adapter.CustomNoticeCursorAdapter;
 import com.cocodev.myapplication.data.Contract;
+import com.cocodev.myapplication.data.FetchDataTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +72,14 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(NOTICE_LOADER,null,this);
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FetchDataTask fetchDataTask = new FetchDataTask(getContext());
+                fetchDataTask.execute();
+            }
+        });
     }
 
     @Override
@@ -105,7 +115,7 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
                 R.id.noticeText
         };
 
-        ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.notice_list_layout);
+        ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.swipe_refresh_layout);
         mListView = new ListView(getContext());
         viewGroup.addView(mListView);
 
