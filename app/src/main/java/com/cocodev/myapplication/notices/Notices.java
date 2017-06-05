@@ -65,6 +65,9 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
         // Inflate the layout for this fragment
         Log.e("his","onCreateView");
         mView  = inflater.inflate(R.layout.fragment_notices, container, false);
+
+        mListView = (ListView) mView.findViewById(R.id.list_notices);
+
         return mView;
     }
 
@@ -72,14 +75,17 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(NOTICE_LOADER,null,this);
-        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                FetchDataTask fetchDataTask = new FetchDataTask(getContext());
-                fetchDataTask.execute();
-            }
-        });
+
+        Cursor cursor = getContext().getContentResolver().query(
+                Contract.NoticeEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        mSimpleCursorAdapter =new CustomNoticeCursorAdapter(getContext(),cursor,false);
+
     }
 
     @Override
@@ -107,17 +113,6 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String from[] = new String[]{
-                Contract.NoticeEntry.COLUMN_DESCRIPTION
-        };
-
-        int to[] = new int[]{
-                R.id.noticeText
-        };
-
-        ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.swipe_refresh_layout);
-        mListView = new ListView(getContext());
-        viewGroup.addView(mListView);
 
 
         return new CursorLoader(getActivity(),

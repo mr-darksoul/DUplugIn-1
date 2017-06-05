@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.home) {
             // Handle the camera action
             Home home = new Home();
+            Bundle bundle = new Bundle();
             FragmentManager manager = getSupportFragmentManager();
 
             Log.i(TAG,"FRAGMENt");

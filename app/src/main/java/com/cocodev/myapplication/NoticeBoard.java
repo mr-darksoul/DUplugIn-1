@@ -70,9 +70,6 @@ public class NoticeBoard extends Fragment {
         allNotices.setType(Notices.TYPE_ALL);
         listFragmetns.add(allNotices);
 
-
-
-
         MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listFragmetns);
 
         viewPager.setAdapter(fragmentPageAdapter);
@@ -82,5 +79,7 @@ public class NoticeBoard extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
 
     }
+
+
 
 }

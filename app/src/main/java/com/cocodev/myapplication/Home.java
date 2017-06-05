@@ -35,36 +35,6 @@ public class Home extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        //setting up on click listeners
-        TextView  title_collegeUpdates = (TextView) getView().findViewById(R.id.title_collegeUpdates);
-        title_collegeUpdates.setOnClickListener(new View.OnClickListener() {
-            @Override
-
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getActivity(), categoryDetails.class).putExtra(Intent.EXTRA_TEXT, getString(R.string.title_collegeUpdates));
-                startActivity(intent);
-            }
-        });
-
-        TextView title_universityUpdates = (TextView) getView().findViewById(R.id.title_universityUpdates);
-        title_universityUpdates.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),categoryDetails.class).putExtra(Intent.EXTRA_TEXT,getString(R.string.title_universityUpdates));
-                startActivity(intent);
-            }
-        });
-
-//        dbAdapter=new DBAdapter(getContext());
-//        dbAdapter.open();
-        //dbAdapter.insertRow("i am the fucking title","I am the fucking description, i dont give a fuck");
-       // populateArticleList();
-
-
-
-
     }
 
 

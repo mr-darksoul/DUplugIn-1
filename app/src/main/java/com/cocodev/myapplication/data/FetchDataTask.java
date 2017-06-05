@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,10 +31,12 @@ import java.util.Vector;
 public class FetchDataTask extends AsyncTask<Void, Void, Void> {
 
     Context mContext;
+
     public FetchDataTask(Context context) {
         super();
         mContext=context;
     }
+
 
     @Override
     protected void onPostExecute(Void aVoid) {
@@ -193,6 +196,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
             Log.e("TAG", e.getMessage(), e);
             e.printStackTrace();
         }
+
 
         return null;
     }
