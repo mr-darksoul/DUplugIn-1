@@ -2,17 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cocodev.myapplication.notices.allNotices">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.cocodev.myapplication.notices.Notices"
+    android:id="@+id/notice_list_layout">
 
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listview_notices"
-        android:layout_below="@+id/title_notices"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
 
 </RelativeLayout>

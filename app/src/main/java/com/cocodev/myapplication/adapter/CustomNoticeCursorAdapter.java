@@ -1,5 +1,7 @@
 package com.cocodev.myapplication.adapter;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -80,7 +83,9 @@ public class CustomNoticeCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, final Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        viewHolder.checkBox.setOnCheckedChangeListener(null);
+        final CheckBox checkBox = viewHolder.checkBox;
+        final TextView textView = viewHolder.textView;
+        checkBox.setOnCheckedChangeListener(null);
 
         final int position = cursor.getPosition();
 
@@ -94,18 +99,19 @@ public class CustomNoticeCursorAdapter extends CursorAdapter {
                         Contract.NoticeEntry.COLUMN_CHECK
                 )
         );
-        viewHolder.textView.setText(description);
+        textView.setText(description);
 
         if(checked == 1){
-            viewHolder.checkBox.setChecked(true);
+            checkBox.setChecked(true);
         }else{
-            viewHolder.checkBox.setChecked(false);
+            checkBox.setChecked(false);
         }
         final String ID = cursor.getString(
                 cursor.getColumnIndex(
                         Contract.NoticeEntry._ID)
         );
-        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ContentValues contentValues = new ContentValues();
@@ -129,6 +135,9 @@ public class CustomNoticeCursorAdapter extends CursorAdapter {
 
             }
         });
+
+
+
 
     }
 

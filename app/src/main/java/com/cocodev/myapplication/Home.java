@@ -60,7 +60,7 @@ public class Home extends Fragment {
 //        dbAdapter=new DBAdapter(getContext());
 //        dbAdapter.open();
         //dbAdapter.insertRow("i am the fucking title","I am the fucking description, i dont give a fuck");
-        populateArticleList();
+       // populateArticleList();
 
 
 

@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Sudarshan on 01-06-2017.
  */
 
-public class MyFragmentPageAdapter extends FragmentPagerAdapter {
+public class MyFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     List<Notices> listFragments;
     public MyFragmentPageAdapter(FragmentManager fm, List<Notices> listFragments) {
@@ -40,4 +40,6 @@ public class MyFragmentPageAdapter extends FragmentPagerAdapter {
 
         return notices.getTypeString() + " Notices";
     }
+
+
 }

@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Vector;
 
 /**
  * Created by Sudarshan on 01-06-2017.
@@ -154,6 +155,8 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
 
             JSONArray noticeArray = noticeJSON.getJSONArray("list");
 
+            Vector<ContentValues> cvVector = new Vector<ContentValues>(noticeArray.length());
+
             for(int i=0; i <noticeArray.length();i++){
                 JSONObject notice = noticeArray.getJSONObject(i);
                 String id = notice.getString("id");
@@ -172,9 +175,18 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
                 contentValues.put(Contract.NoticeEntry.COLUMN_DEPARTMENT,departmentID);
                 contentValues.put(Contract.NoticeEntry.COLUMN_DESCRIPTION,description);
 
-                Uri uri = mContext.getContentResolver().insert(Contract.NoticeEntry.CONTENT_URI,contentValues);
-                long id_insertedNOTICE = ContentUris.parseId(uri);
+                cvVector.add(contentValues);
 
+
+            }
+
+            if(cvVector.size()>0){
+                ContentValues[] contentValues= new ContentValues[cvVector.size()];
+                cvVector.toArray(contentValues);
+                mContext.getContentResolver().bulkInsert(
+                        Contract.NoticeEntry.CONTENT_URI,
+                        contentValues
+                );
             }
 
         } catch (JSONException e) {

@@ -6,15 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
-import android.widget.Toast;
 
-import com.cocodev.myapplication.adapter.CustomViewPager;
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
-import com.cocodev.myapplication.data.FetchDataTask;
 import com.cocodev.myapplication.notices.Notices;
 
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class NoticeBoard extends Fragment {
 
     }
 
-    CustomViewPager viewPager;
+    ViewPager viewPager;
     TabHost tabhost;
 
     @Override
@@ -47,6 +45,7 @@ public class NoticeBoard extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notice_board, container, false);
 
         initViewPager(view);
+        getActivity().setTitle("Notice Board");
 
 
         return view;
@@ -55,10 +54,8 @@ public class NoticeBoard extends Fragment {
 
 
     private void initViewPager(View view) {
-        viewPager = (CustomViewPager) view.findViewById(R.id.viewPager_notices);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager_notices);
         List<Notices> listFragmetns = new ArrayList<Notices>();
-
-
 
         Notices classNotices = new Notices();
         classNotices.setType(Notices.TYPE_CLASS);
@@ -80,9 +77,10 @@ public class NoticeBoard extends Fragment {
 
         viewPager.setAdapter(fragmentPageAdapter);
         viewPager.setOffscreenPageLimit(3);
+
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout_notice);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
     }
 
 }
