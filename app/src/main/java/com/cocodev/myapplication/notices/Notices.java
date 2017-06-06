@@ -67,7 +67,14 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
         mView  = inflater.inflate(R.layout.fragment_notices, container, false);
 
         mListView = (ListView) mView.findViewById(R.id.list_notices);
-
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FetchDataTask fetchDataTask = new FetchDataTask(getContext(),swipeRefreshLayout);
+                fetchDataTask.execute();
+            }
+        });
         return mView;
     }
 

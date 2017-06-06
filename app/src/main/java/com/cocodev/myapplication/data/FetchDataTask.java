@@ -31,16 +31,24 @@ import java.util.Vector;
 public class FetchDataTask extends AsyncTask<Void, Void, Void> {
 
     Context mContext;
-
+    SwipeRefreshLayout mSwipeRefreshLayout=null;
     public FetchDataTask(Context context) {
         super();
         mContext=context;
     }
 
+    public FetchDataTask(Context context, SwipeRefreshLayout swipeRefreshLayout) {
+        super();
+        mContext=context;
+        mSwipeRefreshLayout= swipeRefreshLayout;
+    }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        if(mSwipeRefreshLayout!=null){
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         Toast.makeText(mContext,"onPostExecute FetchDataTask",Toast.LENGTH_SHORT).show();
 
     }
