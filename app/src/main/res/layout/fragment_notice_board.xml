@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.cocodev.myapplication.NoticeBoard">
+    tools:context="com.cocodev.myapplication.NoticeBoard"
+    android:background="@null">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -12,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView2"
-        app:theme="@style/AppTheme"
         >
 
         <android.support.design.widget.TabLayout
@@ -25,7 +25,7 @@
             app:tabMode="scrollable"
             app:tabTextAppearance="@style/TabText"
             app:tabSelectedTextColor="#ffffff"
-            android:theme="@style/TabLayout"/>
+            app:theme="@style/TabLayout"/>
     </ScrollView>
 
     <android.support.v4.view.ViewPager

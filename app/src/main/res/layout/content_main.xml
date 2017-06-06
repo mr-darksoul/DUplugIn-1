@@ -11,7 +11,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.cocodev.myapplication.MainActivity"
     tools:showIn="@layout/app_bar_main"
-    android:id="@+id/fragment_layout">
+    android:id="@+id/fragment_layout"
+    android:background="@null">
 
 
 </RelativeLayout>
