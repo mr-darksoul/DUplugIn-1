@@ -42,11 +42,15 @@ public class CustomNoticeCursorAdapter extends CursorAdapter {
 
     private class ViewHolder{
         public CheckBox checkBox;
-        public TextView textView;
+        public TextView description;
+        public TextView time;
+        public TextView deadline;
 
         public ViewHolder(View view){
             checkBox = (CheckBox) view.findViewById(R.id.checkBox);
-            textView = (TextView) view.findViewById(R.id.noticeText);
+            description = (TextView) view.findViewById(R.id.noticeText);
+            time = (TextView) view.findViewById(R.id.notice_time);
+            deadline = (TextView) view.findViewById(R.id.notice_deadline);
         }
 
 
@@ -83,9 +87,8 @@ public class CustomNoticeCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, final Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        final CheckBox checkBox = viewHolder.checkBox;
-        final TextView textView = viewHolder.textView;
-        checkBox.setOnCheckedChangeListener(null);
+
+        viewHolder.checkBox.setOnCheckedChangeListener(null);
 
         final int position = cursor.getPosition();
 
@@ -94,24 +97,36 @@ public class CustomNoticeCursorAdapter extends CursorAdapter {
                         Contract.NoticeEntry.COLUMN_DESCRIPTION
                 )
         );
+        String time = cursor.getString(
+                mThisCursor.getColumnIndex(
+                        Contract.NoticeEntry.COLUMN_TIME
+                )
+        );
+        String deadline = cursor.getString(
+                mThisCursor.getColumnIndex(
+                        Contract.NoticeEntry.COLUMN_DEADLINE
+                )
+        );
         int checked = cursor.getInt(
                 mThisCursor.getColumnIndex(
                         Contract.NoticeEntry.COLUMN_CHECK
                 )
         );
-        textView.setText(description);
+        viewHolder.description.setText(description);
+        viewHolder.deadline.setText(deadline);
+        viewHolder.time.setText(time);
 
         if(checked == 1){
-            checkBox.setChecked(true);
+            viewHolder.checkBox.setChecked(true);
         }else{
-            checkBox.setChecked(false);
+            viewHolder.checkBox.setChecked(false);
         }
         final String ID = cursor.getString(
                 cursor.getColumnIndex(
                         Contract.NoticeEntry._ID)
         );
 
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ContentValues contentValues = new ContentValues();

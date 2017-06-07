@@ -26,10 +26,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cocodev.myapplication.MainActivity;
+import com.cocodev.myapplication.MyApplication;
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.adapter.CustomNoticeCursorAdapter;
 import com.cocodev.myapplication.data.Contract;
 import com.cocodev.myapplication.data.FetchDataTask;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +66,7 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.e("his","onCreateView");
+
         mView  = inflater.inflate(R.layout.fragment_notices, container, false);
 
         mListView = (ListView) mView.findViewById(R.id.list_notices);
@@ -98,7 +101,7 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onStart() {
         super.onStart();
-        Log.e("his","onStart");
+
 
     }
 
@@ -147,8 +150,14 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mSimpleCursorAdapter.swapCursor(null);
+
     }
 
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getLoaderManager().destroyLoader(NOTICE_LOADER);
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 }

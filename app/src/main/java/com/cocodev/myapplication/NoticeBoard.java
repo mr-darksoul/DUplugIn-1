@@ -14,6 +14,7 @@ import android.widget.TabHost;
 
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
 import com.cocodev.myapplication.notices.Notices;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,6 @@ public class NoticeBoard extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Override
@@ -80,6 +78,10 @@ public class NoticeBoard extends Fragment {
 
     }
 
-
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 }

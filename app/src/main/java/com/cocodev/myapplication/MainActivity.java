@@ -2,6 +2,7 @@ package com.cocodev.myapplication;
 
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -26,18 +27,26 @@ import android.widget.Toast;
 import com.cocodev.myapplication.data.Contract;
 import com.cocodev.myapplication.data.FetchDataTask;
 import com.cocodev.myapplication.data.db.DBHelper;
+import com.squareup.leakcanary.ActivityRefWatcher;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
-
+    public static RefWatcher getRefWatcher(Context context) {
+        MainActivity application = (MainActivity) context.getApplicationContext();
+        return application.refWatcher;
+    }
+    private RefWatcher refWatcher;
     public static final String TAG = "check";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Normal app init code...
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
