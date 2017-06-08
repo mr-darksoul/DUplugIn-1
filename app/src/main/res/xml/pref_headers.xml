@@ -16,5 +16,10 @@
         android:fragment="com.cocodev.myapplication.SettingsActivity$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
         android:title="@string/pref_header_data_sync" />
+    <header
+        android:fragment="com.cocodev.myapplication.SettingsActivity$HomeFeedPreferenceFragment"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="Home Page Preferences"/>
+
 
 </preference-headers>
