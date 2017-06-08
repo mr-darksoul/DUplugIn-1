@@ -28,16 +28,16 @@ import java.util.Vector;
  * Created by Sudarshan on 01-06-2017.
  */
 
-public class FetchDataTask extends AsyncTask<Void, Void, Void> {
+public class FetchArticleTask extends AsyncTask<Void, Void, Void> {
 
     Context mContext;
     SwipeRefreshLayout mSwipeRefreshLayout=null;
-    public FetchDataTask(Context context) {
+    public FetchArticleTask(Context context) {
         super();
         mContext=context;
     }
 
-    public FetchDataTask(Context context, SwipeRefreshLayout swipeRefreshLayout) {
+    public FetchArticleTask(Context context, SwipeRefreshLayout swipeRefreshLayout) {
         super();
         mContext=context;
         mSwipeRefreshLayout= swipeRefreshLayout;
@@ -52,7 +52,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
 
         mContext=null;
 
-        Toast.makeText(mContext,"onPostExecute FetchDataTask",Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,"onPostExecute FetchArticleTask",Toast.LENGTH_SHORT).show();
 
     }
 
@@ -106,7 +106,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
 
 
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                    .appendQueryParameter(QUERY_PARAM, "notice")
+                    .appendQueryParameter(QUERY_PARAM, "article")
                     .build();
 
             URL url = new URL(builtUri.toString());
@@ -144,8 +144,8 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
         }catch (JSONException e) {
-           Log.e(LOG_TAG, e.getMessage(), e);
-           e.printStackTrace();}
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();}
         finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -175,19 +175,28 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
                 JSONObject notice = noticeArray.getJSONObject(i);
                 String id = notice.getString("id");
                 String time = notice.getString("time");
-                String deadline = notice.getString("deadline");
-                String description = notice.getString("description");
-                String name = notice.getString("name");
-                String incharge = notice.getString("incharge");
+                String title = notice.getString("title");
+                String tagline = notice.getString("tagline");
+                String author = notice.getString("author");
+                String department = notice.getString("department");
+                String image = notice.getString("image");
+                String shortdesc = notice.getString("shortdesc");
+                String longdesc = notice.getString("longdesc");
+                String deptName = notice.getString("name");
+                String deptIncharge = notice.getString("incharge");
 
-                Log.e("his",id + " " + description);
 
-                long departmentID = addDepartment(name,incharge);
+
+                long departmentID = addDepartment(deptName,deptIncharge);
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(Contract.NoticeEntry.COLUMN_TIME,time);
-                contentValues.put(Contract.NoticeEntry.COLUMN_DEADLINE,deadline);
-                contentValues.put(Contract.NoticeEntry.COLUMN_DEPARTMENT,departmentID);
-                contentValues.put(Contract.NoticeEntry.COLUMN_DESCRIPTION,description);
+                contentValues.put(Contract.ArticleEntry.COLUMN_AUTHOR,author);
+                contentValues.put(Contract.ArticleEntry.COLUMN_IMAGE,image);
+                contentValues.put(Contract.ArticleEntry.COLUMN_DEPARTMENT,departmentID);
+                contentValues.put(Contract.ArticleEntry.COLUMN_LONG_DESC,shortdesc);
+                contentValues.put(Contract.ArticleEntry.COLUMN_SHORT_DESC,longdesc);
+                contentValues.put(Contract.ArticleEntry.COLUMN_TAG_LINE,tagline);
+                contentValues.put(Contract.ArticleEntry.COLUMN_TIME,title);
+                contentValues.put(Contract.ArticleEntry.COLUMN_TITLE,time);
 
                 cvVector.add(contentValues);
 
@@ -198,7 +207,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
                 ContentValues[] contentValues= new ContentValues[cvVector.size()];
                 cvVector.toArray(contentValues);
                 mContext.getContentResolver().bulkInsert(
-                        Contract.NoticeEntry.CONTENT_URI,
+                        Contract.ArticleEntry.CONTENT_URI,
                         contentValues
                 );
             }
