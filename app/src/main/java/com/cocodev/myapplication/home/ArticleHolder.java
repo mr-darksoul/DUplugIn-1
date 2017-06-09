@@ -34,6 +34,7 @@ public class ArticleHolder extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.article_list_view_first, container, false);
         mlistView = (ListView) view.findViewById(R.id.listView_articleHolder);
+
         return view;
     }
 

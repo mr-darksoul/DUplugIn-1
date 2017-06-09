@@ -17,11 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cocodev.myapplication.adapter.CustomArticleHolderNoticeAdapter;
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
+import com.cocodev.myapplication.data.Contract;
+import com.cocodev.myapplication.data.db.ContentProvider;
 import com.cocodev.myapplication.notices.Notices;
 
 import java.util.ArrayList;
@@ -57,15 +62,33 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.article_list_view_first, container, false);
+        View view = inflater.inflate(R.layout.fragment_article_holder, container, false);
 
-        //initViewPager(view);
+        initViewPager(view);
         getActivity().setTitle("App Name");
 
 
         return view;
     }
     private void initViewPager(View view) {
+
+        Cursor c = getContext().getContentResolver().query(
+                Contract.ArticleEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+        if(c.moveToFirst())
+            Toast.makeText(getContext(), Integer.toString(c.getCount()),Toast.LENGTH_SHORT).show();
+
+        ListView listView = (ListView) view.findViewById(R.id.listView_articleHolder);
+        CustomArticleHolderNoticeAdapter adapter = new CustomArticleHolderNoticeAdapter(
+                getContext(),
+                c,
+                false
+        );
+        listView.setAdapter(adapter);
 //        viewPager = (ViewPager) view.findViewById(R.id.viewPager_home);
 //        List<Notices> listFragmetns = new ArrayList<Notices>();
 //

@@ -32,6 +32,7 @@ import com.cocodev.myapplication.MyApplication;
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.adapter.CustomNoticeCursorAdapter;
 import com.cocodev.myapplication.data.Contract;
+import com.cocodev.myapplication.data.FetchArticleTask;
 import com.cocodev.myapplication.data.FetchDataTask;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -75,8 +76,9 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FetchDataTask fetchDataTask = new FetchDataTask(getContext(),swipeRefreshLayout);
-                fetchDataTask.execute();
+
+                FetchArticleTask fetchArticleTask = new FetchArticleTask(getContext(),swipeRefreshLayout);
+                fetchArticleTask.execute();
             }
         });
 

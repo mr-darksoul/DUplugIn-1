@@ -63,11 +63,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        NoticeBoard noticeBoard = new NoticeBoard();
+        Home home = new Home();
         FragmentManager manager = getSupportFragmentManager();
 
         Log.i(TAG, "FRAGMENt");
-        manager.beginTransaction().replace(R.id.fragment_layout, noticeBoard, null).commit();
+        manager.beginTransaction().replace(R.id.fragment_layout, home, null).commit();
 
     }
 

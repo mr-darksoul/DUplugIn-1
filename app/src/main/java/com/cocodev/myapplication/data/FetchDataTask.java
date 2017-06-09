@@ -52,7 +52,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, Void> {
 
         mContext=null;
 
-        Toast.makeText(mContext,"onPostExecute FetchDataTask",Toast.LENGTH_SHORT).show();
+
 
     }
 

@@ -52,7 +52,6 @@ public class FetchArticleTask extends AsyncTask<Void, Void, Void> {
 
         mContext=null;
 
-        Toast.makeText(mContext,"onPostExecute FetchArticleTask",Toast.LENGTH_SHORT).show();
 
     }
 
@@ -195,8 +194,8 @@ public class FetchArticleTask extends AsyncTask<Void, Void, Void> {
                 contentValues.put(Contract.ArticleEntry.COLUMN_LONG_DESC,shortdesc);
                 contentValues.put(Contract.ArticleEntry.COLUMN_SHORT_DESC,longdesc);
                 contentValues.put(Contract.ArticleEntry.COLUMN_TAG_LINE,tagline);
-                contentValues.put(Contract.ArticleEntry.COLUMN_TIME,title);
-                contentValues.put(Contract.ArticleEntry.COLUMN_TITLE,time);
+                contentValues.put(Contract.ArticleEntry.COLUMN_TIME,time);
+                contentValues.put(Contract.ArticleEntry.COLUMN_TITLE,title);
 
                 cvVector.add(contentValues);
 
