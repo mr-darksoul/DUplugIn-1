@@ -40,6 +40,7 @@
         <item>-1</item>
     </string-array>
 
+    <string name="homeFeed_key">multiSelect_homem_page</string>
     <string-array name="multiselect_list_titles">
         <item>Sports</item>
         <item>Dance</item>
@@ -48,22 +49,13 @@
 
     <string-array name="multiselect_list_values">
         <item>
-            <string-array>
-                <item>0</item>
-                <item>1</item>
-            </string-array>
+            2
         </item>
         <item>
-            <string-array>
-                <item>0</item>
-                <item>1</item>
-            </string-array>
+            3
         </item>
         <item>
-            <string-array>
-                <item>0</item>
-                <item>1</item>
-            </string-array>
+            4
         </item>
     </string-array>
 
@@ -106,5 +98,6 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="action_refresh">Refresh</string>
+
 
 </resources>

@@ -29,7 +29,6 @@ public class NoticeBoard extends Fragment {
     }
 
     ViewPager viewPager;
-    TabHost tabhost;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

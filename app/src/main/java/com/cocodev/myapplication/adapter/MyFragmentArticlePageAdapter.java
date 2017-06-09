@@ -2,10 +2,9 @@ package com.cocodev.myapplication.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.cocodev.myapplication.notices.Notices;
+import com.cocodev.myapplication.articles.ArticleHolder;
 
 import java.util.List;
 
@@ -13,11 +12,11 @@ import java.util.List;
  * Created by Sudarshan on 01-06-2017.
  */
 
-public class MyFragmentPageAdapter extends FragmentStatePagerAdapter {
+public class MyFragmentArticlePageAdapter extends FragmentStatePagerAdapter {
 
-    List<Notices> listFragments;
+    List<ArticleHolder> listFragments;
 
-    public MyFragmentPageAdapter(FragmentManager fm, List<Notices> listFragments) {
+    public MyFragmentArticlePageAdapter(FragmentManager fm, List<ArticleHolder> listFragments) {
         super(fm);
         this.listFragments=listFragments;
 
@@ -37,9 +36,9 @@ public class MyFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Notices notices = listFragments.get(position);
+        ArticleHolder articles = listFragments.get(position);
 
-        return notices.getTypeString();
+        return articles.getTypeString();
     }
 
 

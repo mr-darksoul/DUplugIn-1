@@ -22,7 +22,7 @@
             android:background="?attr/colorAccent"
             android:paddingTop="4dp"
             app:tabIndicatorColor="#fff"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             app:tabTextAppearance="@style/TabText"
             app:tabSelectedTextColor="#ffffff"
             app:theme="@style/TabLayout"/>

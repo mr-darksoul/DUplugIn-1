@@ -3,15 +3,12 @@ package com.cocodev.myapplication.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cocodev.myapplication.R;
-import com.cocodev.myapplication.articles.Article;
 import com.cocodev.myapplication.data.Contract;
 
 /**
@@ -72,8 +69,6 @@ public class CustomArticleHolderNoticeAdapter extends CursorAdapter {
             v.authorView.setText(cursor.getString(cursor.getColumnIndex(Contract.ArticleEntry.COLUMN_AUTHOR)));
         }
 
-
-        
     }
 
 

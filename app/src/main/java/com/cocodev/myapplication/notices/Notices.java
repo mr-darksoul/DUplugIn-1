@@ -59,9 +59,6 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("his","onCreate");
-
-
     }
 
     @Override
@@ -76,9 +73,8 @@ public class Notices extends Fragment implements LoaderManager.LoaderCallbacks<C
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
-                FetchArticleTask fetchArticleTask = new FetchArticleTask(getContext(),swipeRefreshLayout);
-                fetchArticleTask.execute();
+                FetchDataTask fetchDataTask = new FetchDataTask(getContext(),swipeRefreshLayout);
+                fetchDataTask.execute();
             }
         });
 
