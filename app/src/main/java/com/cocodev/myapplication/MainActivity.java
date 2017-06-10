@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 
 
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
@@ -34,10 +35,15 @@ import com.squareup.leakcanary.RefWatcher;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private String CURRENT_FRAGMENT = "currentFragment";
+    private final int HOME_FRAGMENT =0;
+    private final int NOTICE_BOARD_FRAGMENT =1;
     public static RefWatcher getRefWatcher(Context context) {
         MainActivity application = (MainActivity) context.getApplicationContext();
         return application.refWatcher;
     }
+
+
     private RefWatcher refWatcher;
     public static final String TAG = "check";
 
@@ -57,25 +63,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-
-        //to set the main activity as home page
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Home home = new Home();
-        FragmentManager manager = getSupportFragmentManager();
-
-        Log.i(TAG, "FRAGMENt");
-        manager.beginTransaction().replace(R.id.fragment_layout, home, null).commit();
+        if(getSupportFragmentManager().findFragmentById(R.id.fragment_layout)==null){
+            Log.e("his","zero");
+            getSupportFragmentManager().beginTransaction().replace(
+                    R.id.fragment_layout,
+                    new Home()
+            ).commit();
+            navigationView.setCheckedItem(R.id.home);
+        }
 
     }
-
-
-
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -160,6 +160,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 }

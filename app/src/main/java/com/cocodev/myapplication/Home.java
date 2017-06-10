@@ -38,7 +38,7 @@ public class Home extends Fragment {
 
 
     //DBAdapter dbAdapter;
-
+    private final String LAST_VIEWED_PAGE = "lastViewedPage";
     public Home() {
         // Required empty public constructor
 
@@ -61,13 +61,14 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        initViewPager(view);
         getActivity().setTitle("App Name");
+
+        initViewPager(view,savedInstanceState);
+
 
         return view;
     }
-    private void initViewPager(View view) {
+    private void initViewPager(View view, Bundle savedInstanceState) {
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_home);
         List<ArticleHolder> listFragmetns = new ArrayList<ArticleHolder>();
@@ -86,6 +87,8 @@ public class Home extends Fragment {
                     }
 
             }
+
+
         }
 
 
@@ -103,6 +106,23 @@ public class Home extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(LAST_VIEWED_PAGE,viewPager.getCurrentItem());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState!=null){
+            int LastViewedpage = savedInstanceState.getInt(LAST_VIEWED_PAGE,0);
+            if(viewPager.getAdapter().getCount()>LastViewedpage) {
+                viewPager.setCurrentItem(LastViewedpage);
+            }
+        }
     }
 
     @Override
