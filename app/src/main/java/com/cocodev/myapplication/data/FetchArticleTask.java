@@ -219,4 +219,5 @@ public class FetchArticleTask extends AsyncTask<Void, Void, Void> {
 
         return null;
     }
+
 }

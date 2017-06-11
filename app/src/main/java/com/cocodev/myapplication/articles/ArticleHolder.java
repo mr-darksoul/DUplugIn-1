@@ -37,10 +37,12 @@ public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallb
     private final String SPORTS = "Sports";
     private final String DANCE = "Dance";
     private final String MUSIC = "Music";
+    private final String LAST_SCROLL_STATE = "lastScrollState";
 
     public ArticleHolder(){}
     CustomArticleHolderNoticeAdapter mSimpleCursorAdapter;
-
+    ListView mListView;
+    FetchArticleTask fetchArticleTask;
 
     public ArticleHolder(int type) {
         // Required empty public constructor
@@ -66,10 +68,11 @@ public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallb
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FetchArticleTask fetchArticleTask = new FetchArticleTask(getContext(),swipeRefreshLayout);
+                 fetchArticleTask = new FetchArticleTask(getContext(),swipeRefreshLayout);
                 fetchArticleTask.execute();
             }
         });
+
 
         Cursor c = getContext().getContentResolver().query(
                 Contract.ArticleEntry.CONTENT_URI,
@@ -80,14 +83,8 @@ public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallb
         );
 
 
-        ListView listView = (ListView) view.findViewById(R.id.listView_articleHolder);
-         mSimpleCursorAdapter = new CustomArticleHolderNoticeAdapter(
-                getContext(),
-                c,
-                false
-        );
+         mListView = (ListView) view.findViewById(R.id.listView_articleHolder);
 
-        listView.setAdapter(mSimpleCursorAdapter);
 
         return view;
     }
@@ -127,7 +124,19 @@ public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mSimpleCursorAdapter.swapCursor(data);
+        if(mSimpleCursorAdapter == null){
+            mSimpleCursorAdapter = new CustomArticleHolderNoticeAdapter(
+                    getContext(),
+                    data,
+                    false
+            );
+
+            mListView.setAdapter(mSimpleCursorAdapter);
+        }else {
+
+            mSimpleCursorAdapter.swapCursor(data);
+        }
+
     }
 
     @Override
@@ -139,7 +148,10 @@ public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallb
     public void onDestroy() {
         super.onDestroy();
         getLoaderManager().destroyLoader(ARTICLE_LOADER);
+
         RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
         refWatcher.watch(this);
     }
+
+
 }

@@ -36,7 +36,9 @@ import java.util.Set;
  */
 public class Home extends Fragment {
 
-
+    MyFragmentArticlePageAdapter fragmentPageAdapter;
+    TabLayout tabLayout;
+    ViewPager viewPager;
     //DBAdapter dbAdapter;
     private final String LAST_VIEWED_PAGE = "lastViewedPage";
     public Home() {
@@ -44,8 +46,7 @@ public class Home extends Fragment {
 
     }
 
-    ViewPager viewPager;
-    TabHost tabhost;
+
 
 
 
@@ -93,15 +94,42 @@ public class Home extends Fragment {
 
 
 
-        MyFragmentArticlePageAdapter fragmentPageAdapter = new MyFragmentArticlePageAdapter(getFragmentManager(),listFragmetns);
+         fragmentPageAdapter = new MyFragmentArticlePageAdapter(getFragmentManager(),listFragmetns);
 
         viewPager.setAdapter(fragmentPageAdapter);
         viewPager.setOffscreenPageLimit(3);
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout_home);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout_home);
         tabLayout.setupWithViewPager(viewPager);
+
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<ArticleHolder> listFragmetns = new ArrayList<ArticleHolder>();
+        listFragmetns.add(new ArticleHolder(0));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if(sharedPreferences!=null){
+
+            Set<String> set = sharedPreferences.getStringSet(getString(R.string.homeFeed_key),null);
+            if(set!=null){
+
+                Iterator<String> iterator = set.iterator();
+                while(iterator.hasNext()){
+                    int id = Integer.parseInt(iterator.next());
+                    listFragmetns.add(new ArticleHolder(id));
+                }
+            }
+        }
+        if(fragmentPageAdapter==null){
+            fragmentPageAdapter=new MyFragmentArticlePageAdapter(getChildFragmentManager(),listFragmetns);
+        }else {
+            fragmentPageAdapter.swapListFragments(listFragmetns);
+            fragmentPageAdapter.notifyDataSetChanged();
+            tabLayout.setupWithViewPager(viewPager);
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

@@ -41,5 +41,9 @@ public class MyFragmentArticlePageAdapter extends FragmentStatePagerAdapter {
         return articles.getTypeString();
     }
 
+    public void swapListFragments(List<ArticleHolder> listFragments){
+        this.listFragments = listFragments;
+    }
+
 
 }

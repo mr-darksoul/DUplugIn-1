@@ -285,6 +285,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
            // bindPreferenceSummaryToValue(findPreference("home_feed_preferences"));
 
+
         }
 
 

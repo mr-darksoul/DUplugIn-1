@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String CURRENT_FRAGMENT = "currentFragment";
     private final int HOME_FRAGMENT =0;
     private final int NOTICE_BOARD_FRAGMENT =1;
+
     public static RefWatcher getRefWatcher(Context context) {
         MainActivity application = (MainActivity) context.getApplicationContext();
         return application.refWatcher;
@@ -160,5 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 }
