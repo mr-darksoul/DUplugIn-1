@@ -25,7 +25,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.cocodev.myapplication.Utility.TouchImageView;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -39,6 +43,7 @@ public class TimeTable extends Fragment   {
     private final int REQUEST_PERMISSION_SETTING =101;
     private  boolean sentToSettings = false;
     SharedPreferences permissionStatus;
+
     public TimeTable() {
         // Required empty public constructor
     }
@@ -146,9 +151,27 @@ public class TimeTable extends Fragment   {
 
         }else{
             //do your stuff
+            populateTimeTable();
 
         }
 
+    }
+
+    public void populateTimeTable(){
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            File root = Environment.getExternalStorageDirectory();
+            File dir = new File(root.getAbsolutePath() + "/KMV/TimeTable");
+            if(!dir.exists()){
+                //timetable task
+            }else{
+                File timeTable = new File(dir.toString()+"/timeTable.csv");
+
+            }
+
+        } else {
+            Toast.makeText(getContext(), "external sd card Absent", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -157,6 +180,7 @@ public class TimeTable extends Fragment   {
         if(requestCode == PERMISSION_WRITE_TO_STORAGE){
             if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){
                 //call function to do stuff
+                populateTimeTable();
             }
         }
     }

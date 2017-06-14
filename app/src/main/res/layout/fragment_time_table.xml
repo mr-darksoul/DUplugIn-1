@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Time Table"
-        android:id="@+id/textView2"
+        android:id="@+id/title_timeTable"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="8dp"
@@ -19,11 +19,12 @@
         android:background="@color/title_background"
         android:textColor="#fff" />
 
-    <ImageView
+    <Spinner
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/timetable"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/title_timeTable" />
+
 
 </RelativeLayout>

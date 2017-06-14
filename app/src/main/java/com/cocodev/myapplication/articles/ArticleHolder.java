@@ -21,6 +21,7 @@ import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.adapter.CustomArticleHolderNoticeAdapter;
 import com.cocodev.myapplication.adapter.CustomNoticeCursorAdapter;
 import com.cocodev.myapplication.data.Contract;
+import com.cocodev.myapplication.data.DownloadTimeTable;
 import com.cocodev.myapplication.data.FetchArticleTask;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -68,8 +69,11 @@ public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallb
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                 fetchArticleTask = new FetchArticleTask(getContext(),swipeRefreshLayout);
-                fetchArticleTask.execute();
+//                 fetchArticleTask = new FetchArticleTask(getContext(),swipeRefreshLayout);
+//                fetchArticleTask.execute();
+                DownloadTimeTable downloadTimeTable = new DownloadTimeTable();
+                downloadTimeTable.execute();
+
             }
         });
 
