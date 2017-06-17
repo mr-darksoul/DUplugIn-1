@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -21,9 +22,13 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.cocodev.myapplication.Utility.Article;
+import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.adapter.MyFragmentArticlePageAdapter;
 import com.cocodev.myapplication.articles.ArticleHolder;
 import com.cocodev.myapplication.data.FetchArticleTask;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,6 +44,8 @@ public class Home extends Fragment {
     MyFragmentArticlePageAdapter fragmentPageAdapter;
     TabLayout tabLayout;
     ViewPager viewPager;
+
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     //DBAdapter dbAdapter;
     private final String LAST_VIEWED_PAGE = "lastViewedPage";
     public Home() {
@@ -53,7 +60,25 @@ public class Home extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addNotice);
 
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Article article = new Article(
+                        "author",
+                        "Why do i need a description? i dont know any description",
+                        "date",
+                        "This is the tagline",
+                        "imageUrl",
+                        "title"
+                );
+                article.setUID(databaseReference.push().getKey());
+                databaseReference.child("Categories").child("Articles").child("Sports").child(article.getUID()).setValue(article.getUID());
+                databaseReference.child("Articles").child(article.getUID()).setValue(article);
+                Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -63,33 +88,26 @@ public class Home extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("App Name");
-
         initViewPager(view,savedInstanceState);
-
-
         return view;
     }
     private void initViewPager(View view, Bundle savedInstanceState) {
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_home);
         List<ArticleHolder> listFragmetns = new ArrayList<ArticleHolder>();
-        listFragmetns.add(new ArticleHolder(0));
+        //listFragmetns.add(new ArticleHolder(0));
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if(sharedPreferences!=null){
 
             Set<String> set = sharedPreferences.getStringSet(getString(R.string.homeFeed_key),null);
             if(set!=null){
-
                     Iterator<String> iterator = set.iterator();
                     while(iterator.hasNext()){
                         int id = Integer.parseInt(iterator.next());
-                        listFragmetns.add(new ArticleHolder(id));
+                        listFragmetns.add(ArticleHolder.newInstance(id));
                     }
-
             }
-
-
         }
 
 
@@ -108,7 +126,7 @@ public class Home extends Fragment {
     public void onResume() {
         super.onResume();
         List<ArticleHolder> listFragmetns = new ArrayList<ArticleHolder>();
-        listFragmetns.add(new ArticleHolder(0));
+        listFragmetns.add(ArticleHolder.newInstance(0));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if(sharedPreferences!=null){
 
@@ -118,7 +136,7 @@ public class Home extends Fragment {
                 Iterator<String> iterator = set.iterator();
                 while(iterator.hasNext()){
                     int id = Integer.parseInt(iterator.next());
-                    listFragmetns.add(new ArticleHolder(id));
+                    listFragmetns.add(ArticleHolder.newInstance(id));
                 }
             }
         }

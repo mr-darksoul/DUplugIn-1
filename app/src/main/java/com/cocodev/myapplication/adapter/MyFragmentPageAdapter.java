@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.notices.Notices;
+import com.cocodev.myapplication.notices.Notices_ALL;
 
 import java.util.List;
 
@@ -15,9 +17,9 @@ import java.util.List;
 
 public class MyFragmentPageAdapter extends FragmentStatePagerAdapter {
 
-    List<Notices> listFragments;
+    List<Fragment> listFragments;
 
-    public MyFragmentPageAdapter(FragmentManager fm, List<Notices> listFragments) {
+    public MyFragmentPageAdapter(FragmentManager fm, List<Fragment> listFragments) {
         super(fm);
         this.listFragments=listFragments;
 
@@ -37,9 +39,13 @@ public class MyFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Notices notices = listFragments.get(position);
-
-        return notices.getTypeString();
+        Fragment notices = listFragments.get(position);
+        if(notices instanceof  Notices){
+            return ((Notices) notices).getTypeString();
+        }else if(notices instanceof Notices_ALL){
+            return ((Notices_ALL) notices).getTypeString();
+        }
+        return null;
     }
 
 

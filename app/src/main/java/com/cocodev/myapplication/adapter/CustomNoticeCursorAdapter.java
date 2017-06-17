@@ -48,7 +48,7 @@ public class CustomNoticeCursorAdapter extends CursorAdapter {
 
         public ViewHolder(View view){
             checkBox = (CheckBox) view.findViewById(R.id.checkBox);
-            description = (TextView) view.findViewById(R.id.noticeText);
+            description = (TextView) view.findViewById(R.id.notice_description);
             time = (TextView) view.findViewById(R.id.notice_time);
             deadline = (TextView) view.findViewById(R.id.notice_deadline);
         }

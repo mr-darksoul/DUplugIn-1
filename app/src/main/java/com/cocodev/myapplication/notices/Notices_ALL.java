@@ -50,7 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class Notices extends Fragment  {
+public class Notices_ALL extends Fragment  {
 
     public static final String key = "type";
     public static final int TYPE_ALL = 0;
@@ -64,71 +64,53 @@ public class Notices extends Fragment  {
     Cursor mCursor;
 
 
-    public Notices() {}
+    public Notices_ALL() {}
 
-    public static final Notices newInstance(int type){
-        Notices n = new Notices();
-        n.setType(type);
-        return n;
-    }
     FirebaseDatabase firebaseDatabase;
     DatabaseReference reference;
     FirebaseListAdapter mAdapter;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseDatabase = FirebaseDatabase.getInstance();
-        if(savedInstanceState!=null){
-                type = savedInstanceState.getInt(key);
-        }
+        reference = firebaseDatabase.getReference().child("Notices");
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         mView  = inflater.inflate(R.layout.fragment_notices, container, false);
         mListView = (ListView) mView.findViewById(R.id.list_notices);
-        reference = firebaseDatabase.getReference().child("Categories").child("Notices")
-                .child(getTypeString());
-
-        mAdapter = new FirebaseListAdapter<String>(
+        mAdapter = new FirebaseListAdapter<Notice>(
                 getActivity(),
-                String.class,
+                Notice.class,
                 R.layout.adapter_notice,
                 reference
         ) {
+
             @Override
-            protected void populateView(View v, String model, int position) {
+            protected void populateView(View v, Notice model, int position) {
                 final TextView description = (TextView) v.findViewById(R.id.notice_description);
                 final TextView time = (TextView) v.findViewById(R.id.notice_time);
                 final TextView deadline = (TextView) v.findViewById(R.id.notice_deadline);
 
-                DatabaseReference dbref = firebaseDatabase.getReference().child("Notices")
-                        .child(model);
-                dbref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Notice notice = dataSnapshot.getValue(Notice.class);
-                        deadline.setText(notice.getDeadline());
-                        time.setText(notice.getTime());
-                        description.setText(notice.getDescription());
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
-                    }
-                });
+                description.setText(model.getDescription());
+                time.setText(model.getTime());
+                deadline.setText(model.getDeadline());
             }
+
+
         };
+
         mListView.setAdapter(mAdapter);
         return mView;
-
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -139,6 +121,7 @@ public class Notices extends Fragment  {
     @Override
     public void onStart() {
         super.onStart();
+
 
     }
 
@@ -158,17 +141,10 @@ public class Notices extends Fragment  {
         return null;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(key,type);
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(mAdapter!=null) {
-            mAdapter.cleanup();
-        }
+        mAdapter.cleanup();
     }
 }

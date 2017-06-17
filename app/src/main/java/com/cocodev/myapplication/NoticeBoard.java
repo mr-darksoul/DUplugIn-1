@@ -3,6 +3,7 @@ package com.cocodev.myapplication;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,9 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
+import android.widget.Toast;
 
+import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
 import com.cocodev.myapplication.notices.Notices;
+import com.cocodev.myapplication.notices.Notices_ALL;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -22,7 +28,8 @@ import java.util.List;
 
 public class NoticeBoard extends Fragment {
 
-
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     public NoticeBoard() {
         // Required empty public constructor
 
@@ -33,6 +40,8 @@ public class NoticeBoard extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
     }
 
     @Override
@@ -40,30 +49,28 @@ public class NoticeBoard extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notice_board, container, false);
-
-        initViewPager(view);
         getActivity().setTitle("Notice Board");
+        initViewPager(view);
+
+
+
 
 
         return view;
     }
 
-
-
     private void initViewPager(View view) {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_notices);
-        List<Notices> listFragmetns = new ArrayList<Notices>();
+        List<Fragment> listFragmetns = new ArrayList<Fragment>();
 
-        Notices classNotices = new Notices();
-        classNotices.setType(Notices.TYPE_CLASS);
+        Notices classNotices =  Notices.newInstance(Notices.TYPE_CLASS);
         listFragmetns.add(classNotices);
 
-        Notices collegeNotices = new Notices();
-        collegeNotices.setType(Notices.TYPE_COLLEGE);
+        Notices collegeNotices =  Notices.newInstance(Notices.TYPE_COLLEGE);
         listFragmetns.add(collegeNotices);
 
 
-        Notices allNotices = new Notices();
+        Notices_ALL allNotices = new Notices_ALL();
         allNotices.setType(Notices.TYPE_ALL);
         listFragmetns.add(allNotices);
 

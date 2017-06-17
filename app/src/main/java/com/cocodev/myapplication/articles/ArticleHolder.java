@@ -1,34 +1,40 @@
 package com.cocodev.myapplication.articles;
 
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.cocodev.myapplication.MyApplication;
 import com.cocodev.myapplication.R;
-import com.cocodev.myapplication.adapter.CustomArticleHolderNoticeAdapter;
-import com.cocodev.myapplication.adapter.CustomNoticeCursorAdapter;
+import com.cocodev.myapplication.Utility.Article;
+import com.cocodev.myapplication.Utility.Notice;
+import com.cocodev.myapplication.adapter.CustomArticleHolderAdapter;
 import com.cocodev.myapplication.data.Contract;
-import com.cocodev.myapplication.data.DownloadTimeTable;
-import com.cocodev.myapplication.data.FetchArticleTask;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.leakcanary.RefWatcher;
 
 
-public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ArticleHolder extends Fragment  {
 
-    private int TYPE =0;
+    public static String key = "type";
+    private int type =-1;
     private final int TYPE_HOME = 0;
     private final int TYPE_COLLEGE = 1;
     private final int TYPE_SPORTS = 2;
@@ -40,67 +46,115 @@ public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallb
     private final String MUSIC = "Music";
     private final String LAST_SCROLL_STATE = "lastScrollState";
 
-    public ArticleHolder(){}
-    CustomArticleHolderNoticeAdapter mSimpleCursorAdapter;
-    ListView mListView;
-    FetchArticleTask fetchArticleTask;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private FirebaseListAdapter mAdapter;
 
-    public ArticleHolder(int type) {
-        // Required empty public constructor
-        this.TYPE = type;
+    public ArticleHolder(){}
+    CustomArticleHolderAdapter mSimpleCursorAdapter;
+    ListView mListView;
+
+
+    public static ArticleHolder newInstance(int type){
+        ArticleHolder a = new ArticleHolder();
+        a.setType(type);
+        return  a;
     }
 
-    public void setTYPE(int TYPE) {
-        this.TYPE = TYPE;
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState!=null){
+            type = savedInstanceState.getInt(key);
+        }
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        if(type!=TYPE_HOME) {
+            databaseReference = firebaseDatabase.getReference()
+                    .child("Categories").child("Articles").child(getTypeString());
+        }else{
+            databaseReference = firebaseDatabase.getReference()
+                    .child("Articles");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_article_holder, container, false);
+        final View view = inflater.inflate(R.layout.fragment_article_holder, container, false);
 
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefreshLayout_articleHolder);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-//                 fetchArticleTask = new FetchArticleTask(getContext(),swipeRefreshLayout);
-//                fetchArticleTask.execute();
-                DownloadTimeTable downloadTimeTable = new DownloadTimeTable();
-                downloadTimeTable.execute();
+        if(type!=TYPE_HOME) {
+            mAdapter = new CustomArticleHolderAdapter<String>(
+                    getActivity(),
+                    String.class,
+                    R.layout.adapter_notice,
+                    databaseReference
+            ) {
 
-            }
-        });
+                @Override
+                protected void populateView(View v, String model, int position) {
+                    final CustomArticleHolderAdapter.ViewHolder viewHolder = (ViewHolder) v.getTag();
 
+                    DatabaseReference dbref = firebaseDatabase.getReference().child("Articles")
+                            .child(model);
+                    dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Article article = dataSnapshot.getValue(Article.class);
+                            if (viewHolder.authorView != null) {
+                                viewHolder.authorView.setText(article.getAuthor());
+                            }
+                            viewHolder.timeView.setText(article.getTime());
+                            viewHolder.titleView.setText(article.getTitle());
+                        }
 
-        Cursor c = getContext().getContentResolver().query(
-                Contract.ArticleEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
+                        }
+                    });
+                }
+            };
+        }else{
+            mAdapter = new CustomArticleHolderAdapter<Article>(
+                    getActivity(),
+                    Article.class,
+                    R.layout.adapter_notice,
+                    databaseReference
+            ) {
 
+                @Override
+                protected void populateView(View v, Article model, int position) {
+                    final CustomArticleHolderAdapter.ViewHolder viewHolder = (ViewHolder) v.getTag();
+                    if(viewHolder.authorView!=null){
+                        viewHolder.authorView.setText(model.getAuthor());
+                    }
+                    viewHolder.titleView.setText(model.getTitle());
+                    viewHolder.timeView.setText(model.getTime());
 
+                }
+            };
+        }
          mListView = (ListView) view.findViewById(R.id.listView_articleHolder);
-
-
-        return view;
+         mListView.setAdapter(mAdapter);
+        
+         return view;
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(ARTICLE_LOADER,null,this);
+
     }
 
     public String getTypeString(){
-        switch(TYPE){
+        switch(type){
             case TYPE_SPORTS:
                 return "Sports";
             case TYPE_DANCE:
@@ -117,45 +171,8 @@ public class ArticleHolder extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),
-                Contract.ArticleEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                Contract.ArticleEntry.COLUMN_TIME);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(key,type);
     }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if(mSimpleCursorAdapter == null){
-            mSimpleCursorAdapter = new CustomArticleHolderNoticeAdapter(
-                    getContext(),
-                    data,
-                    false
-            );
-
-            mListView.setAdapter(mSimpleCursorAdapter);
-        }else {
-
-            mSimpleCursorAdapter.swapCursor(data);
-        }
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mSimpleCursorAdapter.swapCursor(null);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getLoaderManager().destroyLoader(ARTICLE_LOADER);
-
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getContext());
-        refWatcher.watch(this);
-    }
-
-
 }

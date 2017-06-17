@@ -5,10 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.cocodev.myapplication.notices.Notices"
     android:id="@+id/notice_list_layout">
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe_refresh_layout">
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -16,6 +13,6 @@
 
         </ListView>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </RelativeLayout>
