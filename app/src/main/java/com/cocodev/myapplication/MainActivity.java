@@ -131,19 +131,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Home home = new Home();
             Bundle bundle = new Bundle();
             FragmentManager manager = getSupportFragmentManager();
-
-            Log.i(TAG,"FRAGMENt");
             manager.beginTransaction().replace(R.id.fragment_layout,home,null).commit();
 
         } else if (id == R.id.notices) {
             NoticeBoard noticeBoard = new NoticeBoard();
             FragmentManager manager = getSupportFragmentManager();
-
-            Log.i(TAG, "FRAGMENt");
             manager.beginTransaction().replace(R.id.fragment_layout, noticeBoard, null).commit();
-        }else if (id == R.id.results) {
-          //  Intent intent = new Intent(this,Main2Activity.class);
-          //  startActivity(intent);
+
+        }else if (id == R.id.events) {
+            Events events = new Events();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.fragment_layout, events, null).commit();
+
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
