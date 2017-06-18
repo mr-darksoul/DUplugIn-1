@@ -53,7 +53,7 @@ public class Events extends Fragment {
         View view = inflater.inflate(R.layout.fragment_events, container, false);
         getActivity().setTitle("Events");
         //initViewPager(view);
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addNotice);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addEvents);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +62,8 @@ public class Events extends Fragment {
                         "College Auditorium",
                         "timestamp",
                         "descripton",
-                        "www.facebook.com"
+                        "www.facebook.com",
+                        "This is the title"
                 );
                 event.setUID(databaseReference.push().getKey());
                 databaseReference.child("Categories").child("Events").child("Sports").child(event.getUID()).setValue(event.getUID());

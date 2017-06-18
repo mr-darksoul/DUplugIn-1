@@ -10,14 +10,16 @@ public class Event {
     private String time;
     private String Description;
     private String url;
+    private String title;
 
     public Event(){}
 
-    public Event(String venue, String time, String description, String url) {
+    public Event(String venue, String time, String description, String url,String title) {
         this.venue = venue;
         this.time = time;
         Description = description;
         this.url = url;
+        this.title = title;
     }
 
     public String getUID() {
@@ -58,5 +60,13 @@ public class Event {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
