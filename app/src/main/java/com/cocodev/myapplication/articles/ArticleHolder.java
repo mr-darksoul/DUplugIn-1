@@ -2,6 +2,7 @@ package com.cocodev.myapplication.articles;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +11,13 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cocodev.myapplication.Article_details;
@@ -142,9 +145,16 @@ public class ArticleHolder extends Fragment  {
                 }
             };
         }
+
          mListView = (ListView) view.findViewById(R.id.listView_articleHolder);
-         mListView.setAdapter(mAdapter);
+
+        TextView textView = (TextView) view.findViewById(R.id.articleHolder_emptyView);
+        textView.setText("There are currently no articles under this Category.");
+        mListView.setEmptyView(textView);
+        mListView.setAdapter(mAdapter);
          mListView.setOnItemClickListener(onItemClickListener);
+
+
          return view;
     }
 

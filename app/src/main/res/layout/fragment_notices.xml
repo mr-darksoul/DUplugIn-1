@@ -6,6 +6,16 @@
     tools:context="com.cocodev.myapplication.notices.Notices"
     android:id="@+id/notice_list_layout">
 
+        <TextView
+            android:id="@+id/notices_emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

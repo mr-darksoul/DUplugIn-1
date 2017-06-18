@@ -91,7 +91,10 @@ public class Notices extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView  = inflater.inflate(R.layout.fragment_notices, container, false);
+        TextView textView = (TextView) mView.findViewById(R.id.notices_emptyView);
+        textView.setText("There are currently no Notices under this Category.");
         mListView = (ListView) mView.findViewById(R.id.list_notices);
+        mListView.setEmptyView(textView);
         reference = firebaseDatabase.getReference().child("Categories").child("Notices")
                 .child(getTypeString());
 

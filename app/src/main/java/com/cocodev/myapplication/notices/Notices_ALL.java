@@ -85,6 +85,9 @@ public class Notices_ALL extends Fragment  {
 
         mView  = inflater.inflate(R.layout.fragment_notices, container, false);
         mListView = (ListView) mView.findViewById(R.id.list_notices);
+        TextView textView = (TextView) mView.findViewById(R.id.notices_emptyView);
+        textView.setText("There are currently no Notices under this Category.");
+        mListView.setEmptyView(textView);
         mAdapter = new FirebaseListAdapter<Notice>(
                 getActivity(),
                 Notice.class,

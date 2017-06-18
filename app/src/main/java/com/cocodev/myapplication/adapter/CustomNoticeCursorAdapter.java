@@ -53,9 +53,8 @@ public class CustomNoticeCursorAdapter extends CursorAdapter {
             deadline = (TextView) view.findViewById(R.id.notice_deadline);
         }
 
-
-
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
