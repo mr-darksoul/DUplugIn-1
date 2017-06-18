@@ -28,14 +28,14 @@
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/viewPager_notices"
+        android:id="@+id/events_viewPager"
         android:layout_above="@+id/events_scrollView"
         android:layout_alignParentStart="true"
         >
     </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addNotice"
+        android:id="@+id/addEvents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/events_scrollView"

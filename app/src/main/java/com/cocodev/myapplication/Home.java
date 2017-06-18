@@ -60,25 +60,7 @@ public class Home extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addNotice);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Article article = new Article(
-                        "author",
-                        "Why do i need a description? i dont know any description",
-                        "date",
-                        "This is the tagline",
-                        "imageUrl",
-                        "title"
-                );
-                article.setUID(databaseReference.push().getKey());
-                databaseReference.child("Categories").child("Articles").child("Sports").child(article.getUID()).setValue(article.getUID());
-                databaseReference.child("Articles").child(article.getUID()).setValue(article);
-                Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
