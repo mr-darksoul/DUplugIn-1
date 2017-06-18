@@ -4,7 +4,7 @@ package com.cocodev.myapplication.Utility;
  * Created by Sudarshan on 16-06-2017.
  */
 
-public class Article {
+public class Article  {
     private String UID;
     private String author;
     private String description;

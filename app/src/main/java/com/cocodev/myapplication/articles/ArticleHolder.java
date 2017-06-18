@@ -1,5 +1,6 @@
 package com.cocodev.myapplication.articles;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cocodev.myapplication.Article_details;
 import com.cocodev.myapplication.MyApplication;
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.Article;
@@ -51,7 +53,7 @@ public class ArticleHolder extends Fragment  {
     private FirebaseListAdapter mAdapter;
 
     public ArticleHolder(){}
-    CustomArticleHolderAdapter mSimpleCursorAdapter;
+
     ListView mListView;
 
 
@@ -110,6 +112,7 @@ public class ArticleHolder extends Fragment  {
                             }
                             viewHolder.timeView.setText(article.getTime());
                             viewHolder.titleView.setText(article.getTitle());
+                            viewHolder.UID.setText(article.getUID());
                         }
 
                         @Override
@@ -135,17 +138,26 @@ public class ArticleHolder extends Fragment  {
                     }
                     viewHolder.titleView.setText(model.getTitle());
                     viewHolder.timeView.setText(model.getTime());
-
+                    viewHolder.UID.setText(model.getUID());
                 }
             };
         }
          mListView = (ListView) view.findViewById(R.id.listView_articleHolder);
          mListView.setAdapter(mAdapter);
-        
+         mListView.setOnItemClickListener(onItemClickListener);
          return view;
     }
 
+    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            String UID = (String) ((TextView) view.findViewById(R.id.article_UID)).getText();
+            Intent intent = new Intent(getContext(),Article_details.class);
+            intent.putExtra(Article_details.key,UID);
+            startActivity(intent);
 
+        }
+    };
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -175,4 +187,13 @@ public class ArticleHolder extends Fragment  {
         super.onSaveInstanceState(outState);
         outState.putInt(key,type);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mListView = null;
+        mAdapter.cleanup();
+        databaseReference =null;
+    }
+
 }

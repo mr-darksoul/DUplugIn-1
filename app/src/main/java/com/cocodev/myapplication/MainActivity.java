@@ -141,13 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Log.i(TAG, "FRAGMENt");
             manager.beginTransaction().replace(R.id.fragment_layout, noticeBoard, null).commit();
-        } else if (id == R.id.time_table) {
-            TimeTable timeTable = new TimeTable();
-            FragmentManager manager = getSupportFragmentManager();
-
-            Log.i(TAG,"timetable");
-            manager.beginTransaction().replace(R.id.fragment_layout,timeTable,null).commit();
-        } else if (id == R.id.results) {
+        }else if (id == R.id.results) {
           //  Intent intent = new Intent(this,Main2Activity.class);
           //  startActivity(intent);
         } else if (id == R.id.nav_share) {

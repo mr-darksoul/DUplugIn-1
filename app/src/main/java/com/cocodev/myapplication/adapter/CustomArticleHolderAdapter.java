@@ -64,12 +64,14 @@ public abstract class CustomArticleHolderAdapter<T> extends FirebaseListAdapter<
         public final TextView titleView;
         public final TextView timeView;
         public final TextView authorView;
+        public final TextView UID;
 
 
         public ViewHolder(View view) {
             titleView = (TextView) view.findViewById(R.id.article_title);
             timeView = (TextView) view.findViewById(R.id.article_time);
             authorView = (TextView) view.findViewById(R.id.article_author);
+            UID = (TextView) view.findViewById(R.id.article_UID);
         }
     }
 

@@ -33,4 +33,11 @@
         android:text="Time"
         android:textSize="10sp" />
 
+    <TextView
+        android:id="@+id/article_UID"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text=""
+        android:visibility="gone" />
+
 </RelativeLayout>

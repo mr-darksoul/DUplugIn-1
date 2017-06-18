@@ -12,7 +12,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:windowActionBarOverlay">@null</item>
+        <item name="android:windowActionBarOverlay">true</item>
 
     </style>
 
