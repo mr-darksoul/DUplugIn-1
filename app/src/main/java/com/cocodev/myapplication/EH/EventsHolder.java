@@ -1,10 +1,14 @@
-package com.cocodev.myapplication.EventsHolder;
+package com.cocodev.myapplication.EH;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.hardware.display.DisplayManagerCompat;
+import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cocodev.myapplication.Article_details;
 import com.cocodev.myapplication.R;
-import com.cocodev.myapplication.Utility.Article;
 import com.cocodev.myapplication.Utility.Event;
-import com.cocodev.myapplication.adapter.CustomArticleHolderAdapter;
-import com.cocodev.myapplication.articles.ArticleHolder;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,18 +26,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.zip.Inflater;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class eventsHolder extends Fragment {
+public class EventsHolder extends Fragment {
 
     public static String key = "type";
     private int type =-1;
-    private final int TYPE_HOME = 0;
-    private final int TYPE_COLLEGE = 1;
-    private final int TYPE_SPORTS = 2;
-    private final int TYPE_DANCE = 3;
-    private final int TYPE_MUSIC = 4;
+    public final static int TYPE_HOME = 0;
+    public final static int TYPE_COLLEGE = 1;
+    public final static int TYPE_SPORTS = 2;
+    public final static int TYPE_DANCE = 3;
+    public static final  int TYPE_MUSIC = 4;
     private final int ARTICLE_LOADER = 1;
     private final String SPORTS = "Sports";
     private final String DANCE = "Dance";
@@ -49,11 +51,11 @@ public class eventsHolder extends Fragment {
     private DatabaseReference databaseReference;
     private FirebaseListAdapter mAdapter;
 
-    public eventsHolder() {
+    public EventsHolder() {
         // Required empty public constructor
     }
-    public static eventsHolder newInstance(int type){
-        eventsHolder e = new eventsHolder();
+    public static EventsHolder newInstance(int type){
+        EventsHolder e = new EventsHolder();
         e.setType(type);
         return  e;
     }
@@ -72,6 +74,7 @@ public class eventsHolder extends Fragment {
             databaseReference = firebaseDatabase.getReference()
                     .child("Events");
         }
+
 
     }
 
@@ -150,10 +153,17 @@ public class eventsHolder extends Fragment {
     AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            String UID = (String) ((TextView) view.findViewById(R.id.article_UID)).getText();
-//            Intent intent = new Intent(getContext(),Article_details.class);
-//            intent.putExtra(Article_details.key,UID);
-//            startActivity(intent);
+
+            String UID = (String) ((TextView) view.findViewById(R.id.event_UID)).getText();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            View childView = getLayoutInflater(null).inflate(R.layout.event_details,null);
+            builder.setView(childView);
+            AlertDialog alertDialog = builder.create();
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            alertDialog.show();
+            alertDialog.getWindow().setLayout(dm.widthPixels,(int)(dm.heightPixels*0.8));
+
 
         }
     };

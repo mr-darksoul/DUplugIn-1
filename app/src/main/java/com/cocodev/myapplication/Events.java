@@ -7,19 +7,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
 import android.widget.Toast;
 
-import com.cocodev.myapplication.Utility.Article;
+import com.cocodev.myapplication.EH.EventsHolder;
 import com.cocodev.myapplication.Utility.Event;
-import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
-import com.cocodev.myapplication.notices.Notices;
-import com.cocodev.myapplication.notices.Notices_ALL;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.leakcanary.RefWatcher;
@@ -52,7 +47,7 @@ public class Events extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_events, container, false);
         getActivity().setTitle("Events");
-        //initViewPager(view);
+        initViewPager(view);
         FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addEvents);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +62,7 @@ public class Events extends Fragment {
                 );
                 event.setUID(databaseReference.push().getKey());
                 databaseReference.child("Categories").child("Events").child("Sports").child(event.getUID()).setValue(event.getUID());
-                databaseReference.child("Articles").child(event.getUID()).setValue(event);
+                databaseReference.child("Events").child(event.getUID()).setValue(event);
                 Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
             }
         });
@@ -82,6 +77,10 @@ public class Events extends Fragment {
 
         List<Fragment> listFragmetns = new ArrayList<Fragment>();
 
+        EventsHolder eventsHolder =EventsHolder.newInstance(EventsHolder.TYPE_HOME);
+        listFragmetns.add(eventsHolder);
+        EventsHolder eventsHolder1 = EventsHolder.newInstance(EventsHolder.TYPE_SPORTS);
+        listFragmetns.add(eventsHolder1);
 
         MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listFragmetns);
         viewPager.setAdapter(fragmentPageAdapter);

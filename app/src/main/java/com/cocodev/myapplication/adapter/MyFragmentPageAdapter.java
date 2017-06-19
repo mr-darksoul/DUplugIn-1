@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.cocodev.myapplication.EH.EventsHolder;
 import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.notices.Notices;
 import com.cocodev.myapplication.notices.Notices_ALL;
@@ -44,6 +45,8 @@ public class MyFragmentPageAdapter extends FragmentStatePagerAdapter {
             return ((Notices) notices).getTypeString();
         }else if(notices instanceof Notices_ALL){
             return ((Notices_ALL) notices).getTypeString();
+        }else if(notices instanceof EventsHolder){
+            return ((EventsHolder) notices).getTypeString();
         }
         return null;
     }
