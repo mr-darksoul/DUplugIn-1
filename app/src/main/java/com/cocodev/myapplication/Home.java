@@ -26,7 +26,6 @@ import com.cocodev.myapplication.Utility.Article;
 import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.adapter.MyFragmentArticlePageAdapter;
 import com.cocodev.myapplication.articles.ArticleHolder;
-import com.cocodev.myapplication.data.FetchArticleTask;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

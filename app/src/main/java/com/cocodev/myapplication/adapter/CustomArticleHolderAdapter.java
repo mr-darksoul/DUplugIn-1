@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cocodev.myapplication.R;
-import com.cocodev.myapplication.data.Contract;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.ObservableSnapshotArray;
 import com.firebase.ui.database.SnapshotParser;

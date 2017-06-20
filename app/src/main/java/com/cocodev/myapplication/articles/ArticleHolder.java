@@ -26,7 +26,6 @@ import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.Article;
 import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.adapter.CustomArticleHolderAdapter;
-import com.cocodev.myapplication.data.Contract;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

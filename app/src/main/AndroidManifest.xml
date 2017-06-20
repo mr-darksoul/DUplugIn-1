@@ -31,12 +31,6 @@
                 android:value="com.cocodev.myapplication.MainActivity" />
         </activity>
 
-        <provider
-            android:name=".data.db.ContentProvider"
-            android:authorities="com.cocodev.myapplication.MainActivity"
-            android:exported="false"
-            android:syncable="true" />
-
         <activity android:name=".Article_details"
             android:parentActivityName=".MainActivity">
 

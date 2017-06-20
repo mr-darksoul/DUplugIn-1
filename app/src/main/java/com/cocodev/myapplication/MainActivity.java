@@ -25,9 +25,6 @@ import android.support.v4.app.FragmentManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.cocodev.myapplication.data.Contract;
-import com.cocodev.myapplication.data.FetchDataTask;
-import com.cocodev.myapplication.data.db.DBHelper;
 import com.squareup.leakcanary.ActivityRefWatcher;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -108,10 +105,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this,SettingsActivity.class);
             startActivity(intent);
             return true;
-        }else if(id == R.id.action_refresh){
-            FetchDataTask fetchDataTask = new FetchDataTask(this);
-            fetchDataTask.execute();
-            Toast.makeText(this,"Called FetchDataTask",Toast.LENGTH_SHORT).show();
         }
 
         return true;

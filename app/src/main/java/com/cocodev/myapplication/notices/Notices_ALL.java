@@ -1,53 +1,21 @@
 package com.cocodev.myapplication.notices;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cocodev.myapplication.MainActivity;
-import com.cocodev.myapplication.MyApplication;
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.Notice;
-import com.cocodev.myapplication.adapter.CustomNoticeCursorAdapter;
-import com.cocodev.myapplication.data.Contract;
-import com.cocodev.myapplication.data.FetchArticleTask;
-import com.cocodev.myapplication.data.FetchDataTask;
+
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.leakcanary.RefWatcher;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class Notices_ALL extends Fragment  {
@@ -60,8 +28,7 @@ public class Notices_ALL extends Fragment  {
     private View mView;
     private final int NOTICE_LOADER =1;
     private ListView mListView;
-    CustomNoticeCursorAdapter mSimpleCursorAdapter;
-    Cursor mCursor;
+
 
 
     public Notices_ALL() {}
