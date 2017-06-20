@@ -82,4 +82,9 @@ public class Article  {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return getUID()==((Article) obj).getUID();
+    }
 }

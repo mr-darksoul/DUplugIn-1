@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         if(getSupportFragmentManager().findFragmentById(R.id.fragment_layout)==null){
-            Log.e("his","zero");
             getSupportFragmentManager().beginTransaction().replace(
                     R.id.fragment_layout,
                     new Home()
@@ -101,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Log.i("settings12","settings");
             Intent intent = new Intent(this,SettingsActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);

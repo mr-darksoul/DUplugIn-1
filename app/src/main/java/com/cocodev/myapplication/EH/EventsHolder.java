@@ -4,6 +4,7 @@ package com.cocodev.myapplication.EH;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.hardware.display.DisplayManagerCompat;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.Event;
+import com.cocodev.myapplication.Utility.RefListAdapter;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,6 +85,7 @@ public class EventsHolder extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_events_holder, container, false);
+
         if(type!=TYPE_HOME) {
             mAdapter = new FirebaseListAdapter<String>(
                     getActivity(),
@@ -161,8 +164,10 @@ public class EventsHolder extends Fragment {
             AlertDialog alertDialog = builder.create();
             DisplayMetrics dm = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            alertDialog.getWindow().setWindowAnimations(R.style.DialogTheme);
             alertDialog.show();
             alertDialog.getWindow().setLayout(dm.widthPixels,(int)(dm.heightPixels*0.8));
+
 
 
         }

@@ -48,24 +48,6 @@ public class Events extends Fragment {
         View view = inflater.inflate(R.layout.fragment_events, container, false);
         getActivity().setTitle("Events");
         initViewPager(view);
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addEvents);
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Event event = new Event(
-                        "College Auditorium",
-                        "timestamp",
-                        "descripton",
-                        "www.facebook.com",
-                        "This is the title"
-                );
-                event.setUID(databaseReference.push().getKey());
-                databaseReference.child("Categories").child("Events").child("Sports").child(event.getUID()).setValue(event.getUID());
-                databaseReference.child("Events").child(event.getUID()).setValue(event);
-                Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
         return view;

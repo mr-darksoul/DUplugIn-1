@@ -54,7 +54,7 @@ public class ArticleHolder extends Fragment  {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private FirebaseListAdapter mAdapter;
+    private CustomArticleHolderAdapter mAdapter;
 
     public ArticleHolder(){}
 
@@ -98,7 +98,7 @@ public class ArticleHolder extends Fragment  {
                     getActivity(),
                     String.class,
                     R.layout.adapter_notice,
-                    databaseReference
+                    new DatabaseReference[]{databaseReference}
             ) {
 
                 @Override
@@ -131,7 +131,7 @@ public class ArticleHolder extends Fragment  {
                     getActivity(),
                     Article.class,
                     R.layout.adapter_notice,
-                    databaseReference
+                    new DatabaseReference[] {databaseReference}
             ) {
 
                 @Override
@@ -166,12 +166,11 @@ public class ArticleHolder extends Fragment  {
             Intent intent = new Intent(getContext(),Article_details.class);
             intent.putExtra(Article_details.key,UID);
             Pair<View,String> pair1 = Pair.create(view.findViewById(R.id.articleImage),getString(R.string.home_share_image));
-            Pair<View,String> pair2 = Pair.create(view.findViewById(R.id.article_title),getString(R.string.home_share_title));
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     getActivity(),
-                    pair1,
-                    pair2
+                    pair1
             );
+
             startActivity(intent,optionsCompat.toBundle());
 
         }
@@ -210,7 +209,7 @@ public class ArticleHolder extends Fragment  {
     public void onDestroy() {
         super.onDestroy();
         mListView = null;
-        mAdapter.cleanup();
+        mAdapter.removeListener();
         databaseReference =null;
     }
 

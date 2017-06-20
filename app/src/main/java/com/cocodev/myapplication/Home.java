@@ -70,6 +70,26 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("App Name");
         initViewPager(view,savedInstanceState);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addArticles);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Article event = new Article(
+                        "Author",
+                        "i dont know any description",
+                        "20 min ago",
+                        "tagline",
+                        "null",
+                        "This is the Title"
+                );
+                event.setUID(databaseReference.push().getKey());
+                databaseReference.child("Categories").child("Articles").child("Sports").child(event.getUID()).setValue(event.getUID());
+                databaseReference.child("Articles").child(event.getUID()).setValue(event);
+                Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
     private void initViewPager(View view, Bundle savedInstanceState) {

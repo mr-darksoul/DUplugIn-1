@@ -34,16 +34,6 @@
         >
     </android.support.v4.view.ViewPager>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addEvents"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/events_scrollView"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="27dp"
-        android:layout_marginEnd="33dp"
-        android:clickable="true"
-        android:src="@drawable/ic_info_black_24dp"
-        app:fabSize="mini" />
+
 
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cocodev.myapplication.R;
+import com.cocodev.myapplication.Utility.RefListAdapter;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.ObservableSnapshotArray;
 import com.firebase.ui.database.SnapshotParser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 
 /**
@@ -24,28 +27,21 @@ import com.google.firebase.database.Query;
  * Generic version of the Box class.
  * @param <T> the type of the value being boxed
  */
-public abstract class CustomArticleHolderAdapter<T> extends FirebaseListAdapter<T> {
+public abstract class CustomArticleHolderAdapter<T> extends RefListAdapter<T> {
 
     private final int COUNT_VIEW_TYPE = 2;
     private static final int VIEW_TYPE_FIRST=0;
     private static final int VIEW_TYPE_SECOND=1;
 
-    public CustomArticleHolderAdapter(Activity activity, ObservableSnapshotArray<T> dataSnapshots, @LayoutRes int modelLayout) {
-        super(activity, dataSnapshots, modelLayout);
+    public CustomArticleHolderAdapter(@NonNull Context context, Class<T> modelclass, @LayoutRes int resource, DatabaseReference[] db) {
+        super(context, modelclass, resource, db);
     }
 
-    public CustomArticleHolderAdapter(Activity activity, SnapshotParser<T> parser, @LayoutRes int modelLayout, Query query) {
-        super(activity, parser, modelLayout, query);
-    }
-
-    public CustomArticleHolderAdapter(Activity activity, Class<T> modelClass, @LayoutRes int modelLayout, Query query) {
-        super(activity, modelClass, modelLayout, query);
-    }
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = newView(mActivity,position,viewGroup);
+            view = newView(getContext(),position,viewGroup);
         }
         T model = getItem(position);
 
@@ -54,7 +50,7 @@ public abstract class CustomArticleHolderAdapter<T> extends FirebaseListAdapter<
         return view;
     }
 
-    @Override
+
     protected abstract void populateView(View v, T model, int position);
 
 
