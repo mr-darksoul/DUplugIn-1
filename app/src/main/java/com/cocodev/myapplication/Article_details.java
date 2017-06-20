@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -26,6 +27,20 @@ public class Article_details extends AppCompatActivity {
     public static final String key = "article";
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         super.onCreate(savedInstanceState);
@@ -37,6 +52,7 @@ public class Article_details extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setTitle("");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         final TextView titleView= (TextView) findViewById(R.id.article_title);;
         final TextView timeView= (TextView) findViewById(R.id.article_time);;
@@ -62,6 +78,8 @@ public class Article_details extends AppCompatActivity {
                 //
             }
         });
+
+
 
 
 

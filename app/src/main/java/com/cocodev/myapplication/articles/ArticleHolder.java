@@ -5,10 +5,12 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -163,7 +165,14 @@ public class ArticleHolder extends Fragment  {
             String UID = (String) ((TextView) view.findViewById(R.id.article_UID)).getText();
             Intent intent = new Intent(getContext(),Article_details.class);
             intent.putExtra(Article_details.key,UID);
-            startActivity(intent);
+            Pair<View,String> pair1 = Pair.create(view.findViewById(R.id.articleImage),getString(R.string.home_share_image));
+            Pair<View,String> pair2 = Pair.create(view.findViewById(R.id.article_title),getString(R.string.home_share_title));
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(),
+                    pair1,
+                    pair2
+            );
+            startActivity(intent,optionsCompat.toBundle());
 
         }
     };
