@@ -12,19 +12,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.preference.ListPreference;
-import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.MenuItem;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
-import android.widget.Toast;
+import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
+import android.view.MenuItem;
 
 import java.util.List;
 
@@ -40,6 +37,8 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -56,7 +55,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
+
             String stringValue = value.toString();
+
+
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
@@ -281,19 +283,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class HomeFeedPreferenceFragment extends PreferenceFragment {
+
+    public static class HomeFeedPreferenceFragment extends PreferenceFragment  {
+        static boolean homeFeedChanged = false;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_home_feed);
             setHasOptionsMenu(true);
-
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-           // bindPreferenceSummaryToValue(findPreference("home_feed_preferences"));
 
+            findPreference(getString(R.string.homeFeed_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    homeFeedChanged=true;
+                    return true;
+                }
+            });
 
         }
 
@@ -307,6 +316,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
     }
 
     @Override
@@ -327,7 +337,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
 
 
-}
+
 }

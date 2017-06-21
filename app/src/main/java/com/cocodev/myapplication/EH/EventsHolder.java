@@ -1,13 +1,9 @@
 package com.cocodev.myapplication.EH;
 
 
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.hardware.display.DisplayManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,7 +16,6 @@ import android.widget.TextView;
 
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.Event;
-import com.cocodev.myapplication.Utility.RefListAdapter;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,25 +23,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.zip.Inflater;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EventsHolder extends Fragment {
 
     public static String key = "type";
-    private int type =-1;
-    public final static int TYPE_HOME = 0;
-    public final static int TYPE_COLLEGE = 1;
-    public final static int TYPE_SPORTS = 2;
-    public final static int TYPE_DANCE = 3;
-    public static final  int TYPE_MUSIC = 4;
-    private final int ARTICLE_LOADER = 1;
-    private final String SPORTS = "Sports";
-    private final String DANCE = "Dance";
-    private final String MUSIC = "Music";
+    public final static String TYPE_HOME = "Home";
     private final String LAST_SCROLL_STATE = "lastScrollState";
+    private String typeString;
     private ListView mListView;
     private View view;
     private FirebaseDatabase firebaseDatabase;
@@ -56,9 +41,9 @@ public class EventsHolder extends Fragment {
     public EventsHolder() {
         // Required empty public constructor
     }
-    public static EventsHolder newInstance(int type){
+    public static EventsHolder newInstance(String type){
         EventsHolder e = new EventsHolder();
-        e.setType(type);
+        e.setTypeString(type);
         return  e;
     }
 
@@ -66,10 +51,10 @@ public class EventsHolder extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState!=null){
-            type = savedInstanceState.getInt(key);
+            typeString = savedInstanceState.getString(key);
         }
         firebaseDatabase = FirebaseDatabase.getInstance();
-        if(type!=TYPE_HOME) {
+        if(typeString!=TYPE_HOME) {
             databaseReference = firebaseDatabase.getReference()
                     .child("Categories").child("Events").child(getTypeString());
         }else{
@@ -86,7 +71,7 @@ public class EventsHolder extends Fragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_events_holder, container, false);
 
-        if(type!=TYPE_HOME) {
+        if(typeString!=TYPE_HOME) {
             mAdapter = new FirebaseListAdapter<String>(
                     getActivity(),
                     String.class,
@@ -111,6 +96,7 @@ public class EventsHolder extends Fragment {
                             venue.setText(event.getVenue());
                             title.setText(event.getTitle());
                             UID.setText(event.getUID());
+
                         }
 
                         @Override
@@ -166,42 +152,25 @@ public class EventsHolder extends Fragment {
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
             alertDialog.getWindow().setWindowAnimations(R.style.DialogTheme);
             alertDialog.show();
-            alertDialog.getWindow().setLayout(dm.widthPixels,(int)(dm.heightPixels*0.8));
+            alertDialog.getWindow().setLayout(dm.widthPixels,(int)(dm.heightPixels*0.6));
 
 
 
         }
     };
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+    public void setTypeString(String typeString) {
+        this.typeString = typeString;
     }
 
     public String getTypeString(){
-        switch(type){
-            case TYPE_SPORTS:
-                return "Sports";
-            case TYPE_DANCE:
-                return "Dance";
-            case TYPE_MUSIC:
-                return "Music";
-            case TYPE_HOME:
-                return "Home";
-            case TYPE_COLLEGE:
-                return "College";
-            default:
-                return "Unknown Type";
-        }
+        return typeString;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(key,type);
+        outState.putString(key,typeString);
     }
 
     @Override

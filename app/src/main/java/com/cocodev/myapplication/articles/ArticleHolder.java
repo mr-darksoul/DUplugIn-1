@@ -40,17 +40,11 @@ import com.squareup.leakcanary.RefWatcher;
 public class ArticleHolder extends Fragment  {
 
     public static String key = "type";
-    private int type =-1;
-    private final int TYPE_HOME = 0;
-    private final int TYPE_COLLEGE = 1;
-    private final int TYPE_SPORTS = 2;
-    private final int TYPE_DANCE = 3;
-    private final int TYPE_MUSIC = 4;
-    private final int ARTICLE_LOADER = 1;
-    private final String SPORTS = "Sports";
-    private final String DANCE = "Dance";
-    private final String MUSIC = "Music";
+    public final static String TYPE_HOME = "Home";
     private final String LAST_SCROLL_STATE = "lastScrollState";
+
+
+    private String typeString = null;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -61,24 +55,21 @@ public class ArticleHolder extends Fragment  {
     ListView mListView;
 
 
-    public static ArticleHolder newInstance(int type){
+    public static ArticleHolder newInstance(String type){
         ArticleHolder a = new ArticleHolder();
-        a.setType(type);
+        a.typeString = type;
         return  a;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState!=null){
-            type = savedInstanceState.getInt(key);
+            typeString = savedInstanceState.getString(key);
         }
         firebaseDatabase = FirebaseDatabase.getInstance();
-        if(type!=TYPE_HOME) {
+        if(!typeString.equals(TYPE_HOME)) {
             databaseReference = firebaseDatabase.getReference()
                     .child("Categories").child("Articles").child(getTypeString());
         }else{
@@ -93,7 +84,7 @@ public class ArticleHolder extends Fragment  {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_article_holder, container, false);
 
-        if(type!=TYPE_HOME) {
+        if(!typeString.equals(TYPE_HOME)){
             mAdapter = new CustomArticleHolderAdapter<String>(
                     getActivity(),
                     String.class,
@@ -183,26 +174,13 @@ public class ArticleHolder extends Fragment  {
     }
 
     public String getTypeString(){
-        switch(type){
-            case TYPE_SPORTS:
-                return "Sports";
-            case TYPE_DANCE:
-                return "Dance";
-            case TYPE_MUSIC:
-                return "Music";
-            case TYPE_HOME:
-                return "Home";
-            case TYPE_COLLEGE:
-                return "College";
-            default:
-                return "Unknown Type";
-        }
+        return typeString;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(key,type);
+        outState.putString(key,typeString);
     }
 
     @Override

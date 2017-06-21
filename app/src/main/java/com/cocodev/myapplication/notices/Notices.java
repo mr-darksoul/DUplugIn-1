@@ -1,6 +1,5 @@
 package com.cocodev.myapplication.notices;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.Notice;
-
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,10 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 public class Notices extends Fragment  {
 
     public static final String key = "type";
-    public static final int TYPE_ALL = 0;
-    public static final int TYPE_CLASS = 1;
-    public static final int TYPE_COLLEGE = 2;
-    public int type=-1;
+    public static final String TYPE_HOME ="Home";
+    private String typeString;
     private View mView;
     private final int NOTICE_LOADER =1;
     private ListView mListView;
@@ -36,9 +32,9 @@ public class Notices extends Fragment  {
 
     public Notices() {}
 
-    public static final Notices newInstance(int type){
+    public static final Notices newInstance(String type){
         Notices n = new Notices();
-        n.setType(type);
+        n.setTypeString(type);
         return n;
     }
     FirebaseDatabase firebaseDatabase;
@@ -52,7 +48,7 @@ public class Notices extends Fragment  {
         super.onCreate(savedInstanceState);
         firebaseDatabase = FirebaseDatabase.getInstance();
         if(savedInstanceState!=null){
-                type = savedInstanceState.getInt(key);
+                typeString = savedInstanceState.getString(key);
         }
     }
 
@@ -115,26 +111,18 @@ public class Notices extends Fragment  {
 
     }
 
-    public void setType(int type){
-        this.type=type;
+    public void setTypeString(String typeString) {
+        this.typeString = typeString;
     }
 
     public String getTypeString(){
-        switch(type){
-            case TYPE_ALL:
-                return "All";
-            case TYPE_CLASS:
-                return "Class";
-            case TYPE_COLLEGE:
-                return "College";
-        }
-        return null;
+        return typeString;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(key,type);
+        outState.putString(key,typeString);
     }
 
     @Override

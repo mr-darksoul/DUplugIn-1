@@ -3,17 +3,14 @@ package com.cocodev.myapplication;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cocodev.myapplication.EH.EventsHolder;
-import com.cocodev.myapplication.Utility.Event;
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,6 +50,7 @@ public class Events extends Fragment {
         return view;
     }
 
+
     private void initViewPager(View view) {
         viewPager = (ViewPager) view.findViewById(R.id.events_viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.events_tabLayout);
@@ -61,7 +59,7 @@ public class Events extends Fragment {
 
         EventsHolder eventsHolder =EventsHolder.newInstance(EventsHolder.TYPE_HOME);
         listFragmetns.add(eventsHolder);
-        EventsHolder eventsHolder1 = EventsHolder.newInstance(EventsHolder.TYPE_SPORTS);
+        EventsHolder eventsHolder1 = EventsHolder.newInstance("Sports");
         listFragmetns.add(eventsHolder1);
 
         MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listFragmetns);

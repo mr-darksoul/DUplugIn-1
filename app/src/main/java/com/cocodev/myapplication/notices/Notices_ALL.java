@@ -1,6 +1,5 @@
 package com.cocodev.myapplication.notices;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.Notice;
-
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,17 +19,16 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Notices_ALL extends Fragment  {
 
     public static final String key = "type";
-    public static final int TYPE_ALL = 0;
-    public static final int TYPE_CLASS = 1;
-    public static final int TYPE_COLLEGE = 2;
-    public int type=-1;
+    private String typeString ;
     private View mView;
     private final int NOTICE_LOADER =1;
     private ListView mListView;
 
 
 
-    public Notices_ALL() {}
+    public Notices_ALL() {
+        setTypeString(Notices.TYPE_HOME);
+    }
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference reference;
@@ -95,20 +92,12 @@ public class Notices_ALL extends Fragment  {
 
     }
 
-    public void setType(int type){
-        this.type=type;
+    public void setTypeString(String typeString) {
+        this.typeString = typeString;
     }
 
     public String getTypeString(){
-        switch(type){
-            case TYPE_ALL:
-                return "All";
-            case TYPE_CLASS:
-                return "Class";
-            case TYPE_COLLEGE:
-                return "College";
-        }
-        return null;
+        return typeString;
     }
 
 

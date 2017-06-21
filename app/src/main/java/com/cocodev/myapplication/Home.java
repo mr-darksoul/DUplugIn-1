@@ -96,8 +96,7 @@ public class Home extends Fragment {
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_home);
         List<ArticleHolder> listFragmetns = new ArrayList<ArticleHolder>();
-        //listFragmetns.add(new ArticleHolder(0));
-
+        listFragmetns.add(ArticleHolder.newInstance(ArticleHolder.TYPE_HOME));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if(sharedPreferences!=null){
 
@@ -105,8 +104,8 @@ public class Home extends Fragment {
             if(set!=null){
                     Iterator<String> iterator = set.iterator();
                     while(iterator.hasNext()){
-                        int id = Integer.parseInt(iterator.next());
-                        listFragmetns.add(ArticleHolder.newInstance(id));
+                        String string = iterator.next();
+                        listFragmetns.add(ArticleHolder.newInstance(string));
                     }
             }
         }
@@ -126,27 +125,9 @@ public class Home extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<ArticleHolder> listFragmetns = new ArrayList<ArticleHolder>();
-        listFragmetns.add(ArticleHolder.newInstance(0));
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        if(sharedPreferences!=null){
-
-            Set<String> set = sharedPreferences.getStringSet(getString(R.string.homeFeed_key),null);
-            if(set!=null){
-
-                Iterator<String> iterator = set.iterator();
-                while(iterator.hasNext()){
-                    int id = Integer.parseInt(iterator.next());
-                    listFragmetns.add(ArticleHolder.newInstance(id));
-                }
-            }
-        }
-        if(fragmentPageAdapter==null){
-            fragmentPageAdapter=new MyFragmentArticlePageAdapter(getChildFragmentManager(),listFragmetns);
-        }else {
-            fragmentPageAdapter.swapListFragments(listFragmetns);
-            fragmentPageAdapter.notifyDataSetChanged();
-            tabLayout.setupWithViewPager(viewPager);
+        if(SettingsActivity.HomeFeedPreferenceFragment.homeFeedChanged){
+            SettingsActivity.HomeFeedPreferenceFragment.homeFeedChanged=false;
+            getFragmentManager().beginTransaction().replace(R.id.fragment_layout,new Home()).commit();
         }
     }
 

@@ -3,18 +3,13 @@ package com.cocodev.myapplication;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
-import android.widget.Toast;
 
-import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
 import com.cocodev.myapplication.notices.Notices;
 import com.cocodev.myapplication.notices.Notices_ALL;
@@ -63,15 +58,13 @@ public class NoticeBoard extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_notices);
         List<Fragment> listFragmetns = new ArrayList<Fragment>();
 
-        Notices classNotices =  Notices.newInstance(Notices.TYPE_CLASS);
-        listFragmetns.add(classNotices);
 
-        Notices collegeNotices =  Notices.newInstance(Notices.TYPE_COLLEGE);
+
+        Notices collegeNotices =  Notices.newInstance("College");
         listFragmetns.add(collegeNotices);
 
 
         Notices_ALL allNotices = new Notices_ALL();
-        allNotices.setType(Notices.TYPE_ALL);
         listFragmetns.add(allNotices);
 
         MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listFragmetns);
