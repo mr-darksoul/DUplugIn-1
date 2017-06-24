@@ -19,10 +19,11 @@
             android:background="?attr/colorAccent"
             android:paddingTop="4dp"
             app:tabIndicatorColor="#fff"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabTextAppearance="@style/TabText"
             app:tabSelectedTextColor="#ffffff"
-            app:theme="@style/TabLayout"/>
+            app:theme="@style/TabLayout"
+            />
     </ScrollView>
 
     <android.support.v4.view.ViewPager

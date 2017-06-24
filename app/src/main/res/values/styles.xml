@@ -30,5 +30,6 @@
 
     <style name="TabLayout" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/TabText</item>
+        <item name="tabGravity">fill</item>
     </style>
 </resources>

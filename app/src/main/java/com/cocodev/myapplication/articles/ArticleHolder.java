@@ -1,40 +1,29 @@
 package com.cocodev.myapplication.articles;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.util.Pair;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cocodev.myapplication.Article_details;
-import com.cocodev.myapplication.MyApplication;
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.Article;
-import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.adapter.CustomArticleHolderAdapter;
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.leakcanary.RefWatcher;
+import com.squareup.picasso.Picasso;
 
 
 public class ArticleHolder extends Fragment  {
@@ -108,6 +97,7 @@ public class ArticleHolder extends Fragment  {
                             viewHolder.timeView.setText(article.getTime());
                             viewHolder.titleView.setText(article.getTitle());
                             viewHolder.UID.setText(article.getUID());
+
                         }
 
                         @Override
@@ -134,6 +124,7 @@ public class ArticleHolder extends Fragment  {
                     viewHolder.titleView.setText(model.getTitle());
                     viewHolder.timeView.setText(model.getTime());
                     viewHolder.UID.setText(model.getUID());
+
                 }
             };
         }

@@ -1,6 +1,8 @@
 package com.cocodev.myapplication;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,16 +16,19 @@ import com.cocodev.myapplication.EH.EventsHolder;
 import com.cocodev.myapplication.adapter.MyFragmentPageAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.h6ah4i.android.tablayouthelper.TabLayoutHelper;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class Events extends Fragment {
-
+    private static boolean EVENTS_PREFERENCES_CHANGED = false;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    TabLayoutHelper tabLayoutHelper;
     public Events() {
         // Required empty public constructor
 
@@ -34,6 +39,8 @@ public class Events extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(isEventsPreferencesChanged())
+            setEventsPreferencesChanged(false);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
     }
@@ -59,14 +66,31 @@ public class Events extends Fragment {
 
         EventsHolder eventsHolder =EventsHolder.newInstance(EventsHolder.TYPE_HOME);
         listFragmetns.add(eventsHolder);
-        EventsHolder eventsHolder1 = EventsHolder.newInstance("Sports");
-        listFragmetns.add(eventsHolder1);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SA.fileName_EP, Context.MODE_PRIVATE);
+        if(sharedPreferences!=null){
+            Map<String ,?> map = sharedPreferences.getAll();
+            for(Map.Entry<String,?>entry:map.entrySet()){
+                if(entry.getValue().toString().equals("true")){
+                    listFragmetns.add(EventsHolder.newInstance(entry.getKey()));
+                }
+            }
+        }
 
         MyFragmentPageAdapter fragmentPageAdapter = new MyFragmentPageAdapter(getFragmentManager(),listFragmetns);
         viewPager.setAdapter(fragmentPageAdapter);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
+         tabLayoutHelper = new TabLayoutHelper(tabLayout,viewPager);
+        tabLayoutHelper.setAutoAdjustTabModeEnabled(true);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(isEventsPreferencesChanged()){
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_layout,new Events()).commit();
+        }
     }
 
     @Override
@@ -75,4 +99,21 @@ public class Events extends Fragment {
         RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
+
+    public static boolean isEventsPreferencesChanged() {
+        return EVENTS_PREFERENCES_CHANGED;
+    }
+
+    public static void setEventsPreferencesChanged(boolean eventsPreferencesChanged) {
+        EVENTS_PREFERENCES_CHANGED = eventsPreferencesChanged;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(tabLayoutHelper!=null) {
+            tabLayoutHelper.release();
+        }
+    }
+
 }

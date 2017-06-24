@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cocodev.myapplication.SA"
+    android:id="@+id/activity_sa">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/title_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="General"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Spinner
+            android:id="@+id/spinner_college"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/SettingsActivity_child_default_left_margin"
+
+            />
+
+        <Spinner
+            android:id="@+id/spinner_course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/SettingsActivity_child_default_left_margin" />
+
+        <TextView
+            android:id="@+id/title_homePreferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_course"
+            android:layout_centerHorizontal="true"
+            android:padding="8dp"
+            android:text="Home Preferences"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/homePreferences"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/SettingsActivity_child_default_left_margin"></LinearLayout>
+
+        <TextView
+            android:id="@+id/title_eventPreferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_course"
+            android:layout_centerHorizontal="true"
+            android:padding="8dp"
+            android:text="Event Preferences"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/eventPreferences"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/SettingsActivity_child_default_left_margin">
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

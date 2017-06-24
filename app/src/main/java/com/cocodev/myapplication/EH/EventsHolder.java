@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 public class EventsHolder extends Fragment {
 
     public static String key = "type";
-    public final static String TYPE_HOME = "Home";
+    public final static String TYPE_HOME = "All";
     private final String LAST_SCROLL_STATE = "lastScrollState";
     private String typeString;
     private ListView mListView;

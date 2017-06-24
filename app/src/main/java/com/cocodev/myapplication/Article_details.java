@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.view.WindowCompat;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cocodev.myapplication.Utility.Article;
@@ -58,7 +58,9 @@ public class Article_details extends AppCompatActivity {
         final TextView timeView= (TextView) findViewById(R.id.article_time);;
         final TextView authorView= (TextView) findViewById(R.id.article_author);;
         final TextView descriptionView= (TextView) findViewById(R.id.article_description);
-        ;
+
+        ImageView imageView = (ImageView) findViewById(R.id.articleImage);
+
 
         DatabaseReference reference =FirebaseDatabase.getInstance().getReference().child("Articles")
                 .child(UID);

@@ -29,6 +29,7 @@ import java.util.Iterator;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private final int REQUEST_CODE_SETTINGS_ACTIVITY = 1001;
     String[] submenus = {"Articles","Notices","Events"};
     private String CURRENT_FRAGMENT = "currentFragment";
     private final int HOME_FRAGMENT =0;
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 }
             });
+
         }
 
         if(getSupportFragmentManager().findFragmentById(R.id.fragment_layout)==null){
@@ -126,7 +128,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+    }
 
     @Override
     public void onBackPressed() {
@@ -155,6 +161,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            return true;
+        }else if (id == R.id.action_settings2) {
+            Intent intent = new Intent(this,SA.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             return true;
@@ -201,4 +212,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
 
     }
+
 }

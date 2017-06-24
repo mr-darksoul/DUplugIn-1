@@ -2,7 +2,6 @@ package com.cocodev.myapplication;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.leakcanary.LeakCanary;
@@ -29,5 +28,6 @@ public class MyApplication extends Application {
             return;
         }
         refWatcher = LeakCanary.install(this);
+
     }
 }

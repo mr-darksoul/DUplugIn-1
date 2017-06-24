@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 public class Notices extends Fragment  {
 
     public static final String key = "type";
-    public static final String TYPE_HOME ="Home";
+    public static final String TYPE_HOME ="All";
     private String typeString;
     private View mView;
     private final int NOTICE_LOADER =1;

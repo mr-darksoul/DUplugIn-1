@@ -1,44 +1,41 @@
 package com.cocodev.myapplication;
 
 
-
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.cocodev.myapplication.Utility.Article;
-import com.cocodev.myapplication.Utility.Notice;
 import com.cocodev.myapplication.adapter.MyFragmentArticlePageAdapter;
 import com.cocodev.myapplication.articles.ArticleHolder;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.h6ah4i.android.tablayouthelper.TabLayoutHelper;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Home extends Fragment {
+
+    private static boolean HOME_PREFERENCES_CHANGED = false;
 
     MyFragmentArticlePageAdapter fragmentPageAdapter;
     TabLayout tabLayout;
@@ -52,9 +49,12 @@ public class Home extends Fragment {
 
     }
 
-
-
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(isHomePreferencesChanged())
+            setHomePreferencesChanged(false);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -97,16 +97,13 @@ public class Home extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_home);
         List<ArticleHolder> listFragmetns = new ArrayList<ArticleHolder>();
         listFragmetns.add(ArticleHolder.newInstance(ArticleHolder.TYPE_HOME));
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SA.fileName_HP, Context.MODE_PRIVATE);
         if(sharedPreferences!=null){
-
-            Set<String> set = sharedPreferences.getStringSet(getString(R.string.homeFeed_key),null);
-            if(set!=null){
-                    Iterator<String> iterator = set.iterator();
-                    while(iterator.hasNext()){
-                        String string = iterator.next();
-                        listFragmetns.add(ArticleHolder.newInstance(string));
-                    }
+            Map<String ,?> map = sharedPreferences.getAll();
+            for(Map.Entry<String,?>entry:map.entrySet()){
+                if(entry.getValue().toString().equals("true")){
+                    listFragmetns.add(ArticleHolder.newInstance(entry.getKey()));
+                }
             }
         }
 
@@ -116,18 +113,20 @@ public class Home extends Fragment {
 
         viewPager.setAdapter(fragmentPageAdapter);
         viewPager.setOffscreenPageLimit(3);
+
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout_home);
         tabLayout.setupWithViewPager(viewPager);
-
+        TabLayoutHelper tabLayoutHelper = new TabLayoutHelper(tabLayout,viewPager);
+        tabLayoutHelper.setAutoAdjustTabModeEnabled(true);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(SettingsActivity.HomeFeedPreferenceFragment.homeFeedChanged){
-            SettingsActivity.HomeFeedPreferenceFragment.homeFeedChanged=false;
-            getFragmentManager().beginTransaction().replace(R.id.fragment_layout,new Home()).commit();
+        if(HOME_PREFERENCES_CHANGED){
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_layout,new Home()).commit();
+            HOME_PREFERENCES_CHANGED=false;
         }
     }
 
@@ -169,5 +168,11 @@ public class Home extends Fragment {
         return true;
     }
 
+    public static void setHomePreferencesChanged(boolean homePreferencesChanged) {
+        HOME_PREFERENCES_CHANGED = homePreferencesChanged;
+    }
 
+    public static boolean isHomePreferencesChanged() {
+        return HOME_PREFERENCES_CHANGED;
+    }
 }

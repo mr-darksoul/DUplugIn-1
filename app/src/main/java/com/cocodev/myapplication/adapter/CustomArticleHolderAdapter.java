@@ -1,23 +1,17 @@
 package com.cocodev.myapplication.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cocodev.myapplication.R;
 import com.cocodev.myapplication.Utility.RefListAdapter;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.firebase.ui.database.ObservableSnapshotArray;
-import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 
 /**
  * Created by Sudarshan on 08-06-2017.
@@ -60,13 +54,14 @@ public abstract class CustomArticleHolderAdapter<T> extends RefListAdapter<T> {
         public final TextView timeView;
         public final TextView authorView;
         public final TextView UID;
-
+        public final ImageView imageView;
 
         public ViewHolder(View view) {
             titleView = (TextView) view.findViewById(R.id.article_title);
             timeView = (TextView) view.findViewById(R.id.article_time);
             authorView = (TextView) view.findViewById(R.id.article_author);
             UID = (TextView) view.findViewById(R.id.article_UID);
+            imageView = (ImageView) view.findViewById(R.id.articleImage);
         }
     }
 
