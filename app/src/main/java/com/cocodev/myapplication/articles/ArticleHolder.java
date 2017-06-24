@@ -2,6 +2,7 @@ package com.cocodev.myapplication.articles;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -10,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cocodev.myapplication.Article_details;
 import com.cocodev.myapplication.R;
@@ -23,26 +26,22 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 
-public class ArticleHolder extends Fragment  {
+public class ArticleHolder extends Fragment implements AbsListView.OnScrollListener {
 
     public static String key = "type";
     public final static String TYPE_HOME = "Home";
+    private int preLast =0;
     private final String LAST_SCROLL_STATE = "lastScrollState";
-
-
     private String typeString = null;
-
+    private long itemCount=0;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private CustomArticleHolderAdapter mAdapter;
-
     public ArticleHolder(){}
-
     ListView mListView;
-
+    View mFooterView;
 
     public static ArticleHolder newInstance(String type){
         ArticleHolder a = new ArticleHolder();
@@ -62,7 +61,7 @@ public class ArticleHolder extends Fragment  {
             databaseReference = firebaseDatabase.getReference()
                     .child("Categories").child("Articles").child(getTypeString());
         }else{
-            databaseReference = firebaseDatabase.getReference()
+             databaseReference= firebaseDatabase.getReference()
                     .child("Articles");
         }
     }
@@ -72,7 +71,28 @@ public class ArticleHolder extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_article_holder, container, false);
+        mListView = (ListView) view.findViewById(R.id.listView_articleHolder);
 
+        //view to be added while loading more data;
+        mFooterView = LayoutInflater.from(getContext()).inflate(R.layout.footer_progress_bar, null);
+
+        mListView.addFooterView(mFooterView);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mListView==null)
+                    return;
+                mListView.removeFooterView(mFooterView);
+                mAdapter.notifyDataSetChanged();
+            }
+        },5000);
+
+        //view when list is empty
+        TextView textView = (TextView) view.findViewById(R.id.articleHolder_emptyView);
+        textView.setText("There are currently no articles under this Category.");
+        mListView.setEmptyView(textView);
+
+        //if this is the home page else ...
         if(!typeString.equals(TYPE_HOME)){
             mAdapter = new CustomArticleHolderAdapter<String>(
                     getActivity(),
@@ -87,25 +107,29 @@ public class ArticleHolder extends Fragment  {
 
                     DatabaseReference dbref = firebaseDatabase.getReference().child("Articles")
                             .child(model);
+
                     dbref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Article article = dataSnapshot.getValue(Article.class);
+                            if(article==null)
+                                return;
                             if (viewHolder.authorView != null) {
                                 viewHolder.authorView.setText(article.getAuthor());
                             }
                             viewHolder.timeView.setText(article.getTime());
                             viewHolder.titleView.setText(article.getTitle());
                             viewHolder.UID.setText(article.getUID());
-
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
+                            Toast.makeText(getContext(),"There has been some problem establishing connection with the server.",Toast.LENGTH_SHORT).show();
+
                         }
                     });
                 }
+
             };
         }else{
             mAdapter = new CustomArticleHolderAdapter<Article>(
@@ -126,20 +150,27 @@ public class ArticleHolder extends Fragment  {
                     viewHolder.UID.setText(model.getUID());
 
                 }
+
+                @Override
+                public boolean isEmpty() {
+                    if(mListView.getFooterViewsCount()!=0)
+                        return false;
+                    return super.isEmpty();
+                }
             };
+
+
         }
 
-         mListView = (ListView) view.findViewById(R.id.listView_articleHolder);
 
-        TextView textView = (TextView) view.findViewById(R.id.articleHolder_emptyView);
-        textView.setText("There are currently no articles under this Category.");
-        mListView.setEmptyView(textView);
         mListView.setAdapter(mAdapter);
-         mListView.setOnItemClickListener(onItemClickListener);
-
+        mListView.setOnItemClickListener(onItemClickListener);
+        mListView.setOnScrollListener(this);
 
          return view;
     }
+
+
 
     AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -180,6 +211,44 @@ public class ArticleHolder extends Fragment  {
         mListView = null;
         mAdapter.removeListener();
         databaseReference =null;
+
     }
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        //do nothing
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        // Make your calculation stuff here. You have all your
+        // needed info from the parameters of this function.
+
+        // Sample calculation to determine if the last
+        // item is fully visible.
+        final int lastItem = firstVisibleItem + visibleItemCount-mListView.getFooterViewsCount();
+
+        if(lastItem == totalItemCount)
+        {
+            if(preLast!=lastItem) {
+                Log.e("his",Integer.toString(preLast)+" "+Integer.toString(lastItem));
+                if(mListView.getFooterViewsCount()==0){
+                    mListView.addFooterView(mFooterView);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(mListView==null)
+                                return;
+                            mListView.removeFooterView(mFooterView);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    },5000);
+                }
+                preLast = lastItem;
+                //to avoid multiple calls for last item
+                mAdapter.populateMoreList(mListView,mFooterView);
+            }
+        }
+
+    }
 }

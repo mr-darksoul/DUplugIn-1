@@ -27,10 +27,10 @@ import java.util.Iterator;
 
 public class SA extends AppCompatActivity {
 
-    public static final String KEY_COLLEGE = "com.cocodev.myapplication.collegechoices";
+    public static final String KEY_COLLEGE    = "com.cocodev.myapplication.collegechoices";
     public static final String KEY_DEPARTMENT = "com.cocodev.myapplication.departmentchoices";
-    public static final String fileName_HP = "com.cocodev.myapplication.homepreferences";
-    public static final String fileName_EP = "com.cocodev.myapplication.eventpreferences";
+    public static final String fileName_HP    = "com.cocodev.myapplication.homepreferences";
+    public static final String fileName_EP    = "com.cocodev.myapplication.eventpreferences";
 
     //if College or Department has changed
     private boolean RELOAD_PARENT_ACTIVITY = false;
@@ -68,9 +68,7 @@ public class SA extends AppCompatActivity {
                     if(department.equals(selection)){
                         departmentChoices.setSelection(arrayAdapter.getPosition(department));
                     }
-                    if(departmentChoices.getSelectedItemPosition()==-1){
-                        departmentChoices.setSelection(0);
-                    }
+
                 }
             }
 
@@ -83,12 +81,7 @@ public class SA extends AppCompatActivity {
 
         departmentChoices.setAdapter(arrayAdapter);
         departmentChoices.setOnItemSelectedListener(departmentSelectedListener);
-        departmentChoices.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RELOAD_PARENT_ACTIVITY=true;
-            }
-        });
+
 
 
     }
@@ -118,9 +111,7 @@ public class SA extends AppCompatActivity {
                     if(department.equals(selection)){
                         collegeChoices.setSelection(arrayAdapter.getPosition(department));
                     }
-                    if(collegeChoices.getSelectedItemPosition()==-1){
-                        collegeChoices.setSelection(0);
-                    }
+
                 }
             }
 
@@ -132,12 +123,7 @@ public class SA extends AppCompatActivity {
         });
         collegeChoices.setAdapter(arrayAdapter);
         collegeChoices.setOnItemSelectedListener(collegeSelectedListener);
-        collegeChoices.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RELOAD_PARENT_ACTIVITY=true;
-            }
-        });
+
 
     }
 

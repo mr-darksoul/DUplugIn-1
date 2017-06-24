@@ -162,7 +162,7 @@ public class Home extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(getActivity(),SettingsActivity.class);
+            Intent intent = new Intent(getActivity(),SA.class);
             startActivity(intent);
         }
         return true;
@@ -172,7 +172,7 @@ public class Home extends Fragment {
         HOME_PREFERENCES_CHANGED = homePreferencesChanged;
     }
 
-    public static boolean isHomePreferencesChanged() {
+    public boolean isHomePreferencesChanged() {
         return HOME_PREFERENCES_CHANGED;
     }
 }

@@ -24,12 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 public abstract class CustomArticleHolderAdapter<T> extends RefListAdapter<T> {
 
     private final int COUNT_VIEW_TYPE = 2;
-    private static final int VIEW_TYPE_FIRST=0;
-    private static final int VIEW_TYPE_SECOND=1;
+    private final int VIEW_TYPE_FIRST=0;
+    private final int VIEW_TYPE_SECOND=1;
 
     public CustomArticleHolderAdapter(@NonNull Context context, Class<T> modelclass, @LayoutRes int resource, DatabaseReference[] db) {
         super(context, modelclass, resource, db);
     }
+
 
 
     @Override
