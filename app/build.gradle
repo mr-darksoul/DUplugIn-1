@@ -5,8 +5,8 @@ android {
     buildToolsVersion '25.0.2'
 
     defaultConfig {
-        applicationId "com.cocodev.myapplication"
-        minSdkVersion 19
+        applicationId "com.cocodev.TheDuChronicle"
+        minSdkVersion 18
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -36,12 +36,6 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 }
-
-
-
-
-
-
 
 
 
