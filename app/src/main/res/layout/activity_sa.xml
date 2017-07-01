@@ -21,7 +21,6 @@
             android:padding="8dp"
             android:text="General"
             android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:drawableLeft="@drawable/ic_menu_event"
             android:drawablePadding="4dp"
             />
 

@@ -28,7 +28,7 @@
         android:clickable="true"
         android:focusableInTouchMode="true"
         android:padding="8dp"
-        android:src="?android:attr/actionModeShareDrawable"
+        app:srcCompat="?android:attr/actionModeShareDrawable"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_margin="20dp"

@@ -23,6 +23,7 @@
         <activity android:name="com.cocodev.TheDuChronicle.Article_details" />
         <activity android:name="com.cocodev.TheDuChronicle.SA"
             android:launchMode="singleTask"
+            android:theme="@style/AppTheme"
             >
             <meta-data
             android:name="android.support.PARENT_ACTIVITY"
