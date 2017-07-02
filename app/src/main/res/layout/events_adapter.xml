@@ -1,37 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:padding="10dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:id="@+id/event_UID"/>
+    android:background="?android:attr/detailsElementBackground"
+    android:orientation="vertical"
+    >
 
-    <TextView
-        android:id="@+id/event_title"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Shades audition on 15 August"
-        android:textSize="24sp" />
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="true">
 
-    <TextView
-        android:id="@+id/event_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/event_title"
-        android:layout_marginTop="5dp"
-        android:text="College Auditorium" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/event_venue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/event_title"
-        android:layout_marginTop="5dp"
-        android:text="timestamp" />
+
+            <TextView
+                android:id="@+id/event_UID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/event_place_holder" />
+
+            <TextView
+                android:id="@+id/event_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/image_view"
+                android:fontFamily="monospace"
+                android:padding="8dp"
+                android:text="Shades audition on 15 August"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/event_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_title"
+                android:layout_marginLeft="4dp"
+                android:layout_toEndOf="@+id/time_image_view"
+                android:drawableLeft="@mipmap/time"
+                android:drawablePadding="4dp"
+                android:paddingLeft="8dp"
+                android:text="16 Jan 2017"
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:id="@+id/event_venue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/event_time"
+                android:layout_below="@+id/event_time"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@mipmap/place"
+                android:drawablePadding="4dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:text="College Auditorium"
+                android:textColor="#505050"
+                android:textSize="12dp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>

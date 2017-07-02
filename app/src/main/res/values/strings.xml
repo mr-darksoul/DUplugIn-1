@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TheDuChronicle</string>
+    <string name="app_name">DUplugIn</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -47,6 +47,7 @@
     <string name="action_refresh">Refresh</string>
     <string name="home_share_image">home_share_image</string>
     <string name="home_share_title">home_share_title</string>
+    <string name="dimen_padding_events">8dp</string>
 
 
 </resources>
