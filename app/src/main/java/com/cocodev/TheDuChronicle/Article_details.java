@@ -98,4 +98,6 @@ public class Article_details extends AppCompatActivity {
         super.onDestroy();
 
     }
+
+
 }

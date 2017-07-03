@@ -24,7 +24,6 @@
     </string>
 
 
-
     <string name="homeFeed_key">multiSelect_home_page</string>
     <string-array name="multiselect_list_titles">
         <item>Sports</item>
@@ -48,6 +47,7 @@
     <string name="home_share_image">home_share_image</string>
     <string name="home_share_title">home_share_title</string>
     <string name="dimen_padding_events">8dp</string>
+    <string name="event_share_image">event_share_image</string>
 
 
 </resources>

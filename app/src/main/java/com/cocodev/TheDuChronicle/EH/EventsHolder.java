@@ -1,11 +1,12 @@
 package com.cocodev.TheDuChronicle.EH;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.util.DisplayMetrics;
+import android.support.v4.util.Pair;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.cocodev.TheDuChronicle.R;
 import com.cocodev.TheDuChronicle.Utility.Event;
+import com.cocodev.TheDuChronicle.events_details;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -144,18 +146,14 @@ public class EventsHolder extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             String UID = (String) ((TextView) view.findViewById(R.id.event_UID)).getText();
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            View childView = getLayoutInflater(null).inflate(R.layout.event_details,null);
-            builder.setView(childView);
-            AlertDialog alertDialog = builder.create();
-            DisplayMetrics dm = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-            alertDialog.getWindow().setWindowAnimations(R.style.DialogTheme);
-            alertDialog.show();
-            alertDialog.getWindow().setLayout(dm.widthPixels,(int)(dm.heightPixels*0.6));
-
-
-
+            Intent intent = new Intent(getContext(),events_details.class);
+            intent.putExtra("uid",UID);
+            Pair<View,String> pair1 = Pair.create(view.findViewById(R.id.event_image),getString(R.string.event_share_image));
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(),
+                    pair1
+            );
+            startActivity(intent,optionsCompat.toBundle());
         }
     };
 
