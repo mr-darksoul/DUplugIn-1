@@ -160,6 +160,7 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
 
     @Override
     public void onBackPressed() {
+        commentAdapter.clear();
         finish();
     }
 
