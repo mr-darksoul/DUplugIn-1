@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="6dp"
-    >
-
+    android:orientation="vertical"
+    android:paddingBottom="6dp">
+   <!--
     <ImageView
         android:id="@+id/articleImage"
         android:layout_width="match_parent"
@@ -15,27 +15,27 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/placeholder"
-        android:transitionName="@string/home_share_image"
-        />
+        android:transitionName="@string/home_share_image" />
 
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/shareArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusableInTouchMode="true"
         android:padding="8dp"
-        app:srcCompat="?android:attr/actionModeShareDrawable"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="20dp"/>
+        app:srcCompat="?android:attr/actionModeShareDrawable" />
 
     <TextView
         android:id="@+id/article_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/articleImage"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="8dp"
@@ -46,8 +46,7 @@
         android:textColor="@android:color/background_dark"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_alignParentStart="true"
-        android:transitionName="@string/home_share_title"/>
+        android:transitionName="@string/home_share_title" />
 
     <TextView
         android:id="@+id/textView3"
@@ -87,6 +86,27 @@
         android:layout_marginRight="4dp"
         android:layout_marginTop="12dp"
         android:text="description" />
+
+    <TextView
+        android:id="@+id/article_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/article_description"
+        android:padding="8dp"
+        android:text="Reviews"
+        android:textSize="22sp"
+        android:textStyle="bold" /> !-->
+
+
+    <ListView
+        android:id="@+id/article_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+    </ListView>
+
+
 
 
 </RelativeLayout>
