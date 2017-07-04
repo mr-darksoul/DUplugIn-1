@@ -74,22 +74,23 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
         actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         actionBar.setTitle("");
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        final TextView titleView= (TextView) findViewById(R.id.article_title);;
-        final TextView timeView= (TextView) findViewById(R.id.article_time);;
-        final TextView authorView= (TextView) findViewById(R.id.article_author);;
-        final TextView descriptionView= (TextView) findViewById(R.id.article_description);
+        
+        View headerView = LayoutInflater.from(context).inflate(R.layout.review_list,null);
+        
+        final TextView titleView= (TextView) headerView.findViewById(R.id.article_title);;
+        final TextView timeView= (TextView) headerView.findViewById(R.id.article_time);;
+        final TextView authorView= (TextView) headerView.findViewById(R.id.article_author);;
+        final TextView descriptionView= (TextView) headerView.findViewById(R.id.article_description);
 
 
         mListView = (ListView) findViewById(R.id.article_list_view);
         commentAdapter = new CommentAdapter(this,R.layout.review_single_list,mCommentEntries);
         //View headerView = (View) layoutInflater.inflate(R.layout.review_list, mListView, false);
-        View view = LayoutInflater.from(context).inflate(R.layout.review_list,null);
         commentAdapter.add(new Comment("CoCo developer","Review 1"));
         commentAdapter.add(new Comment("Shudarshan Yadav","Review 2"));
         commentAdapter.add(new Comment("Manav Bansal","Review 3"));
         mListView.setAdapter(commentAdapter);
-        mListView.addHeaderView(view);
+        mListView.addHeaderView(headerView);
 
         mFooterView = LayoutInflater.from(context).inflate(R.layout.footer_progress_bar, null);
 
@@ -124,12 +125,12 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 article = dataSnapshot.getValue(Article.class);
-                //PRODUCING ERROR!!!
-                //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
-                //timeView.setText(article.getTime());
-                //titleView.setText(article.getTitle());
-                //authorView.setText(article.getAuthor());
-               // descriptionView.setText(article.getDescription());
+                
+                java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
+                timeView.setText(article.getTime());
+                titleView.setText(article.getTitle());
+                authorView.setText(article.getAuthor());
+                descriptionView.setText(article.getDescription());
             }
 
             @Override
