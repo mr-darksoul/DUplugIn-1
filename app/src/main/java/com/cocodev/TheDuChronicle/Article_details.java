@@ -1,5 +1,8 @@
 package com.cocodev.TheDuChronicle;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 
 import com.cocodev.TheDuChronicle.Utility.Article;
 import com.cocodev.TheDuChronicle.Utility.Comment;
+import com.cocodev.TheDuChronicle.Utility.Event;
 import com.cocodev.TheDuChronicle.adapter.CommentAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,7 +47,9 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
     ListView mListView;
     View mFooterView;
     View mFooterButton;
+    String postUID;
     CommentAdapter commentAdapter;
+    private DatabaseReference mCommentRefrence;
     final static List<Comment> mCommentEntries = new ArrayList<>();
     Button postButton;
 
@@ -67,7 +73,7 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_details);
         Intent intent = getIntent();
-        String UID = intent.getStringExtra(key);
+        final String UID = intent.getStringExtra(key);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -79,7 +85,6 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
         final TextView timeView= (TextView) findViewById(R.id.article_time);;
         final TextView authorView= (TextView) findViewById(R.id.article_author);;
         final TextView descriptionView= (TextView) findViewById(R.id.article_description);
-
 
         mListView = (ListView) findViewById(R.id.article_list_view);
         commentAdapter = new CommentAdapter(this,R.layout.review_single_list,mCommentEntries);
@@ -110,8 +115,12 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Post Button Clicked!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Post Button Clicked!", Toast.LENGTH_SHORT).show();
                 //Launch Review Activity
+                Intent i = new Intent(getApplicationContext(),CommentBox.class);
+                i.putExtra("postUID",postUID);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -124,6 +133,7 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 article = dataSnapshot.getValue(Article.class);
+                postUID = article.getUID();
                 //PRODUCING ERROR!!!
                 //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
                 //timeView.setText(article.getTime());
@@ -154,6 +164,7 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
 
     @Override
     protected void onDestroy() {
+        commentAdapter.clear();
         super.onDestroy();
 
     }
@@ -168,8 +179,8 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
     public void onScrollStateChanged(AbsListView absListView, int i) {
 
 
-
     }
+
 
     @Override
     public void onScroll(AbsListView absListView, int i, int i1, int i2) {
