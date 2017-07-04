@@ -1,19 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_margin="8dp"
-    android:layout_height="match_parent">
-<TextView
-    android:id="@+id/user_name"
-    tools:text="Manav Bansal"
-    android:textSize="22sp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+`   <ImageView
+    android:id="@+id/user_image_placeHolder"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:src="@mipmap/user"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="4dp"/>
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/user_image_placeHolder"
+        android:textStyle="bold"
+        tools:text="Manav Bansal" />
+
+    <TextView
+        android:id="@+id/comment_timeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="1 Minute Ago"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/user_image_placeHolder"
+        android:layout_below="@id/user_name"/>
+
     <TextView
         android:id="@+id/user_review"
-        tools:text="bhot bhoooot bhhoooooooott sari bakchodiyaaaaaaaaaaaaaaaaa"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/background_dark"
+        android:textSize="14sp"
+        tools:text="bhot bhoooot bhhoooooooott sari bakchodiyaaaaaaaaaaaaaaaaa"
+        android:layout_below="@+id/user_image_placeHolder"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/like_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:background="@null"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@mipmap/like"
+        android:layout_below="@id/user_review"
+        tools:text="8"/>
+    <Button
+        android:id="@+id/dislike_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:textSize="18sp"
+        android:layout_marginLeft="32dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@mipmap/dislike"
+        android:layout_below="@id/user_review"
+        android:layout_toRightOf="@id/like_count"
+        android:layout_marginBottom="8dp"
+        tools:text="8"/>
+
+</RelativeLayout>
