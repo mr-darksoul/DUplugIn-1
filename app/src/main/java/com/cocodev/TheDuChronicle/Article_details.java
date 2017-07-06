@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.cocodev.TheDuChronicle.Utility.Article;
 import com.cocodev.TheDuChronicle.Utility.Comment;
 import com.cocodev.TheDuChronicle.Utility.Event;
@@ -37,13 +36,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Article_details extends AppCompatActivity implements AbsListView.OnScrollListener{
-    private int preLast =0;
+public class Article_details extends AppCompatActivity implements AbsListView.OnScrollListener {
+    private int preLast = 0;
+    private static int flag = 0;
     private Article article;
+    private String postUID;
     public static final String key = "article";
     Context context = this;
-    //LayoutInflater layoutInflater = this.getLayoutInflater();
-    //Add listview
     ListView mListView;
     View mFooterView;
     View mFooterButton;
@@ -52,6 +51,7 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
     private DatabaseReference mCommentRefrence;
     final static List<Comment> mCommentEntries = new ArrayList<>();
     Button postButton;
+    Button getComments;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -81,65 +81,80 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
         actionBar.setTitle("");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        final TextView titleView= (TextView) findViewById(R.id.article_title);;
-        final TextView timeView= (TextView) findViewById(R.id.article_time);;
-        final TextView authorView= (TextView) findViewById(R.id.article_author);;
-        final TextView descriptionView= (TextView) findViewById(R.id.article_description);
+        View headerView = LayoutInflater.from(context).inflate(R.layout.review_list, null);
+
+        final TextView titleView = (TextView) headerView.findViewById(R.id.article_title);
+        final TextView timeView = (TextView) headerView.findViewById(R.id.article_time);
+        final TextView authorView = (TextView) headerView.findViewById(R.id.article_author);
+        final TextView descriptionView = (TextView) headerView.findViewById(R.id.article_description);
 
         mListView = (ListView) findViewById(R.id.article_list_view);
-        commentAdapter = new CommentAdapter(this,R.layout.review_single_list,mCommentEntries);
-        //View headerView = (View) layoutInflater.inflate(R.layout.review_list, mListView, false);
-        View view = LayoutInflater.from(context).inflate(R.layout.review_list,null);
-        commentAdapter.add(new Comment("CoCo developer","Review 1"));
-        commentAdapter.add(new Comment("Shudarshan Yadav","Review 2"));
-        commentAdapter.add(new Comment("Manav Bansal","Review 3"));
+        commentAdapter = new CommentAdapter(this, R.layout.review_single_list, mCommentEntries);
+        mListView.addHeaderView(headerView);
         mListView.setAdapter(commentAdapter);
-        mListView.addHeaderView(view);
-
-        mFooterView = LayoutInflater.from(context).inflate(R.layout.footer_progress_bar, null);
-
-        mListView.addFooterView(mFooterView);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(mListView==null)
-                    return;
-                mListView.removeFooterView(mFooterView);
-                commentAdapter.notifyDataSetChanged();
-            }
-        },5000);
-         mFooterButton = LayoutInflater.from(context).inflate(R.layout.button_post,null);
-         mListView.addFooterView(mFooterButton);
+        mFooterButton = LayoutInflater.from(context).inflate(R.layout.button_post, null);
+        mListView.addFooterView(mFooterButton);
         commentAdapter.notifyDataSetChanged();
         postButton = (Button) findViewById(R.id.button_post_review);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getApplicationContext(),"Post Button Clicked!", Toast.LENGTH_SHORT).show();
-                //Launch Review Activity
-                Intent i = new Intent(getApplicationContext(),CommentBox.class);
-                i.putExtra("postUID",postUID);
+                Intent i = new Intent(getApplicationContext(), CommentBox.class);
+                i.putExtra("postUID", postUID);
                 startActivity(i);
                 finish();
+            }
+        });
+
+        getComments = (Button) findViewById(R.id.button_get_comments);
+        getComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (flag == 0) {
+                    mListView.removeFooterView(mFooterButton);
+                    getComments.setText("Hide Comments");
+                    commentAdapter.add(new Comment("CoCo developer", "Review 1"));
+                    commentAdapter.add(new Comment("Shudarshan Yadav", "Review 2"));
+                    commentAdapter.add(new Comment("Manav Bansal", "Review 3"));
+                    mFooterView = LayoutInflater.from(context).inflate(R.layout.footer_progress_bar, null);
+                    mListView.addFooterView(mFooterView);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mListView == null)
+                                return;
+                            mListView.removeFooterView(mFooterView);
+                            commentAdapter.notifyDataSetChanged();
+                        }
+                    }, 5000);
+                    mListView.addFooterView(mFooterButton);
+                    commentAdapter.notifyDataSetChanged();
+                    flag++;
+                } else {
+                    getComments.setText("Show Comments");
+                    commentAdapter.clear();
+                    flag = 0;
+
+                }
             }
         });
 
         ImageView imageView = (ImageView) findViewById(R.id.articleImage);
 
 
-        DatabaseReference reference =FirebaseDatabase.getInstance().getReference().child("Articles")
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Articles")
                 .child(UID);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 article = dataSnapshot.getValue(Article.class);
                 postUID = article.getUID();
-                //PRODUCING ERROR!!!
-                //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
-                //timeView.setText(article.getTime());
-                //titleView.setText(article.getTitle());
-                //authorView.setText(article.getAuthor());
-               // descriptionView.setText(article.getDescription());
+
+                java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
+                timeView.setText(article.getTime());
+                titleView.setText(article.getTitle());
+                authorView.setText(article.getAuthor());
+                  descriptionView.setText(article.getDescription());
             }
 
             @Override
@@ -153,10 +168,6 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-
-
-        //return super.onCreateView(parent, name, context, attrs);
-
         return super.onCreateView(parent, name, context, attrs);
 
 
@@ -185,27 +196,26 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
     @Override
     public void onScroll(AbsListView absListView, int i, int i1, int i2) {
 
-        final int lastItem = i + i1-mListView.getFooterViewsCount();
+        final int lastItem = i + i1 - mListView.getFooterViewsCount();
 
-        if(lastItem == i2)
-        {
-            if(preLast!=lastItem) {
-                Log.e("his",Integer.toString(preLast)+" "+Integer.toString(lastItem));
-                if(mListView.getFooterViewsCount()==0){
+        if (lastItem == i2) {
+            if (preLast != lastItem) {
+                Log.e("his", Integer.toString(preLast) + " " + Integer.toString(lastItem));
+                if (mListView.getFooterViewsCount() == 0) {
                     mListView.addFooterView(mFooterView);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if(mListView==null)
+                            if (mListView == null)
                                 return;
                             mListView.removeFooterView(mFooterView);
                             commentAdapter.notifyDataSetChanged();
                         }
-                    },5000);
+                    }, 5000);
                 }
                 preLast = lastItem;
                 //to avoid multiple calls for last item
-               // commentAdapter.populateMoreList(mListView,mFooterView);
+                // commentAdapter.populateMoreList(mListView,mFooterView);
             }
         }
 
