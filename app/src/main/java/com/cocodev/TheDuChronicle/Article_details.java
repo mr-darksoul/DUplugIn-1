@@ -125,8 +125,7 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 article = dataSnapshot.getValue(Article.class);
-                
-                java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
+
                 timeView.setText(article.getTime());
                 titleView.setText(article.getTitle());
                 authorView.setText(article.getAuthor());
