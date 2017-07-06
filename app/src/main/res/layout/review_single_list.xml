@@ -7,9 +7,19 @@
 
 `   <ImageView
     android:id="@+id/user_image_placeHolder"
+<<<<<<< HEAD
     android:layout_width="64dp"
     android:layout_height="64dp"
 
+||||||| merged common ancestors
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:src="@mipmap/user"
+=======
+    android:layout_width="52dp"
+    android:layout_height="52dp"
+    android:src="@mipmap/user"
+>>>>>>> f23c03d7d1312fa11c9d10bbaeb8ab744df9c117
     android:layout_marginTop="8dp"
     android:layout_marginBottom="4dp"/>
     <TextView
@@ -52,7 +62,14 @@
         android:textSize="18sp"
         android:background="@null"
         android:drawablePadding="4dp"
+<<<<<<< HEAD
 
+||||||| merged common ancestors
+        android:drawableLeft="@mipmap/like"
+=======
+        android:clickable="true"
+        android:drawableLeft="@mipmap/like"
+>>>>>>> f23c03d7d1312fa11c9d10bbaeb8ab744df9c117
         android:layout_below="@id/user_review"
         tools:text="8"/>
     <Button
@@ -63,7 +80,14 @@
         android:textSize="18sp"
         android:layout_marginLeft="32dp"
         android:drawablePadding="4dp"
+<<<<<<< HEAD
 
+||||||| merged common ancestors
+        android:drawableLeft="@mipmap/dislike"
+=======
+        android:clickable="true"
+        android:drawableLeft="@mipmap/dislike"
+>>>>>>> f23c03d7d1312fa11c9d10bbaeb8ab744df9c117
         android:layout_below="@id/user_review"
         android:layout_toRightOf="@id/like_count"
         android:layout_marginBottom="8dp"

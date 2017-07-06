@@ -88,15 +88,19 @@
         android:layout_marginTop="12dp"
         android:text="description" />
 
-    <TextView
-        android:id="@+id/article_review"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:padding="8dp"
-        android:layout_below="@id/article_description"
-        android:text="Reviews"/>
+
+        <Button
+            android:id="@+id/button_get_comments"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="32dp"
+            android:background="@null"
+            android:textColor="@color/colorPrimary"
+            android:layout_below="@id/article_description"
+            android:layout_marginRight="32dp"
+            android:elevation="8dp"
+            android:layout_height="wrap_content"
+            android:text="Show Comments"/>
+
 
 </RelativeLayout>
 
