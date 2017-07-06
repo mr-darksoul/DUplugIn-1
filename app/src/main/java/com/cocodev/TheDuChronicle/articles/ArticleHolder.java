@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cocodev.TheDuChronicle.Article_details;
+import com.cocodev.TheDuChronicle.ArticleDetails;
 import com.cocodev.TheDuChronicle.R;
 import com.cocodev.TheDuChronicle.Utility.Article;
 import com.cocodev.TheDuChronicle.adapter.CustomArticleHolderAdapter;
@@ -176,8 +176,8 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String UID = (String) ((TextView) view.findViewById(R.id.article_UID)).getText();
-            Intent intent = new Intent(getContext(),Article_details.class);
-            intent.putExtra(Article_details.key,UID);
+            Intent intent = new Intent(getContext(),ArticleDetails.class);
+            intent.putExtra(ArticleDetails.key,UID);
             Pair<View,String> pair1 = Pair.create(view.findViewById(R.id.articleImage),getString(R.string.home_share_image));
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     getActivity(),

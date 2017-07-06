@@ -29,11 +29,13 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
     private String lastArticle="";
     private ListView mListView;
     private View mFooterView;
+    private int resource;
     public RefListAdapter(@NonNull Context context,Class<T> modelclass, @LayoutRes int resource,DatabaseReference[] db) {
         super(context, resource);
         this.db=db;
         this.modelclass=modelclass;
         instantiateList();
+        this.resource=resource;
     }
 
 
@@ -98,9 +100,12 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
     @NonNull
     @Override
     public  View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        int layoutID= getItemViewType(position);
-        View view = LayoutInflater.from(getContext()).inflate(layoutID,parent,false);
-        return view;
+
+        if(convertView==null){
+            convertView=LayoutInflater.from(getContext()).inflate(resource,parent,false);
+        }
+        populateView(convertView,getItem(position),position);
+        return convertView;
     }
 
 

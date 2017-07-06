@@ -16,7 +16,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/placeholder"
-        android:transitionName="@string/home_share_image" />
+        android:transitionName="@string/home_share_image"
+        />
 
 
     <android.support.v7.widget.AppCompatImageButton
@@ -89,19 +90,50 @@
         android:text="description" />
 
 
-        <Button
-            android:id="@+id/button_get_comments"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="32dp"
-            android:background="@null"
-            android:textColor="@color/colorPrimary"
-            android:layout_below="@id/article_description"
-            android:layout_marginRight="32dp"
-            android:elevation="8dp"
-            android:layout_height="wrap_content"
-            android:text="Show Comments"/>
+    <Button
+        android:id="@+id/articleDetails_toggleShowHideComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/article_description"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@null"
+        android:elevation="8dp"
+        android:text="Show Comments"
+        android:textColor="@color/colorPrimary" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/articleDetails_postComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/articleDetails_toggleShowHideComments"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 
+    <EditText
+        android:id="@+id/articleDetails_comment_EditText"
+        android:layout_width="match_parent"
+        android:lines="8"
+        android:gravity="top|left"
+        android:scrollbars="vertical"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:hint="write your comment...."
+        android:layout_below="@id/articleDetails_toggleShowHideComments"
+        android:visibility="gone"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/articleDetails_submitComment"
+        android:layout_below="@id/articleDetails_comment_EditText"
+        android:textColor="@color/black"
+        android:text="Post Comment"
+        android:visibility="gone"/>
 </RelativeLayout>
 
 
