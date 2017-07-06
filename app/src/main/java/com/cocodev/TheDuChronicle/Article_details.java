@@ -94,10 +94,10 @@ public class Article_details extends AppCompatActivity implements AbsListView.On
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), CommentBox.class);
-                i.putExtra("postUID", postUID);
-                startActivity(i);
-                finish();
+//                Intent i = new Intent(getApplicationContext(), CommentBox.class);
+//                i.putExtra("postUID", postUID);
+//                startActivity(i);
+//                finish();
             }
         });
 
