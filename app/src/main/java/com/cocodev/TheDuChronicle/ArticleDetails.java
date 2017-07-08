@@ -1,6 +1,7 @@
 package com.cocodev.TheDuChronicle;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import android.widget.Toast;
 
 import com.cocodev.TheDuChronicle.Utility.Article;
 import com.cocodev.TheDuChronicle.Utility.Comment;
-import com.cocodev.TheDuChronicle.Utility.RefListAdapter;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -32,17 +33,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.cocodev.TheDuChronicle.Utility.Utility.getTimeAgo;
+
+
 public class ArticleDetails extends AppCompatActivity{
     private int preLast = 0;
     private Article article;
     private String articleUid;
     public static final String key = "article";
-
+    private View emptyFooterView;
 
     ListView mListView;
     View mFooterView;
     private DatabaseReference mCommentRefrence;
-    private RefListAdapter<Comment> commentAdapter;
+    private FirebaseListAdapter<Comment> commentAdapter;
 
     Button toggleShowHideComments;
 
@@ -89,7 +93,7 @@ public class ArticleDetails extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 article = dataSnapshot.getValue(Article.class);
 
-                timeView.setText(article.getTime());
+                timeView.setText(getTimeAgo(ArticleDetails.this,article.getTime()));
                 titleView.setText(article.getTitle());
                 authorView.setText(article.getAuthor());
                 descriptionView.setText(article.getDescription());
@@ -102,11 +106,11 @@ public class ArticleDetails extends AppCompatActivity{
         });
 
         mCommentRefrence = FirebaseDatabase.getInstance().getReference().child("comments").child(articleUid);
-        commentAdapter = new RefListAdapter<Comment>(
+        commentAdapter = new FirebaseListAdapter<Comment>(
                 this,
                 Comment.class,
                 R.layout.comment_layout,
-                new DatabaseReference[] {mCommentRefrence}
+                mCommentRefrence
         ) {
             @Override
             protected void populateView(View v, Comment model, int position) {
@@ -121,44 +125,65 @@ public class ArticleDetails extends AppCompatActivity{
 
         };
 
-        mListView.setAdapter(null);
+        mListView.setAdapter(commentAdapter);
 
-        final FloatingActionButton postComment = (FloatingActionButton) headerView.findViewById(R.id.articleDetails_postComment);
+        final FloatingActionButton writeComment = (FloatingActionButton) headerView.findViewById(R.id.articleDetails_postComment);
         toggleShowHideComments = (Button) headerView.findViewById(R.id.articleDetails_toggleShowHideComments);
         final EditText comment = (EditText) headerView.findViewById(R.id.articleDetails_comment_EditText);
         final Button submitComment = (Button) headerView.findViewById(R.id.articleDetails_submitComment);
+        emptyFooterView = LayoutInflater.from(ArticleDetails.this).inflate(R.layout.empty_view,null);
+
         toggleShowHideComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(postComment.getVisibility()==View.GONE) {
-                    postComment.setVisibility(View.VISIBLE);
+
+                if(writeComment.getVisibility()==View.GONE) {
+                    writeComment.setVisibility(View.VISIBLE);
                     toggleShowHideComments.setText("Hide Comments");
                     mListView.setAdapter(commentAdapter);
 
+                    if(commentAdapter.getCount()==0){
+                        mListView.addFooterView(emptyFooterView);
+                    }
                 }else{
+
                     comment.setVisibility(View.GONE);
                     submitComment.setVisibility(View.GONE);
-                    postComment.setImageDrawable(ContextCompat.getDrawable(ArticleDetails.this,android.R.drawable.ic_menu_edit));
-                    postComment.setVisibility(View.GONE);
+                    writeComment.setImageDrawable(ContextCompat.getDrawable(ArticleDetails.this,android.R.drawable.ic_menu_edit));
+                    writeComment.setVisibility(View.GONE);
                     toggleShowHideComments.setText("Show Comments");
                     mListView.setAdapter(null);
-
+                    mListView.removeFooterView(emptyFooterView);
+                }
+            }
+        });
+        commentAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if(commentAdapter.getCount()==0){
+                   if(writeComment.getVisibility()==View.VISIBLE){
+                        mListView.addFooterView(emptyFooterView);
+                   }
+                }else{
+                    mListView.removeFooterView(emptyFooterView);
                 }
             }
         });
 
-        postComment.setOnClickListener(new View.OnClickListener() {
+        writeComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(comment.getVisibility()==View.GONE) {
                     comment.setVisibility(View.VISIBLE);
                     submitComment.setVisibility(View.VISIBLE);
-                    postComment.setImageDrawable(ContextCompat.getDrawable(ArticleDetails.this, android.R.drawable.ic_menu_close_clear_cancel));
+                    writeComment.setImageDrawable(ContextCompat.getDrawable(ArticleDetails.this, android.R.drawable.ic_menu_close_clear_cancel));
+
                 }else{
                     comment.setVisibility(View.GONE);
                     submitComment.setVisibility(View.GONE);
-                    postComment.setImageDrawable(ContextCompat.getDrawable(
+                    writeComment.setImageDrawable(ContextCompat.getDrawable(
                             ArticleDetails.this, android.R.drawable.ic_menu_edit));
 
                 }
@@ -193,7 +218,7 @@ public class ArticleDetails extends AppCompatActivity{
                         }
                     });
                     comment.setText("");
-                    postComment.callOnClick();
+                    writeComment.callOnClick();
                 }
 
             }
@@ -214,7 +239,7 @@ public class ArticleDetails extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        commentAdapter.cleanup();
     }
 
     @Override

@@ -8,7 +8,7 @@ public class Article  {
     private String UID;
     private String author;
     private String description;
-    private String time;
+    private long time;
     private String tagLine;
     private String imageUrl;
     private String title;
@@ -17,7 +17,7 @@ public class Article  {
         //default Constructor
     }
 
-    public Article(String author, String description, String time, String tagLine, String imageUrl,String title) {
+    public Article(String author, String description, long time, String tagLine, String imageUrl,String title) {
         this.author = author;
         this.description = description;
         this.time = time;
@@ -51,11 +51,11 @@ public class Article  {
         this.UID = UID;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String date) {
+    public void setTime(long date) {
         this.time = date;
     }
 

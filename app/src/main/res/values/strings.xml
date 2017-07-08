@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">DUplugIn</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,6 +48,9 @@
     <string name="home_share_title">home_share_title</string>
     <string name="dimen_padding_events">8dp</string>
     <string name="event_share_image">event_share_image</string>
+    <string name="today">Today</string>
+    <string name="format_full_friendly_date"><xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g></string>
+    <string name="tomorrow">Tomorrow</string>
 
 
 </resources>

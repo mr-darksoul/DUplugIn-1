@@ -15,6 +15,8 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import static com.cocodev.TheDuChronicle.Utility.Utility.getTimeAgo;
+
 
 public class Notices_ALL extends Fragment  {
 
@@ -66,8 +68,8 @@ public class Notices_ALL extends Fragment  {
                 final TextView deadline = (TextView) v.findViewById(R.id.notice_deadline);
 
                 description.setText(model.getDescription());
-                time.setText(model.getTime());
-                deadline.setText(model.getDeadline());
+                time.setText(getTimeAgo(getContext(),model.getTime()));
+                deadline.setText(getTimeAgo(getContext(),model.getDeadline()));
             }
 
 

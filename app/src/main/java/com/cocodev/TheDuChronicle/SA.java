@@ -178,11 +178,13 @@ public class SA extends AppCompatActivity {
                     editor.putBoolean(temp.getKey().toString(),true);
                     editor.commit();
                 }
-                aSwitch.setChecked(sharedPreferences.getBoolean(temp.getKey().toString(),true));
-                aSwitch.setText(temp.getKey());
-                aSwitch.setTextColor(Color.BLACK);
-                aSwitch.setOnCheckedChangeListener(hpOnCheckedChangeListener);
-                linearLayout.addView(aSwitch);
+                if(!temp.getKey().equals(sharedPreferences.getString(KEY_DEPARTMENT,""))) {
+                    aSwitch.setChecked(sharedPreferences.getBoolean(temp.getKey().toString(), true));
+                    aSwitch.setText(temp.getKey());
+                    aSwitch.setTextColor(Color.BLACK);
+                    aSwitch.setOnCheckedChangeListener(hpOnCheckedChangeListener);
+                    linearLayout.addView(aSwitch);
+                }
             }
         }
         @Override

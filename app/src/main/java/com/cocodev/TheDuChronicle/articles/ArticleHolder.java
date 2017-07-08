@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.cocodev.TheDuChronicle.Utility.Utility.formatDate;
+
 
 public class ArticleHolder extends Fragment implements AbsListView.OnScrollListener {
 
@@ -117,7 +119,7 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                             if (viewHolder.authorView != null) {
                                 viewHolder.authorView.setText(article.getAuthor());
                             }
-                            viewHolder.timeView.setText(article.getTime());
+                            viewHolder.timeView.setText(formatDate(article.getTime()));
                             viewHolder.titleView.setText(article.getTitle());
                             viewHolder.UID.setText(article.getUID());
                         }
@@ -146,7 +148,7 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                         viewHolder.authorView.setText(model.getAuthor());
                     }
                     viewHolder.titleView.setText(model.getTitle());
-                    viewHolder.timeView.setText(model.getTime());
+                    viewHolder.timeView.setText(formatDate(model.getTime()));
                     viewHolder.UID.setText(model.getUID());
 
                 }
@@ -246,7 +248,7 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                 }
                 preLast = lastItem;
                 //to avoid multiple calls for last item
-                mAdapter.populateMoreList(mListView,mFooterView);
+                //mAdapter.populateMoreList(mListView,mFooterView);
             }
         }
 

@@ -30,6 +30,7 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
     private ListView mListView;
     private View mFooterView;
     private int resource;
+
     public RefListAdapter(@NonNull Context context,Class<T> modelclass, @LayoutRes int resource,DatabaseReference[] db) {
         super(context, resource);
         this.db=db;
@@ -45,7 +46,6 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
         for (DatabaseReference databaseReference:db
              ) {
             databaseReference.addChildEventListener(childEventListener);
-
         }
 
     }
@@ -58,7 +58,7 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
                 if(!lastArticle.equals(dataSnapshot.getKey())) {
                     lastArticle = dataSnapshot.getKey();
                     T t = dataSnapshot.getValue(modelclass);
-                    add(t);
+                    insert(t,0);
                 }
             }
 
@@ -68,12 +68,14 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
                 int position = getPosition(t);
                 remove(t);
                 insert(t,position);
+                notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 T t = dataSnapshot.getValue(modelclass);
                 remove(t);
+                notifyDataSetChanged();
             }
 
             @Override
@@ -113,7 +115,7 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
     public void populateMoreList(final ListView listView,final View view){
         for (DatabaseReference databaseReference : db
                 ) {
-            databaseReference.startAt(null, lastArticle).limitToFirst(limit).addChildEventListener(childEventListener);
+            databaseReference.startAt(lastArticle).limitToLast(limit).addChildEventListener(childEventListener);
         }
     }
 

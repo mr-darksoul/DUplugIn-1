@@ -5,26 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="6dp">
 
-    <TextView
-        android:id="@+id/articleDetails_emptyView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="There are no comments on this article."
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:visibility="gone" />
-    <ListView
 
+    <ListView
         android:id="@+id/articleComment_listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
-
-    </ListView>
+        android:layout_margin="8dp"
+        />
 
 
 

@@ -8,15 +8,15 @@ public class Notice {
 
     private String UID;
     private String department;
-    private String time;
-    private String deadline;
+    private long time;
+    private long deadline;
     private String description;
 
     public Notice(){
         //default constructor
     }
 
-    public Notice(String department, String time, String deadline, String description) {
+    public Notice(String department, long time, long deadline, String description) {
         this.department = department;
         this.time = time;
         this.deadline = deadline;
@@ -31,19 +31,19 @@ public class Notice {
         this.department = department;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
-    public String getDeadline() {
+    public long getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(long deadline) {
         this.deadline = deadline;
     }
 

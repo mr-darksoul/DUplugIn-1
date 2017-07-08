@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -81,7 +82,7 @@ public class Home extends Fragment {
                 Article event = new Article(
                         "Author",
                         "Here starts the description",
-                        "20 min ago",
+                        System.currentTimeMillis(),
                         "tagline",
                         "null",
                         "This is the Title"
@@ -98,21 +99,27 @@ public class Home extends Fragment {
     private void initViewPager(View view, Bundle savedInstanceState) {
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager_home);
-        List<ArticleHolder> listFragmetns = new ArrayList<ArticleHolder>();
-        listFragmetns.add(ArticleHolder.newInstance(ArticleHolder.TYPE_HOME));
+        List<ArticleHolder> listFragments = new ArrayList<ArticleHolder>();
+        listFragments.add(ArticleHolder.newInstance(ArticleHolder.TYPE_HOME));
+        String department = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_DEPARTMENT,null);
+
+        if(department!=null) {
+            listFragments.add(ArticleHolder.newInstance(department));
+        }
+
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SA.fileName_HP, Context.MODE_PRIVATE);
         if(sharedPreferences!=null){
             Map<String ,?> map = sharedPreferences.getAll();
             for(Map.Entry<String,?>entry:map.entrySet()){
                 if(entry.getValue().toString().equals("true")){
-                    listFragmetns.add(ArticleHolder.newInstance(entry.getKey()));
+                    listFragments.add(ArticleHolder.newInstance(entry.getKey()));
                 }
             }
         }
 
 
 
-         fragmentPageAdapter = new MyFragmentArticlePageAdapter(getFragmentManager(),listFragmetns);
+         fragmentPageAdapter = new MyFragmentArticlePageAdapter(getFragmentManager(),listFragments);
 
         viewPager.setAdapter(fragmentPageAdapter);
         viewPager.setOffscreenPageLimit(3);

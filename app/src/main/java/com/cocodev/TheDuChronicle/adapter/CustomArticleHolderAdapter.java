@@ -45,9 +45,8 @@ public abstract class CustomArticleHolderAdapter<T> extends RefListAdapter<T> {
         return view;
     }
 
-
-    protected abstract void populateView(View v, T model, int position);
-
+    @Override
+    abstract protected void populateView(View v, T model, int position);
 
     public static class ViewHolder {
 

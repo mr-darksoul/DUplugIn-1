@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.cocodev.TheDuChronicle.Utility.Utility.getTimeAgo;
+
 
 public class Notices extends Fragment  {
 
@@ -82,8 +84,8 @@ public class Notices extends Fragment  {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Notice notice = dataSnapshot.getValue(Notice.class);
-                        deadline.setText(notice.getDeadline());
-                        time.setText(notice.getTime());
+                        deadline.setText(getTimeAgo(getContext(),notice.getDeadline()));
+                        time.setText(getTimeAgo(getContext(),notice.getTime()));
                         description.setText(notice.getDescription());
                     }
 

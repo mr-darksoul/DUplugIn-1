@@ -18,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
             public void run()
             {
                 try {
-                    sleep(3000);
+                    sleep(2000);
                     //Check if application is launching first time or not
                     //If it is First Time Launch Show IntroSlider
                     if (session.isFirstTimeLaunch()) {
