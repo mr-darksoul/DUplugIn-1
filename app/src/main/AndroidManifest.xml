@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cocodev.TheDuChronicle">
+    package="com.cocodev.duplugin">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.cocodev.duplugin.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashScreen"
+            android:name="com.cocodev.duplugin.SplashScreen"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
@@ -24,24 +24,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.cocodev.duplugin.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ArticleDetails" />
+        <activity android:name="com.cocodev.duplugin.ArticleDetails" />
         <activity
-            android:name=".SA"
+            android:name="com.cocodev.duplugin.SA"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.cocodev.TheDuChronicle.MainActivity" />
+                android:value="com.cocodev.duplugin.MainActivity" />
         </activity>
 
         <activity
-            android:name=".IntroSlider"
+            android:name="com.cocodev.duplugin.IntroSlider"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".events_details">
+        <activity android:name="com.cocodev.duplugin.events_details">
 
         </activity>
     </application>

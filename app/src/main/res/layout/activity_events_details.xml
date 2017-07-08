@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context="com.cocodev.TheDuChronicle.Event_details">
+        tools:context="com.cocodev.duplugin.Event_details">
 
         <ImageView
             android:id="@+id/event_image"
@@ -23,18 +23,20 @@
             android:id="@+id/event_detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:padding="8dp"
-            android:textStyle="bold"
-            android:background="@drawable/rectangle_background"
+            android:textColor="@color/black"
             android:textSize="24sp"
-            tools:text="Wetland Pool Party Festival"
-            />
+            tools:text="Wetland Pool Party Festival" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"/>
         <TextView
             android:id="@+id/event_detail_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/calendar"
-            android:background="@drawable/rectangle_grey_backgroud"
             tools:text="Sun,2 Jul at 2PM"
             android:paddingTop="16dp"
             android:paddingLeft="8dp"
@@ -42,27 +44,37 @@
             android:textSize="16sp"
             android:drawablePadding="8dp"
             />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"/>
         <TextView
             android:id="@+id/event_detail_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_grey_backgroud"
             tools:text="The Royal Plaza"
             android:paddingTop="16dp"
             android:paddingStart="8dp"
+            android:layout_marginLeft="8dp"
             android:drawableStart="@mipmap/place"
             android:paddingBottom="16dp"
             android:textSize="18sp"
             android:drawablePadding="8dp"
             />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"/>
+
         <TextView
             android:id="@+id/event_detail_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textSize="18sp"
             android:text="Description Starts from here"
-            />
+            android:textColor="?android:attr/panelColorForeground"
+            android:textSize="18sp" />
 
 
     </LinearLayout>

@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/placeholder"
         android:transitionName="shareImage"
+
         />
 
 
@@ -57,8 +57,9 @@
         android:layout_alignStart="@+id/article_title"
         android:layout_below="@+id/article_title"
         android:layout_marginTop="7dp"
-        android:text="DUChronicle"
-        android:textSize="12sp" />
+        android:text="DU plugIn"
+        android:textSize="12sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/article_time"
@@ -67,7 +68,8 @@
         android:layout_alignStart="@+id/textView3"
         android:layout_below="@+id/textView3"
         android:text="20 min ago"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"/>
 
     <TextView
         android:id="@+id/article_author"
@@ -77,7 +79,9 @@
         android:layout_alignBottom="@+id/textView3"
         android:layout_alignEnd="@+id/shareArticle"
         android:text="Nupur Joshi"
-        android:textSize="12sp" />
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/article_UID"

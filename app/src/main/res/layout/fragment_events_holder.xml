@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.cocodev.TheDuChronicle.EH.EventsHolder"
+    tools:context="com.cocodev.duplugin.EH.EventsHolder"
     android:background="@android:color/white">
 
     <TextView
