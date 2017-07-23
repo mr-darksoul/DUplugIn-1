@@ -38,6 +38,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/SettingsActivity_child_default_left_margin" />
 
+        <Switch
+            android:id="@+id/switch_notify_SA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="4dp"
+            android:padding="8dp"
+            android:text="Notifications"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
         <TextView
             android:id="@+id/title_homePreferences"
             android:layout_width="match_parent"

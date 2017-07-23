@@ -3,6 +3,7 @@ package com.cocodev.duplugin.EH;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -17,17 +18,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cocodev.duplugin.R;
+import com.cocodev.duplugin.SA;
 import com.cocodev.duplugin.Utility.Event;
+import com.cocodev.duplugin.Utility.RefListAdapterQuery;
 import com.cocodev.duplugin.events_details;
-import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import static com.cocodev.duplugin.Utility.Utility.formatDate;
+import static com.cocodev.duplugin.Utility.Utility.getTimeAgo;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,8 +45,8 @@ public class EventsHolder extends Fragment {
     private ListView mListView;
     private View view;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
-    private FirebaseListAdapter mAdapter;
+    private Query databaseReference;
+    private RefListAdapterQuery mAdapter;
 
     public EventsHolder() {
         // Required empty public constructor
@@ -65,7 +69,9 @@ public class EventsHolder extends Fragment {
                     .child("Categories").child("Events").child(getTypeString());
         }else{
             databaseReference = firebaseDatabase.getReference()
-                    .child("Events");
+                    .child("Events")
+            .orderByChild("date")
+            .startAt(System.currentTimeMillis());
         }
 
 
@@ -78,13 +84,93 @@ public class EventsHolder extends Fragment {
         view= inflater.inflate(R.layout.fragment_events_holder, container, false);
 
         if(typeString!=TYPE_HOME) {
-            mAdapter = new FirebaseListAdapter<String>(
+            DatabaseReference temp =   FirebaseDatabase.getInstance().getReference().child("College Content")
+                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                    .child("Categories")
+                    .child("Events")
+                    .child(getTypeString());
+            temp.keepSynced(true);
+            mAdapter = new RefListAdapterQuery<String>(
                     getActivity(),
                     String.class,
                     R.layout.events_adapter,
-                    databaseReference
+                    new Query[]{databaseReference
+                    , temp}
             ) {
+                @Override
+                public void setChildEventListener() {
+                    this.childEventListener = new ChildEventListener() {
 
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                    if(!lastArticle.equals(dataSnapshot.getKey())) {
+//                    lastArticle = dataSnapshot.getKey();
+                            final String t = dataSnapshot.getValue(String.class);
+                            DatabaseReference dbref = firebaseDatabase.getReference().child("Events")
+                                    .child(t);
+                            dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Event event = dataSnapshot.getValue(Event.class);
+                                    if(event.getDate()<System.currentTimeMillis())
+                                        return;
+                                    insert(t,0);
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
+                                }
+                            });
+
+                            //}
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            final String t = dataSnapshot.getValue(String.class);
+                            final int position = getPosition(t);
+                            remove(t);
+                            DatabaseReference dbref = firebaseDatabase.getReference().child("Events")
+                                    .child(t);
+                            dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Event event = dataSnapshot.getValue(Event.class);
+                                    if(event.getDate()<System.currentTimeMillis())
+                                        return;
+                                    insert(t,position);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
+                                }
+                            });
+
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            String t = dataSnapshot.getValue(String.class);
+                            remove(t);
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            //do Nothing
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            //error in connection
+                        }
+
+                    };
+                }
                 @Override
                 protected void populateView(View v, String model, int position) {
                     final TextView title = (TextView) v.findViewById(R.id.event_title);
@@ -94,16 +180,24 @@ public class EventsHolder extends Fragment {
                     final ImageView imageView = (ImageView) v.findViewById(R.id.event_image);
                     DatabaseReference dbref = firebaseDatabase.getReference().child("Events")
                             .child(model);
-                    dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    DatabaseReference dbref2 = firebaseDatabase.getReference()
+                            .child("College Content")
+                            .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                            .child("Events")
+                            .child(model);
+                    dbref2.keepSynced(true);
+                    ValueEventListener valueEventListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Event event = dataSnapshot.getValue(Event.class);
-                            time.setText(formatDate(event.getTime()));
+                            time.setText(getTimeAgo(getContext(),event.getDate()));
                             venue.setText(event.getVenue());
                             title.setText(event.getTitle());
                             UID.setText(event.getUID());
-                            Picasso.with(getContext()).load(event.getUrl()).placeholder(R.drawable.event_place_holder)
-                                    .fit().centerCrop().into(imageView);
+                            if(!event.getUrl().equals("")) {
+                                Picasso.with(getContext()).load(event.getUrl()).placeholder(R.drawable.event_place_holder)
+                                        .fit().centerCrop().into(imageView);
+                            }
 
                         }
 
@@ -111,31 +205,37 @@ public class EventsHolder extends Fragment {
                         public void onCancelled(DatabaseError databaseError) {
                             Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
                         }
-                    });
+                    };
+                    dbref.addListenerForSingleValueEvent(valueEventListener);
+                    dbref2.addValueEventListener(valueEventListener);
                 }
             };
         }else{
-            mAdapter = new FirebaseListAdapter<Event>(
+            mAdapter = new RefListAdapterQuery<Event>(
                     getActivity(),
                     Event.class,
                     R.layout.events_adapter,
-                    databaseReference
+                    new Query[]{databaseReference}
             ) {
+
 
                 @Override
                 protected void populateView(View v, Event event, int position) {
-                     TextView title = (TextView) v.findViewById(R.id.event_title);
-                     TextView venue = (TextView) v.findViewById(R.id.event_venue);
-                     TextView time  = (TextView) v.findViewById(R.id.event_time);
-                     TextView UID  = (TextView) v.findViewById(R.id.event_UID);
-                     ImageView imageView = (ImageView) v.findViewById(R.id.event_image);
-                    time.setText(formatDate(event.getTime()));
+                    TextView title = (TextView) v.findViewById(R.id.event_title);
+                    TextView venue = (TextView) v.findViewById(R.id.event_venue);
+                    TextView time = (TextView) v.findViewById(R.id.event_time);
+                    TextView UID = (TextView) v.findViewById(R.id.event_UID);
+                    ImageView imageView = (ImageView) v.findViewById(R.id.event_image);
+                    time.setText(getTimeAgo(getContext(),event.getDate()));
                     venue.setText(event.getVenue());
                     title.setText(event.getTitle());
                     UID.setText(event.getUID());
 
-                    Picasso.with(getContext()).load(event.getUrl()).placeholder(R.drawable.event_place_holder)
-                            .fit().centerCrop().into(imageView);
+                    if (!event.getUrl().equals("")){
+                        Picasso.with(getContext()).load(event.getUrl()).placeholder(R.drawable.event_place_holder)
+                                .fit().centerCrop().into(imageView);
+                    }
+
                 }
             };
         }
@@ -185,7 +285,7 @@ public class EventsHolder extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mListView = null;
-        mAdapter.cleanup();
+        mAdapter.removeListener();
         databaseReference =null;
     }
 }

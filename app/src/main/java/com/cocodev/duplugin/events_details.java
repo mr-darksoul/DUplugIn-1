@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -49,23 +50,34 @@ public class events_details extends AppCompatActivity {
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Events")
                 .child(Uid);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference()
+                .child("College Content")
+                .child(PreferenceManager.getDefaultSharedPreferences(events_details.this).getString(SA.KEY_COLLEGE,null))
+                .child("Events")
+                .child(Uid);
+        reference2.keepSynced(true);
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Event event = dataSnapshot.getValue(Event.class);
-
-                timeView.setText(getTimeAgo(events_details.this,event.getTime()));
+                if(event==null)
+                    return;
+                timeView.setText(getTimeAgo(events_details.this,event.getDate()));
                 titleView.setText(event.getTitle());
                 eventPlace.setText(event.getVenue());
                 descriptionView.setText(Html.fromHtml(event.getDescription()));
-                Picasso.with(events_details.this).load(event.getUrl()).placeholder(R.drawable.event_place_holder).fit().centerInside().into(imageView);
+                if(!event.getUrl().equals("")) {
+                    Picasso.with(events_details.this).load(event.getUrl()).placeholder(R.drawable.event_place_holder).fit().centerInside().into(imageView);
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //
+
             }
-        });
+        };
+        reference.addListenerForSingleValueEvent(valueEventListener);
+        reference2.addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,9 +30,12 @@ public class SA extends AppCompatActivity {
 
     public static final String KEY_COLLEGE    = "com.cocodev.myapplication.collegechoices";
     public static final String KEY_DEPARTMENT = "com.cocodev.myapplication.departmentchoices";
+    public static final String KEY_NOTIFY = "com.cocodev.myapplication.notify";
     public static final String fileName_HP    = "com.cocodev.myapplication.homepreferences";
     public static final String fileName_EP    = "com.cocodev.myapplication.eventpreferences";
-
+     Spinner collegeChoices ;
+     Spinner departmentChoices;
+    Switch notify;
     //if College or Department has changed
     private boolean RELOAD_PARENT_ACTIVITY = false;
 
@@ -39,21 +43,40 @@ public class SA extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sa);
-        DatabaseReference hpDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Categories").child("Articles");
+        DatabaseReference hpDatabaseReference = FirebaseDatabase.getInstance().getReference().child("CategoryList").child("Articles");
         hpDatabaseReference.addListenerForSingleValueEvent(hpValueEventListener);
-        DatabaseReference epDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Categories").child("Events");
+        DatabaseReference epDatabaseReference = FirebaseDatabase.getInstance().getReference().child("CategoryList").child("Events");
         epDatabaseReference.addListenerForSingleValueEvent(epValueEventListener);
-
+        collegeChoices = (Spinner) findViewById(R.id.spinner_college);
+        departmentChoices = (Spinner) findViewById(R.id.spinner_course);
+        notify = (Switch) findViewById(R.id.switch_notify_SA);
+        initNotify();
         initCollegeSpinner();
-        initDepartmentSpinner();
 
     }
 
+    private void initNotify() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean checked = sharedPref.getBoolean(KEY_NOTIFY,true);
+        notify.setChecked(checked);
+        notify.setOnCheckedChangeListener(notifyChangedListener);
+    }
+    CompoundButton.OnCheckedChangeListener notifyChangedListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(SA.this);
+            sharedPref.edit().putBoolean(KEY_NOTIFY,isChecked).commit();
+            notify.setChecked(isChecked);
+        }
+    };
     private void initDepartmentSpinner() {
-        final Spinner departmentChoices = (Spinner) findViewById(R.id.spinner_course);
+
         final ArrayList<String> departments =new ArrayList<String>();
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,departments);
-        DatabaseReference collegesDR = FirebaseDatabase.getInstance().getReference().child("Colleges").child("Keshav Mahavidyalya");
+        Log.e("tag",(String)collegeChoices.getSelectedItem());
+        if(collegeChoices.getSelectedItem()==null)
+            return;
+        DatabaseReference collegesDR = FirebaseDatabase.getInstance().getReference().child("CollegeList").child((String)collegeChoices.getSelectedItem());
         SharedPreferences sharedpref = PreferenceManager.getDefaultSharedPreferences(SA.this);
         final String selection = sharedpref.getString(KEY_DEPARTMENT,"");
         collegesDR.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -87,10 +110,10 @@ public class SA extends AppCompatActivity {
     }
 
     private void initCollegeSpinner() {
-        final Spinner collegeChoices = (Spinner) findViewById(R.id.spinner_college);
+
         final ArrayList<String> colleges =new ArrayList<String>();
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,colleges);
-        DatabaseReference collegesDR = FirebaseDatabase.getInstance().getReference().child("Colleges");
+        DatabaseReference collegesDR = FirebaseDatabase.getInstance().getReference().child("CollegeList");
 
         SharedPreferences sharedpref = PreferenceManager.getDefaultSharedPreferences(SA.this);
         final String selection = sharedpref.getString(KEY_COLLEGE,"");
@@ -110,6 +133,7 @@ public class SA extends AppCompatActivity {
 
                     if(department.equals(selection)){
                         collegeChoices.setSelection(arrayAdapter.getPosition(department));
+                        initDepartmentSpinner();
                     }
 
                 }
@@ -258,7 +282,7 @@ public class SA extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(RELOAD_PARENT_ACTIVITY){
+        if(RELOAD_PARENT_ACTIVITY || isTaskRoot()){
             RELOAD_PARENT_ACTIVITY=false;
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);

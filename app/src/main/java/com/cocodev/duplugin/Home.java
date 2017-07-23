@@ -18,7 +18,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.cocodev.duplugin.Utility.Article;
 import com.cocodev.duplugin.adapter.MyFragmentArticlePageAdapter;
 import com.cocodev.duplugin.articles.ArticleHolder;
 import com.google.firebase.database.DatabaseReference;
@@ -74,22 +76,25 @@ public class Home extends Fragment {
         initViewPager(view,savedInstanceState);
         FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addArticles);
 
-//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Event event = new Event(
-//                        "Venue",
-//                        System.currentTimeMillis(),
-//                        "description",
-//                        "null",
-//                        "This is the Title"
-//                );
-//                event.setUID(databaseReference.push().getKey());
-//                databaseReference.child("Categories").child("Events").child("Workshops").child(event.getUID()).setValue(event.getUID());
-//                databaseReference.child("Events").child(event.getUID()).setValue(event);
-//                Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
+
+      floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Article article = new Article(
+                        "Author",
+                        "description",
+                        System.currentTimeMillis(),
+                        "tagLine",
+                        "null",
+                        "This is the Title"
+                );
+                article.setUID(databaseReference.push().getKey());
+                databaseReference.child("Categories").child("Articles").child("Workshops").child(article.getUID()).setValue(article.getUID());
+                databaseReference.child("Articles").child(article.getUID()).setValue(article);
+                Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
@@ -99,11 +104,22 @@ public class Home extends Fragment {
         List<ArticleHolder> listFragments = new ArrayList<ArticleHolder>();
         listFragments.add(ArticleHolder.newInstance(ArticleHolder.TYPE_HOME));
         String department = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_DEPARTMENT,null);
+        String college = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null);
+        if(!(college==null || department==null)) {
+            DatabaseReference dr[] = new DatabaseReference[]{
+                    FirebaseDatabase.getInstance().getReference().child("Categories")
+                            .child("Articles")
+                            .child(department),
+                    FirebaseDatabase.getInstance().getReference().child("College Content")
+                            .child(college)
+                            .child("Department")
+                            .child(department)
 
-        if(department!=null) {
-            listFragments.add(ArticleHolder.newInstance(department));
+            };
+            if (department != null) {
+                listFragments.add(ArticleHolder.newInstance(department, dr));
+            }
         }
-
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SA.fileName_HP, Context.MODE_PRIVATE);
         if(sharedPreferences!=null){
             Map<String ,?> map = sharedPreferences.getAll();

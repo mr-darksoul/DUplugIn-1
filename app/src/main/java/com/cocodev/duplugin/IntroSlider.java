@@ -44,7 +44,7 @@ public class IntroSlider extends AppCompatActivity {
                 R.layout.activity_screen_1,
                 R.layout.activity_screen_2,
                 R.layout.activity_screen_3,
-                R.layout.activity_screen_4};
+        };
 
         // adding bottom dots
         addBottomDots(0);
@@ -105,7 +105,7 @@ public class IntroSlider extends AppCompatActivity {
 
     private void launchHomeScreen() {
         // session.setFirstTimeLaunch(false);
-        startActivity(new Intent(IntroSlider.this, MainActivity.class));
+        startActivity(new Intent(IntroSlider.this, SA.class));
         finish();
     }
 

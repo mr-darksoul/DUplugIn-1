@@ -127,7 +127,7 @@ public class Utility {
             return getDayName(context, dateInMillis);
         } else {
             // Otherwise, use the form "Mon Jun 3"
-            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
+            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat(" MMM d, EEE"+"\n"+" h:mm a");
             return shortenedDateFormat.format(dateInMillis);
         }
 

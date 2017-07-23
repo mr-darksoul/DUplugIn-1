@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -90,14 +91,21 @@ public class ArticleDetails extends AppCompatActivity{
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Articles")
                 .child(UID);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference()
+                .child("College Content")
+                .child(PreferenceManager.getDefaultSharedPreferences(this).getString(SA.KEY_COLLEGE,null))
+                .child("Articles")
+                .child(UID);
+        reference2.keepSynced(true);
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 article = dataSnapshot.getValue(Article.class);
-
+                if(article==null)
+                    return;
                 timeView.setText(getTimeAgo(ArticleDetails.this,article.getTime()));
-                titleView.setText(article.getTitle());
-                authorView.setText(article.getAuthor());
+                titleView.setText(Html.fromHtml(article.getTitle()));
+                authorView.setText(Html.fromHtml(article.getAuthor()));
                 descriptionView.setText(Html.fromHtml(article.getDescription()));
                 Picasso.with(ArticleDetails.this).load(article.getImageUrl()).placeholder(R.drawable.placeholder).fit().centerInside().into(imageView);
             }
@@ -106,7 +114,9 @@ public class ArticleDetails extends AppCompatActivity{
             public void onCancelled(DatabaseError databaseError) {
                 //
             }
-        });
+        };
+        reference.addListenerForSingleValueEvent(valueEventListener);
+        reference2.addListenerForSingleValueEvent(valueEventListener);
 
         mCommentRefrence = FirebaseDatabase.getInstance().getReference().child("comments").child(articleUid);
         commentAdapter = new FirebaseListAdapter<Comment>(
@@ -128,7 +138,7 @@ public class ArticleDetails extends AppCompatActivity{
 
         };
 
-        mListView.setAdapter(commentAdapter);
+        mListView.setAdapter(null);
 
         final FloatingActionButton writeComment = (FloatingActionButton) headerView.findViewById(R.id.articleDetails_postComment);
         toggleShowHideComments = (Button) headerView.findViewById(R.id.articleDetails_toggleShowHideComments);
@@ -136,30 +146,30 @@ public class ArticleDetails extends AppCompatActivity{
         final Button submitComment = (Button) headerView.findViewById(R.id.articleDetails_submitComment);
         emptyFooterView = LayoutInflater.from(ArticleDetails.this).inflate(R.layout.empty_view,null);
 
-        toggleShowHideComments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(writeComment.getVisibility()==View.GONE) {
-                    writeComment.setVisibility(View.VISIBLE);
-                    toggleShowHideComments.setText("Hide Comments");
-                    mListView.setAdapter(commentAdapter);
-
-                    if(commentAdapter.getCount()==0){
-                        mListView.addFooterView(emptyFooterView);
-                    }
-                }else{
-
-                    comment.setVisibility(View.GONE);
-                    submitComment.setVisibility(View.GONE);
-                    writeComment.setImageDrawable(ContextCompat.getDrawable(ArticleDetails.this,android.R.drawable.ic_menu_edit));
-                    writeComment.setVisibility(View.GONE);
-                    toggleShowHideComments.setText("Show Comments");
-                    mListView.setAdapter(null);
-                    mListView.removeFooterView(emptyFooterView);
-                }
-            }
-        });
+//        toggleShowHideComments.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if(writeComment.getVisibility()==View.GONE) {
+//                    writeComment.setVisibility(View.VISIBLE);
+//                    toggleShowHideComments.setText("Hide Comments");
+//                    mListView.setAdapter(commentAdapter);
+//
+//                    if(commentAdapter.getCount()==0){
+//                        mListView.addFooterView(emptyFooterView);
+//                    }
+//                }else{
+//
+//                    comment.setVisibility(View.GONE);
+//                    submitComment.setVisibility(View.GONE);
+//                    writeComment.setImageDrawable(ContextCompat.getDrawable(ArticleDetails.this,android.R.drawable.ic_menu_edit));
+//                    writeComment.setVisibility(View.GONE);
+//                    toggleShowHideComments.setText("Show Comments");
+//                    mListView.setAdapter(null);
+//                    mListView.removeFooterView(emptyFooterView);
+//                }
+//            }
+//        });
         commentAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
@@ -247,6 +257,10 @@ public class ArticleDetails extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
+        if(isTaskRoot()){
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        }
         finish();
     }
 

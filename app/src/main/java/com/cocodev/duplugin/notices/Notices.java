@@ -1,9 +1,10 @@
 package com.cocodev.duplugin.notices;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cocodev.duplugin.R;
+import com.cocodev.duplugin.SA;
 import com.cocodev.duplugin.Utility.Notice;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
+import com.cocodev.duplugin.Utility.RefListAdapterQuery;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.Query;
 
 import static com.cocodev.duplugin.Utility.Utility.getTimeAgo;
 
@@ -40,8 +39,8 @@ public class Notices extends Fragment  {
         return n;
     }
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference reference;
-    FirebaseListAdapter mAdapter;
+    Query reference;
+    RefListAdapterQuery mAdapter;
 
 
 
@@ -63,40 +62,35 @@ public class Notices extends Fragment  {
         textView.setText("There are currently no Notices under this Category.");
         mListView = (ListView) mView.findViewById(R.id.list_notices);
         mListView.setEmptyView(textView);
-        reference = firebaseDatabase.getReference().child("Categories").child("Notices")
-                .child(getTypeString());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String college = sharedPreferences.getString(SA.KEY_COLLEGE,null);
+        if(college!=null) {
+            reference = firebaseDatabase.getReference().child("College Content")
+                    .child(college)
+                    .child("Notices")
+                    .orderByChild("deadline")
+                    .startAt(System.currentTimeMillis());
 
-        mAdapter = new FirebaseListAdapter<String>(
-                getActivity(),
-                String.class,
-                R.layout.adapter_notice,
-                reference
-        ) {
-            @Override
-            protected void populateView(View v, String model, int position) {
-                final TextView description = (TextView) v.findViewById(R.id.notice_description);
-                final TextView time = (TextView) v.findViewById(R.id.notice_time);
-                final TextView deadline = (TextView) v.findViewById(R.id.notice_deadline);
+            mAdapter = new RefListAdapterQuery<Notice>(
+                    getActivity(),
+                    Notice.class,
+                    R.layout.adapter_notice,
+                    new Query[]{reference}
+            ) {
+                @Override
+                protected void populateView(View v, Notice model, int position) {
+                    final TextView description = (TextView) v.findViewById(R.id.notice_description);
+                    final TextView time = (TextView) v.findViewById(R.id.notice_time);
+                    final TextView deadline = (TextView) v.findViewById(R.id.notice_deadline);
+                    deadline.setText(getTimeAgo(getContext(), model.getDeadline()));
+                    time.setText(getTimeAgo(getContext(), model.getTime()));
+                    description.setText(model.getDescription());
 
-                DatabaseReference dbref = firebaseDatabase.getReference().child("Notices")
-                        .child(model);
-                dbref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Notice notice = dataSnapshot.getValue(Notice.class);
-                        deadline.setText(getTimeAgo(getContext(),notice.getDeadline()));
-                        time.setText(getTimeAgo(getContext(),notice.getTime()));
-                        description.setText(notice.getDescription());
-                    }
+                }
+            };
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
-                    }
-                });
-            }
-        };
-        mListView.setAdapter(mAdapter);
+            mListView.setAdapter(mAdapter);
+        }
         return mView;
 
     }
@@ -131,7 +125,7 @@ public class Notices extends Fragment  {
     public void onDestroyView() {
         super.onDestroyView();
         if(mAdapter!=null) {
-            mAdapter.cleanup();
+            mAdapter.removeListener();
         }
     }
 }

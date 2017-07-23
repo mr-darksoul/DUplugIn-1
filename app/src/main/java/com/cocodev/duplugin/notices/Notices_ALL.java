@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.cocodev.duplugin.R;
 import com.cocodev.duplugin.Utility.Notice;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.database.DatabaseReference;
+import com.cocodev.duplugin.Utility.RefListAdapterQuery;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import static com.cocodev.duplugin.Utility.Utility.getTimeAgo;
 
@@ -29,18 +29,21 @@ public class Notices_ALL extends Fragment  {
 
 
     public Notices_ALL() {
-        setTypeString(Notices.TYPE_HOME);
+        setTypeString("University");
     }
 
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference reference;
-    FirebaseListAdapter mAdapter;
+    Query reference;
+    RefListAdapterQuery mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseDatabase = FirebaseDatabase.getInstance();
-        reference = firebaseDatabase.getReference().child("Notices");
+        reference = firebaseDatabase.getReference()
+                .child("Notices")
+                .orderByChild("deadline")
+                .startAt(System.currentTimeMillis());
 
     }
 
@@ -54,11 +57,11 @@ public class Notices_ALL extends Fragment  {
         TextView textView = (TextView) mView.findViewById(R.id.notices_emptyView);
         textView.setText("There are currently no Notices under this Category.");
         mListView.setEmptyView(textView);
-        mAdapter = new FirebaseListAdapter<Notice>(
+        mAdapter = new RefListAdapterQuery<Notice>(
                 getActivity(),
                 Notice.class,
                 R.layout.adapter_notice,
-                reference
+                new Query[]{reference}
         ) {
 
             @Override
@@ -106,6 +109,6 @@ public class Notices_ALL extends Fragment  {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mAdapter.cleanup();
+        mAdapter.removeListener();
     }
 }

@@ -3,10 +3,12 @@ package com.cocodev.duplugin.articles;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.cocodev.duplugin.ArticleDetails;
 import com.cocodev.duplugin.R;
+import com.cocodev.duplugin.SA;
 import com.cocodev.duplugin.Utility.Article;
 import com.cocodev.duplugin.adapter.CustomArticleHolderAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -45,10 +48,17 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
     public ArticleHolder(){}
     ListView mListView;
     View mFooterView;
+    DatabaseReference[] databaseReferences;
 
     public static ArticleHolder newInstance(String type){
         ArticleHolder a = new ArticleHolder();
         a.typeString = type;
+        return  a;
+    }
+    public static ArticleHolder newInstance(String type,DatabaseReference[] databaseReferences){
+        ArticleHolder a = new ArticleHolder();
+        a.typeString = type;
+        a.databaseReferences=databaseReferences;
         return  a;
     }
 
@@ -60,6 +70,8 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
             typeString = savedInstanceState.getString(key);
         }
         firebaseDatabase = FirebaseDatabase.getInstance();
+        if(databaseReferences!=null)
+            return;
         if(!typeString.equals(TYPE_HOME)) {
             databaseReference = firebaseDatabase.getReference()
                     .child("Categories").child("Articles").child(getTypeString());
@@ -95,13 +107,12 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
         textView.setText("There are currently no articles under this Category.");
         mListView.setEmptyView(textView);
 
-        //if this is the home page else ...
-        if(!typeString.equals(TYPE_HOME)){
+        if(databaseReferences!=null){
             mAdapter = new CustomArticleHolderAdapter<String>(
                     getActivity(),
                     String.class,
                     R.layout.adapter_notice,
-                    new DatabaseReference[]{databaseReference}
+                    databaseReferences
             ) {
 
                 @Override
@@ -111,14 +122,79 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                     DatabaseReference dbref = firebaseDatabase.getReference().child("Articles")
                             .child(model);
 
-                    dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    DatabaseReference dbref2 = firebaseDatabase.getReference()
+                            .child("College Content")
+                            .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                            .child("Articles")
+                            .child(model);
+                    dbref2.keepSynced(true);
+                    ValueEventListener valueEventListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Article article = dataSnapshot.getValue(Article.class);
-                            if(article==null)
+                            if (article == null) {
                                 return;
+                            }
+
                             if (viewHolder.authorView != null) {
                                 viewHolder.authorView.setText(article.getAuthor());
+                            }
+                            viewHolder.timeView.setText(getTimeAgo(getContext(), article.getTime()));
+                            viewHolder.titleView.setText(Html.fromHtml(article.getTitle()));
+                            viewHolder.UID.setText(article.getUID());
+                            Picasso.with(getContext()).load(article.getImageUrl()).placeholder(R.drawable.placeholder).fit().centerCrop().into(viewHolder.imageView);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(getContext(), "There has been some problem establishing connection with the server.", Toast.LENGTH_SHORT).show();
+
+                        }
+                    };
+
+                    dbref.addListenerForSingleValueEvent(valueEventListener);
+                    dbref2.addListenerForSingleValueEvent(valueEventListener);
+                }
+
+            };
+        }else if(!typeString.equals(TYPE_HOME)){
+            DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("College Content")
+                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                    .child("Categories")
+                    .child("Articles")
+                    .child(getTypeString());
+            temp.keepSynced(true);
+            mAdapter = new CustomArticleHolderAdapter<String>(
+                    getActivity(),
+                    String.class,
+                    R.layout.adapter_notice,
+                    new DatabaseReference[]{databaseReference,
+                        temp
+                    }
+            ) {
+
+                @Override
+                protected void populateView(View v, String model, int position) {
+                    final CustomArticleHolderAdapter.ViewHolder viewHolder = (ViewHolder) v.getTag();
+
+                    DatabaseReference dbref = firebaseDatabase.getReference().child("Articles")
+                            .child(model);
+                    DatabaseReference dbref2 = firebaseDatabase.getReference()
+                            .child("College Content")
+                            .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                            .child("Articles")
+                            .child(model);
+                    dbref2.keepSynced(true);
+                    ValueEventListener valueEventListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Article article = dataSnapshot.getValue(Article.class);
+                            if(article==null) {
+                                return;
+                            }
+                            if (viewHolder.authorView != null) {
+                                viewHolder.authorView.setText(Html.fromHtml(article.getAuthor()));
                             }
                             viewHolder.timeView.setText(getTimeAgo(getContext(),article.getTime()));
                             viewHolder.titleView.setText(article.getTitle());
@@ -131,25 +207,34 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                             Toast.makeText(getContext(),"There has been some problem establishing connection with the server.",Toast.LENGTH_SHORT).show();
 
                         }
-                    });
+                    };
+                    dbref2.addListenerForSingleValueEvent(valueEventListener);
+                    dbref.addListenerForSingleValueEvent(valueEventListener);
+
+
                 }
 
             };
         }else{
+            DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("College Content")
+                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                    .child("Articles");
+
+            temp.keepSynced(true);
             mAdapter = new CustomArticleHolderAdapter<Article>(
                     getActivity(),
                     Article.class,
                     R.layout.adapter_notice,
-                    new DatabaseReference[] {databaseReference}
+                    new DatabaseReference[] {databaseReference,temp}
             ) {
 
                 @Override
                 protected void populateView(View v, Article model, int position) {
                     final CustomArticleHolderAdapter.ViewHolder viewHolder = (ViewHolder) v.getTag();
                     if(viewHolder.authorView!=null){
-                        viewHolder.authorView.setText(model.getAuthor());
+                        viewHolder.authorView.setText(Html.fromHtml(model.getAuthor()));
                     }
-                    viewHolder.titleView.setText(model.getTitle());
+                    viewHolder.titleView.setText(Html.fromHtml(model.getTitle()));
                     viewHolder.timeView.setText(getTimeAgo(getContext(),model.getTime()));
                     viewHolder.UID.setText(model.getUID());
                     Picasso.with(getContext()).load(model.getImageUrl()).placeholder(R.drawable.placeholder).fit().centerCrop().into(viewHolder.imageView);

@@ -7,7 +7,7 @@ package com.cocodev.duplugin.Utility;
 public class Notice {
 
     private String UID;
-    private String department;
+    //private String department;
     private long time;
     private long deadline;
     private String description;
@@ -16,20 +16,26 @@ public class Notice {
         //default constructor
     }
 
+//    public Notice(String department, long time, long deadline, String description) {
+//       //this.department = department;
+//        this.time = time;
+//        this.deadline = deadline;
+//        this.description = description;
+//    }
     public Notice(String department, long time, long deadline, String description) {
-        this.department = department;
+       //this.department = department;
         this.time = time;
         this.deadline = deadline;
         this.description = description;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
+//    public String getDepartment() {
+//        return department;
+//    }
+//
+//    public void setDepartment(String department) {
+//        this.department = department;
+//    }
 
     public long getTime() {
         return time;

@@ -14,7 +14,6 @@ import android.widget.ListView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -22,8 +21,8 @@ import com.google.firebase.database.ValueEventListener;
  * Created by Sudarshan on 20-06-2017.
  */
 
-public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
-    private DatabaseReference[] db;
+public abstract class RefListAdapterQuery<T> extends ArrayAdapter<T>{
+    private Query[] db;
     private Query[] queries;
     public ChildEventListener childEventListener;
     private Class<T> modelclass;
@@ -34,7 +33,7 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
     private int resource;
     private long lastArticle;
     Time time = new Time();
-    public RefListAdapter(@NonNull Context context,Class<T> modelclass, @LayoutRes int resource,DatabaseReference[] db) {
+    public RefListAdapterQuery(@NonNull Context context, Class<T> modelclass, @LayoutRes int resource, Query[] db) {
         super(context, resource);
         this.db=db;
         this.modelclass=modelclass;
@@ -64,9 +63,9 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
         });
 
 
-        for (DatabaseReference databaseReference:db
+        for (Query databaseReference:db
              ) {
-            databaseReference.orderByKey().startAt(Long.toString(lastArticle)).addChildEventListener(childEventListener);
+            databaseReference.addChildEventListener(childEventListener);
         }
 
     }
@@ -113,7 +112,7 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
     }
 
     public void removeListener(){
-        for (DatabaseReference databaseReference:db
+        for (Query databaseReference:db
              ) {
             databaseReference.removeEventListener(childEventListener);
         }
@@ -136,7 +135,7 @@ public abstract class  RefListAdapter<T> extends ArrayAdapter<T>{
     public void populateMoreList(final ListView listView,final View view){
         time.monthDay -= 15;
         long startAt = time.toMillis(true);
-        for (DatabaseReference databaseReference : db
+        for (Query databaseReference : db
                 ) {
             databaseReference.orderByKey().startAt(Long.toString(startAt)).endAt(Long.toString(lastArticle-1)).addChildEventListener(childEventListener);
         }
