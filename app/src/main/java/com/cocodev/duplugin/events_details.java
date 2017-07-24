@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cocodev.duplugin.Utility.Event;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +27,7 @@ import static com.cocodev.duplugin.Utility.Utility.getTimeAgo;
 public class events_details extends AppCompatActivity {
 
     private String Uid = "";
-
+    boolean check = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
@@ -60,8 +61,15 @@ public class events_details extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Event event = dataSnapshot.getValue(Event.class);
-                if(event==null)
+                if(event==null) {
+                    if(check){
+                        check=false;
+                    }else{
+                        Toast.makeText(events_details.this, "This Article has been deleted.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                     return;
+                }
                 timeView.setText(getTimeAgo(events_details.this,event.getDate()));
                 titleView.setText(event.getTitle());
                 eventPlace.setText(event.getVenue());

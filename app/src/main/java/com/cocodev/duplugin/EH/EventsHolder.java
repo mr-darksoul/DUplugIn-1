@@ -108,10 +108,16 @@ public class EventsHolder extends Fragment {
                             final String t = dataSnapshot.getValue(String.class);
                             DatabaseReference dbref = firebaseDatabase.getReference().child("Events")
                                     .child(t);
-                            dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            DatabaseReference dbref2 = firebaseDatabase.getReference().child("College Content")
+                                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                                    .child("Events")
+                                    .child(t);
+                            ValueEventListener valueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Event event = dataSnapshot.getValue(Event.class);
+                                    if(event == null)
+                                        return;
                                     if(event.getDate()<System.currentTimeMillis())
                                         return;
                                     insert(t,0);
@@ -122,7 +128,9 @@ public class EventsHolder extends Fragment {
                                 public void onCancelled(DatabaseError databaseError) {
                                     Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
                                 }
-                            });
+                            };
+                            dbref.addListenerForSingleValueEvent(valueEventListener);
+                            dbref2.addListenerForSingleValueEvent(valueEventListener);
 
                             //}
                         }
@@ -134,20 +142,30 @@ public class EventsHolder extends Fragment {
                             remove(t);
                             DatabaseReference dbref = firebaseDatabase.getReference().child("Events")
                                     .child(t);
-                            dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            DatabaseReference dbref2 = firebaseDatabase.getReference().child("College Content")
+                                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                                    .child("Events")
+                                    .child(t);
+                            ValueEventListener valueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Event event = dataSnapshot.getValue(Event.class);
+                                    if(event == null)
+                                        return;
                                     if(event.getDate()<System.currentTimeMillis())
                                         return;
-                                    insert(t,position);
+                                    insert(t,0);
+
                                 }
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
                                     Log.e("TAG", "onCancelled --> addValueEventListener --> populateView" + databaseError.toString());
                                 }
-                            });
+                            };
+
+                            dbref.addListenerForSingleValueEvent(valueEventListener);
+                            dbref2.addListenerForSingleValueEvent(valueEventListener);
 
                             notifyDataSetChanged();
                         }
@@ -190,6 +208,8 @@ public class EventsHolder extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Event event = dataSnapshot.getValue(Event.class);
+                            if(event==null)
+                                return;
                             time.setText(getTimeAgo(getContext(),event.getDate()));
                             venue.setText(event.getVenue());
                             title.setText(event.getTitle());

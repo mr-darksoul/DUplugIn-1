@@ -45,7 +45,7 @@ public class ArticleDetails extends AppCompatActivity{
     private String articleUid;
     public static final String key = "article";
     private View emptyFooterView;
-
+    boolean check = true;
     ListView mListView;
     View mFooterView;
     private DatabaseReference mCommentRefrence;
@@ -101,8 +101,15 @@ public class ArticleDetails extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 article = dataSnapshot.getValue(Article.class);
-                if(article==null)
+                if(article==null) {
+                    if(check){
+                        check=false;
+                    }else{
+                        Toast.makeText(ArticleDetails.this, "This Article has been deleted.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                     return;
+                }
                 timeView.setText(getTimeAgo(ArticleDetails.this,article.getTime()));
                 titleView.setText(Html.fromHtml(article.getTitle()));
                 authorView.setText(Html.fromHtml(article.getAuthor()));

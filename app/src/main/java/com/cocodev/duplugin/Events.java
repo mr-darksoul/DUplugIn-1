@@ -18,7 +18,7 @@ import com.cocodev.duplugin.adapter.MyFragmentPageAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.h6ah4i.android.tablayouthelper.TabLayoutHelper;
-import com.squareup.leakcanary.RefWatcher;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,8 +97,7 @@ public class Events extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+
     }
 
     public static boolean isEventsPreferencesChanged() {

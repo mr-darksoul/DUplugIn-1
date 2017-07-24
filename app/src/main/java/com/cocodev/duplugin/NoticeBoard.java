@@ -16,7 +16,6 @@ import com.cocodev.duplugin.notices.Notices;
 import com.cocodev.duplugin.notices.Notices_ALL;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +80,7 @@ public class NoticeBoard extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+
     }
 
     @Override

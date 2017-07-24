@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:src="@drawable/placeholder"
         android:transitionName="@string/home_share_image"
-        />
+        app:srcCompat="@drawable/placeholder" />
 
 
     <android.support.v7.widget.AppCompatImageButton

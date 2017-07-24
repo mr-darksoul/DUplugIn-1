@@ -21,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.widget.Toast;
 
 import com.cocodev.duplugin.EH.EventsHolder;
 import com.cocodev.duplugin.Utility.Article;
@@ -37,7 +36,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,13 +55,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<Query> queryEvent = new ArrayList<Query>();
     List<Query> queryNotices = new ArrayList<Query>();
 
-    public static RefWatcher getRefWatcher(Context context) {
-        MainActivity application = (MainActivity) context.getApplicationContext();
-        return application.refWatcher;
-    }
 
 
-    private RefWatcher refWatcher;
+
+
     public static final String TAG = "check";
     DatabaseReference databaseReference;
 
@@ -236,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return;
             Notice notice = dataSnapshot.getValue(Notice.class);
             if(notice==null){
-                Toast.makeText(MainActivity.this, "There was some error ", Toast.LENGTH_SHORT).show();
                 return;
             }
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
@@ -289,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Event event = dataSnapshot.getValue(Event.class);
                     if(event==null){
-                        Toast.makeText(MainActivity.this, "There was some error ", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
@@ -353,7 +346,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Article article = dataSnapshot.getValue(Article.class);
                     if(article==null){
-                        Toast.makeText(MainActivity.this, "There was some error ", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
