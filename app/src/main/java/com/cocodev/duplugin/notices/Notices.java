@@ -1,16 +1,20 @@
 package com.cocodev.duplugin.notices;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cocodev.duplugin.NoticeDetails;
 import com.cocodev.duplugin.R;
 import com.cocodev.duplugin.SA;
 import com.cocodev.duplugin.Utility.Notice;
@@ -79,18 +83,40 @@ public class Notices extends Fragment  {
             ) {
                 @Override
                 protected void populateView(View v, Notice model, int position) {
-                    final TextView description = (TextView) v.findViewById(R.id.notice_description);
+                    final TextView uid = (TextView) v.findViewById(R.id.notice_uid);
+                    final TextView title = (TextView) v.findViewById(R.id.notice_title);
                     final TextView time = (TextView) v.findViewById(R.id.notice_time);
                     final TextView deadline = (TextView) v.findViewById(R.id.notice_deadline);
                     deadline.setText(getTimeAgo(getContext(), model.getDeadline()));
                     time.setText(getTimeAgo(getContext(), model.getTime()));
-                    description.setText(model.getDescription());
+                    title.setText(Html.fromHtml(model.getTitle()));
+                    uid.setText(model.getUid());
 
                 }
             };
 
             mListView.setAdapter(mAdapter);
+
         }
+
+
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                TextView u = (TextView) view.findViewById(R.id.notice_uid);
+                String uid = (String) u.getText();
+                Intent intent = new Intent(getContext(), NoticeDetails.class);
+                intent.putExtra(NoticeDetails.key,uid);
+                startActivity(intent);
+            }
+
+
+
+        });
         return mView;
 
     }
@@ -100,6 +126,8 @@ public class Notices extends Fragment  {
         super.onActivityCreated(savedInstanceState);
 
     }
+
+
 
     @Override
     public void onStart() {

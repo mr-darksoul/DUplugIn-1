@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,10 +84,10 @@ public class ArticleDetails extends AppCompatActivity{
 
 
         final ImageView imageView = (ImageView) findViewById(R.id.articleImage);
-        final TextView titleView = (TextView) headerView.findViewById(R.id.article_title);
-        final TextView timeView = (TextView) headerView.findViewById(R.id.article_time);
+        final TextView titleView = (TextView) headerView.findViewById(R.id.notice_details_title);
+        final TextView timeView = (TextView) headerView.findViewById(R.id.notice_deatails_time);
         final TextView authorView = (TextView) headerView.findViewById(R.id.article_author);
-        final TextView descriptionView = (TextView) headerView.findViewById(R.id.article_description);
+        final TextView descriptionView = (TextView) headerView.findViewById(R.id.notice_details_description);
 
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Articles")
@@ -112,9 +113,10 @@ public class ArticleDetails extends AppCompatActivity{
                 }
                 timeView.setText(getTimeAgo(ArticleDetails.this,article.getTime()));
                 titleView.setText(Html.fromHtml(article.getTitle()));
+                descriptionView. setMovementMethod(LinkMovementMethod.getInstance());
                 authorView.setText(Html.fromHtml(article.getAuthor()));
                 descriptionView.setText(Html.fromHtml(article.getDescription()));
-                Picasso.with(ArticleDetails.this).load(article.getImageUrl()).placeholder(R.drawable.placeholder).fit().centerInside().into(imageView);
+                Picasso.with(ArticleDetails.this).load(article.getImageUrl()).fit().into(imageView);
             }
 
             @Override
@@ -177,6 +179,8 @@ public class ArticleDetails extends AppCompatActivity{
 //                }
 //            }
 //        });
+
+
         commentAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
@@ -269,6 +273,7 @@ public class ArticleDetails extends AppCompatActivity{
             startActivity(intent);
         }
         finish();
+
     }
 
 }

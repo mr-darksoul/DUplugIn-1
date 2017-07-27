@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -46,7 +47,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String LAST_SYNC_ARTICLE= "lastSyncTime";
     private final int REQUEST_CODE_SETTINGS_ACTIVITY = 1001;
-    String[] submenus = {"Articles","Notices","Events"};
+    String[] submenus = {"Events","Articles","Notices"};
     private String CURRENT_FRAGMENT = "currentFragment";
     private final int HOME_FRAGMENT =0;
     private final int NOTICE_BOARD_FRAGMENT =1;
@@ -54,10 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<Query> queryArticle = new ArrayList<Query>();
     List<Query> queryEvent = new ArrayList<Query>();
     List<Query> queryNotices = new ArrayList<Query>();
-
-
-
-
 
     public static final String TAG = "check";
     DatabaseReference databaseReference;
@@ -89,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             final SubMenu  sM = menu.addSubMenu(subMenu);
 
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("Categories").child(subMenu);
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("CategoryList").child(subMenu);
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -103,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             public boolean onMenuItemClick(MenuItem menuItem) {
 
                                 if(subMenu.equals("Articles")){
+
                                     ArticleHolder articleHolder =  ArticleHolder.newInstance(menuItem.getTitle().toString());
 
                                     getSupportFragmentManager().beginTransaction().replace(
@@ -142,9 +140,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(getSupportFragmentManager().findFragmentById(R.id.fragment_layout)==null){
             getSupportFragmentManager().beginTransaction().replace(
                     R.id.fragment_layout,
-                    new Home()
+                    new Events()
             ).commit();
-            navigationView.setCheckedItem(R.id.home);
+            navigationView.setCheckedItem(R.id.events);
         }
 
     }
@@ -152,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setNotifications() {
 
         String lastSyncArticle = getSharedPreferences(this.getLocalClassName(),MODE_PRIVATE).getString(LAST_SYNC_ARTICLE,FirebaseDatabase.getInstance().getReference().push().getKey());
+
+        String college = (PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(SA.KEY_COLLEGE,""));
 
 
         SharedPreferences sharedPreferences = this.getSharedPreferences(SA.fileName_HP, Context.MODE_PRIVATE);
@@ -169,10 +169,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .startAt(lastSyncArticle);
                     Query qr2 = FirebaseDatabase.getInstance().getReference()
                             .child("College Content")
-                            .child(PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(SA.KEY_COLLEGE,null))
+                            .child(college)
                             .child("Categories")
                             .child("Articles")
-                            .child(category);
+                            .child(category)
+                            .orderByKey()
+                            .startAt(lastSyncArticle);
                     qr.addChildEventListener(notificationCELArticle);
                     qr2.addChildEventListener(notificationCELArticle);
                     queryArticle.add(qr2);
@@ -180,9 +182,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
+
         SharedPreferences eventPrefrences = this.getSharedPreferences(SA.fileName_EP,Context.MODE_PRIVATE);
         if(sharedPreferences!=null){
-            Map<String ,?> map = sharedPreferences.getAll();
+            Map<String ,?> map = eventPrefrences.getAll();
             for(Map.Entry<String,?>entry:map.entrySet()){
                 if(entry.getValue().toString().equals("true")){
                     String category = entry.getKey();
@@ -190,15 +193,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .child("Categories")
                             .child("Events")
                             .child(category);
-                    Query qr = tempDatabaseReference
-                            .orderByKey()
-                            .startAt(lastSyncArticle);
+                    Query qr = tempDatabaseReference.orderByKey().startAt(lastSyncArticle);
                     Query qr2 = FirebaseDatabase.getInstance().getReference()
                             .child("College Content")
-                            .child(PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(SA.KEY_COLLEGE,null))
+                            .child(college)
                             .child("Categories")
                             .child("Events")
-                            .child(category);
+                            .child(category)
+                            .orderByKey()
+                            .startAt(lastSyncArticle);
 
                     qr2.addChildEventListener(notificationCELEvent);
                     qr.addChildEventListener(notificationCELEvent);
@@ -216,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         queryNotices.add(qr);
         qr= FirebaseDatabase.getInstance().getReference()
                 .child("College Content")
+                .child(college)
                 .child("Notices")
                 .orderByKey()
                 .startAt(lastSyncArticle);
@@ -227,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-            if(!PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SA.KEY_NOTIFY,false))
+            if(!PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SA.KEY_NOTIFY,true))
                 return;
             Notice notice = dataSnapshot.getValue(Notice.class);
             if(notice==null){
@@ -235,10 +239,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
             mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-            mBuilder.setContentTitle(notice.getDescription());
+            mBuilder.setContentTitle(Html.fromHtml(notice.getDescription()));
             mBuilder.setContentInfo(Utility.getTimeAgo(getApplicationContext(),notice.getDeadline()));
             mBuilder.setAutoCancel(true);
-            mBuilder.setTicker("DUplugIn "+notice.getDescription());
+            mBuilder.setTicker("DUplugIn "+Html.fromHtml(notice.getDescription()));
             mBuilder.setDefaults(Notification.DEFAULT_ALL);
             Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(MainActivity.this);
@@ -251,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             // notificationID allows you to update the notification later on.
-            mNotificationManager.notify(notice.getUID(),0, mBuilder.build());
+            mNotificationManager.notify(notice.getUid(),0, mBuilder.build());
 
 
         }
@@ -276,9 +280,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             String Uid = dataSnapshot.getKey();
-            if(!PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SA.KEY_NOTIFY,true))
-                return;
-            FirebaseDatabase.getInstance().getReference().child("Events").child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            if(!PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SA.KEY_NOTIFY,true)) {
+                 return;
+            }
+
+            ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Event event = dataSnapshot.getValue(Event.class);
@@ -287,10 +294,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
                     mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-                    mBuilder.setContentTitle(event.getTitle());
-                    mBuilder.setContentText(event.getDescription());
+                    mBuilder.setContentTitle(Html.fromHtml(event.getTitle()));
+                    mBuilder.setContentText(Html.fromHtml(event.getDescription()));
                     mBuilder.setAutoCancel(true);
-                    mBuilder.setTicker("DUplugIn "+event.getTitle());
+                    mBuilder.setTicker("DUplugIn "+Html.fromHtml(event.getTitle()));
                     mBuilder.setDefaults(Notification.DEFAULT_ALL);
                     Intent resultIntent = new Intent(MainActivity.this, ArticleDetails.class);
                     resultIntent.putExtra(ArticleDetails.key,event.getUID());
@@ -311,9 +318,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
-            });
+            };
 
-
+            FirebaseDatabase.getInstance().getReference().child("Events").child(Uid).addListenerForSingleValueEvent(valueEventListener);
+            FirebaseDatabase.getInstance().getReference()
+                    .child("College Content")
+                    .child(PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(SA.KEY_COLLEGE,""))
+                    .child("Events")
+                    .child(Uid)
+                    .addListenerForSingleValueEvent(valueEventListener)
+            ;
         }
 
         @Override
@@ -332,16 +346,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onCancelled(DatabaseError databaseError) {
         }
     };
-
-
-
     ChildEventListener notificationCELArticle = new ChildEventListener() {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             String Uid = dataSnapshot.getKey();
-            if(!PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SA.KEY_NOTIFY,false))
+            if(!PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SA.KEY_NOTIFY,true))
                 return;
-            FirebaseDatabase.getInstance().getReference().child("Articles").child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Article article = dataSnapshot.getValue(Article.class);
@@ -350,10 +362,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
                     mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-                    mBuilder.setContentTitle(article.getTitle());
-                    mBuilder.setContentText(article.getDescription());
+                    mBuilder.setContentTitle(Html.fromHtml(article.getTitle()));
+                    mBuilder.setContentText(Html.fromHtml(article.getDescription()));
                     mBuilder.setAutoCancel(true);
-                    mBuilder.setTicker("DUplugIn "+article.getTitle());
+                    mBuilder.setTicker("DUplugIn "+ Html.fromHtml(article.getTitle()));
                     mBuilder.setDefaults(Notification.DEFAULT_ALL);
                     Intent resultIntent = new Intent(MainActivity.this, ArticleDetails.class);
                     resultIntent.putExtra(ArticleDetails.key,article.getUID());
@@ -374,9 +386,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
-            });
-
-
+            };
+            FirebaseDatabase.getInstance().getReference().child("Articles").child(Uid).addListenerForSingleValueEvent(valueEventListener);
+            FirebaseDatabase.getInstance().getReference()
+                    .child("College Content")
+                    .child(PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(SA.KEY_COLLEGE,""))
+                    .child("Articles")
+                    .child(Uid)
+                    .addListenerForSingleValueEvent(valueEventListener);
         }
 
         @Override
@@ -395,8 +412,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onCancelled(DatabaseError databaseError) {
         }
     };
-
-
 
     @Override
     protected void onResume() {
@@ -441,14 +456,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-         String TAG_HOME = "Home";
+         String TAG_UPDATES = "Updates";
          String TAG_NOTICES = "Notices";
          String TAG_EVENTS = "Events";
         if (id == R.id.home) {
@@ -456,7 +469,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Home home = new Home();
             Bundle bundle = new Bundle();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_layout,home,TAG_HOME).commit();
+            manager.beginTransaction().replace(R.id.fragment_layout,home,TAG_UPDATES).commit();
 
         } else if (id == R.id.notices) {
             FragmentManager manager = getSupportFragmentManager();
@@ -476,8 +489,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
     @Override
     protected void onDestroy() {

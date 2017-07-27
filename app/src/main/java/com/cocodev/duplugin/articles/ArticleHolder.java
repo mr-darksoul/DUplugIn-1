@@ -160,7 +160,7 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
             };
         }else if(!typeString.equals(TYPE_HOME)){
             DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("College Content")
-                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,""))
                     .child("Categories")
                     .child("Articles")
                     .child(getTypeString());
@@ -182,7 +182,7 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                             .child(model);
                     DatabaseReference dbref2 = firebaseDatabase.getReference()
                             .child("College Content")
-                            .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                            .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,""))
                             .child("Articles")
                             .child(model);
                     dbref2.keepSynced(true);
@@ -217,7 +217,7 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
             };
         }else{
             DatabaseReference temp = FirebaseDatabase.getInstance().getReference().child("College Content")
-                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,""))
                     .child("Articles");
 
             temp.keepSynced(true);
@@ -225,12 +225,15 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                     getActivity(),
                     Article.class,
                     R.layout.adapter_notice,
-                    new DatabaseReference[] {databaseReference,temp}
+                    new DatabaseReference[] {temp,databaseReference}
             ) {
 
                 @Override
                 protected void populateView(View v, Article model, int position) {
+
                     final CustomArticleHolderAdapter.ViewHolder viewHolder = (ViewHolder) v.getTag();
+                    if(model==null)
+                        Toast.makeText(getContext(), "model null", Toast.LENGTH_SHORT).show();
                     if(viewHolder.authorView!=null){
                         viewHolder.authorView.setText(Html.fromHtml(model.getAuthor()));
                     }

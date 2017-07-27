@@ -1,14 +1,18 @@
 package com.cocodev.duplugin.notices;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cocodev.duplugin.NoticeDetails;
 import com.cocodev.duplugin.R;
 import com.cocodev.duplugin.Utility.Notice;
 import com.cocodev.duplugin.Utility.RefListAdapterQuery;
@@ -66,11 +70,14 @@ public class Notices_ALL extends Fragment  {
 
             @Override
             protected void populateView(View v, Notice model, int position) {
-                final TextView description = (TextView) v.findViewById(R.id.notice_description);
+                final TextView title = (TextView) v.findViewById(R.id.notice_title);
                 final TextView time = (TextView) v.findViewById(R.id.notice_time);
                 final TextView deadline = (TextView) v.findViewById(R.id.notice_deadline);
-
-                description.setText(model.getDescription());
+                final TextView uid = (TextView) v.findViewById(R.id.notice_uid);
+                if(model==null)
+                    return;
+                uid.setText(model.getUid());
+                title.setText(Html.fromHtml(model.getTitle()));
                 time.setText(getTimeAgo(getContext(),model.getTime()));
                 deadline.setText(getTimeAgo(getContext(),model.getDeadline()));
             }
@@ -79,6 +86,18 @@ public class Notices_ALL extends Fragment  {
         };
 
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView u = (TextView) view.findViewById(R.id.notice_uid);
+                String uid = (String) u.getText();
+
+                Intent intent = new Intent(getContext(), NoticeDetails.class);
+                intent.putExtra(NoticeDetails.key,uid);
+                startActivity(intent);
+            }
+
+        });
         return mView;
     }
 

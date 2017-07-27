@@ -6,12 +6,12 @@ package com.cocodev.duplugin.Utility;
 
 public class Notice {
 
-    private String UID;
+    private String uid;
     //private String department;
     private long time;
     private long deadline;
     private String description;
-
+    private String title;
     public Notice(){
         //default constructor
     }
@@ -22,8 +22,9 @@ public class Notice {
 //        this.deadline = deadline;
 //        this.description = description;
 //    }
-    public Notice(String department, long time, long deadline, String description) {
-       //this.department = department;
+    public Notice(String title,String department, long time, long deadline, String description) {
+        //this.department = department;
+        this.title = title;
         this.time = time;
         this.deadline = deadline;
         this.description = description;
@@ -36,6 +37,15 @@ public class Notice {
 //    public void setDepartment(String department) {
 //        this.department = department;
 //    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public long getTime() {
         return time;
@@ -61,11 +71,11 @@ public class Notice {
         this.description = description;
     }
 
-    public String getUID() {
-        return UID;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUID(String UID) {
-        this.UID = UID;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

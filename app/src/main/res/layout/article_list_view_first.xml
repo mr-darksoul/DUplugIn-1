@@ -13,6 +13,7 @@
         android:id="@+id/articleImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="390dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:transitionName="shareImage"
@@ -35,7 +36,7 @@
         />
 
     <TextView
-        android:id="@+id/article_title"
+        android:id="@+id/notice_details_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/articleImage"
@@ -54,15 +55,15 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/article_title"
-        android:layout_below="@+id/article_title"
+        android:layout_alignStart="@+id/notice_details_title"
+        android:layout_below="@+id/notice_details_title"
         android:layout_marginTop="7dp"
         android:text="DU plugIn"
         android:textSize="12sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/article_time"
+        android:id="@+id/notice_deatails_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView3"

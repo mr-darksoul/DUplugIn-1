@@ -62,7 +62,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/event_titleLine"
                 android:layout_marginLeft="4dp"
-                android:layout_toEndOf="@+id/time_image_view"
                 android:drawableLeft="@mipmap/time"
                 android:drawablePadding="4dp"
                 android:paddingLeft="8dp"

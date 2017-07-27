@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -18,9 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.cocodev.duplugin.Utility.Article;
 import com.cocodev.duplugin.adapter.MyFragmentArticlePageAdapter;
 import com.cocodev.duplugin.articles.ArticleHolder;
 import com.google.firebase.database.DatabaseReference;
@@ -74,27 +71,27 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("App Name");
         initViewPager(view,savedInstanceState);
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addArticles);
+//        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.addArticles);
 
 
-
-      floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Article article = new Article(
-                        "Author",
-                        "description",
-                        System.currentTimeMillis(),
-                        "tagLine",
-                        "null",
-                        "This is the Title"
-                );
-                article.setUID(databaseReference.push().getKey());
-                databaseReference.child("Categories").child("Articles").child("Workshops").child(article.getUID()).setValue(article.getUID());
-                databaseReference.child("Articles").child(article.getUID()).setValue(article);
-                Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
-            }
-        });
+//
+//      floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Article article = new Article(
+//                        "Author",
+//                        "description",
+//                        System.currentTimeMillis(),
+//                        "tagLine",
+//                        "null",
+//                        "This is the Title"
+//                );
+//                article.setUID(databaseReference.push().getKey());
+//                databaseReference.child("Categories").child("Articles").child("Workshops").child(article.getUID()).setValue(article.getUID());
+//                databaseReference.child("Articles").child(article.getUID()).setValue(article);
+//                Toast.makeText(getContext(),"FAB clicked",Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         return view;
     }

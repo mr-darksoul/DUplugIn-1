@@ -85,7 +85,7 @@ public class EventsHolder extends Fragment {
 
         if(typeString!=TYPE_HOME) {
             DatabaseReference temp =   FirebaseDatabase.getInstance().getReference().child("College Content")
-                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,null))
+                    .child(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SA.KEY_COLLEGE,""))
                     .child("Categories")
                     .child("Events")
                     .child(getTypeString());

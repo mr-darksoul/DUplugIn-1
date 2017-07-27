@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    tools:context="com.cocodev.duplugin.NoticeDetails">
+
+    <TextView
+        android:id="@+id/notice_details_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/notice_details_description"
+        android:layout_below="@+id/articleImage"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="monospace"
+        android:text="sfgs"
+        android:textColor="@android:color/background_dark"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:transitionName="@string/home_share_title" />
+
+    <TextView
+        android:id="@+id/notice_deatails_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/notice_details_title"
+        android:layout_below="@+id/notice_details_title"
+        android:text="20 min ago"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"/>
+
+    <View
+        android:id="@+id/view_notice_details_time"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#c0c0c0"
+        android:layout_below="@id/notice_deatails_time"
+        android:layout_marginTop="8dp"
+        />
+
+    <TextView
+        android:id="@+id/notice_details_deadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/notice_details_title"
+        android:text="Nupur Joshi"
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/notice_details_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/view_notice_details_time"
+        android:layout_below="@+id/view_notice_details_time"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:text="description"
+        android:textColor="?android:attr/panelColorForeground"
+        android:textSize="18sp" />
+
+
+</RelativeLayout>

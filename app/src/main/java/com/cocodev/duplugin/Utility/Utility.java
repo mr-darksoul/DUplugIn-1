@@ -149,17 +149,18 @@ public class Utility {
 
         Time t = new Time();
         t.setToNow();
+
+        // Otherwise, the format is just the day of the week (e.g "Wednesday".
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE \n HH:mm a");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a");
         int julianDay = Time.getJulianDay(dateInMillis, t.gmtoff);
         int currentJulianDay = Time.getJulianDay(System.currentTimeMillis(), t.gmtoff);
         if (julianDay == currentJulianDay) {
-            return context.getString(R.string.today);
+            return context.getString(R.string.today) + "\n" +timeFormat.format(dateInMillis) ;
         } else if ( julianDay == currentJulianDay +1 ) {
-            return context.getString(R.string.tomorrow);
+            return context.getString(R.string.tomorrow)+"\n"+timeFormat.format(dateInMillis);
         } else {
-            Time time = new Time();
-            time.setToNow();
-            // Otherwise, the format is just the day of the week (e.g "Wednesday".
-            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+
             return dayFormat.format(dateInMillis);
         }
     }
@@ -175,7 +176,7 @@ public class Utility {
         Time time = new Time();
         time.setToNow();
         SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
-        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd");
+        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd \n HH:mm a");
         String monthDayString = monthDayFormat.format(dateInMillis);
         return monthDayString;
     }
