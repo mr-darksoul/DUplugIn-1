@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cocodev.duplugin">
+    package="com.cocodev.university.delhi.duplugin">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -32,10 +32,10 @@
         <activity
             android:name=".SA"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.cocodev.duplugin.MainActivity" />
+                android:value="com.cocodev.university.delhi.duplugin.MainActivity" />
         </activity>
         <activity
             android:name=".IntroSlider"

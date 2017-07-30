@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cocodev.duplugin.SA"
+    tools:context="com.cocodev.university.delhi.duplugin.SA"
     android:id="@+id/activity_sa">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,15 +15,33 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="4dp"
+            android:background="@null"
+
+            >
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorAccent"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                />
+
+        </android.support.design.widget.AppBarLayout>
+
         <TextView
             android:id="@+id/title_general"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawablePadding="4dp"
             android:padding="8dp"
             android:text="General"
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:drawablePadding="4dp"
-            />
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <Spinner
             android:id="@+id/spinner_college"
@@ -48,23 +67,6 @@
             android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <TextView
-            android:id="@+id/title_homePreferences"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/spinner_course"
-            android:layout_centerHorizontal="true"
-            android:padding="8dp"
-            android:text="Home Preferences"
-            android:textAppearance="@android:style/TextAppearance.Material.Large" />
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/homePreferences"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/SettingsActivity_child_default_left_margin"></LinearLayout>
-
-        <TextView
             android:id="@+id/title_eventPreferences"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,6 +83,23 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/SettingsActivity_child_default_left_margin">
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/title_homePreferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_course"
+            android:layout_centerHorizontal="true"
+            android:padding="8dp"
+            android:text="Article Preferences"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <LinearLayout
+            android:id="@+id/homePreferences"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/SettingsActivity_child_default_left_margin"
+            android:orientation="vertical"></LinearLayout>
 
     </LinearLayout>
 </ScrollView>

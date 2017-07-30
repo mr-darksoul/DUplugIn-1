@@ -59,17 +59,17 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:49646810348:android:c21d81224c17aae3",
+        "mobilesdk_app_id": "1:49646810348:android:523d9daaf00a0a08",
         "android_client_info": {
-          "package_name": "com.cocodev.TheDuChronicle"
+          "package_name": "com.cocodev.DuplugIn"
         }
       },
       "oauth_client": [
         {
-          "client_id": "49646810348-1coc18ach5shpl2bis2rhfvk1el9aid3.apps.googleusercontent.com",
+          "client_id": "49646810348-0gm8tpcdgds2bjh79m5fg5kofndhjr20.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.cocodev.TheDuChronicle",
+            "package_name": "com.cocodev.DuplugIn",
             "certificate_hash": "37da939800e55907986674bcb757a9cf03e41ddd"
           }
         },
@@ -110,17 +110,17 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:49646810348:android:523d9daaf00a0a08",
+        "mobilesdk_app_id": "1:49646810348:android:d89753a05c55ed31",
         "android_client_info": {
-          "package_name": "com.cocodev.DuplugIn"
+          "package_name": "com.cocodev.university.delhi.duplugin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "49646810348-0gm8tpcdgds2bjh79m5fg5kofndhjr20.apps.googleusercontent.com",
+          "client_id": "49646810348-ogpqt2pk5j5055l00b750aj22ruc1ulq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.cocodev.DuplugIn",
+            "package_name": "com.cocodev.university.delhi.duplugin",
             "certificate_hash": "37da939800e55907986674bcb757a9cf03e41ddd"
           }
         },

@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">University Of Delhi Updates : DUplugIn</string>
+    <string name="app_name">DUplugIn</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -51,6 +51,13 @@
     <string name="today">Today</string>
     <string name="format_full_friendly_date"><xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g></string>
     <string name="tomorrow">Tomorrow</string>
+
+    <string name="sp_college">sp_college</string>
+    <string name="sp_interest">sp_interest</string>
+    <string name="sp_backButton">sp_backButton</string>
+    <string name="sp_menuButton">sp_menuButton</string>
+    <string name="sp_detailButton">sp_detailButton</string>
+
 
 
 </resources>

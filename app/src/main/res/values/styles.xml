@@ -42,4 +42,12 @@
         <item name="tabTextAppearance">@style/TabText</item>
         <item name="tabGravity">fill</item>
     </style>
+
+    <style name="textAppearanceTitleNice">
+        <item name="android:textSize">24dp</item>
+    </style>
+
+    <style name="textAppearanceContentNice">
+        <item name="android:textSize">18dp</item>
+    </style>
 </resources>
