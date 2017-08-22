@@ -39,17 +39,16 @@
         android:id="@+id/notice_details_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/articleImage"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="12dp"
         android:fontFamily="monospace"
-        android:text="Rohan Bopanna scripts history, wins French Open mixed-doubles title"
         android:textColor="@android:color/background_dark"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_alignParentStart="true"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView3"
@@ -68,9 +67,8 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView3"
         android:layout_below="@+id/textView3"
-        android:text="20 min ago"
-        android:textSize="12sp"
-        android:layout_marginTop="4dp"/>
+        android:layout_marginTop="4dp"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/article_author"
@@ -79,7 +77,6 @@
         android:layout_alignBaseline="@+id/textView3"
         android:layout_alignBottom="@+id/textView3"
         android:layout_alignEnd="@+id/shareArticle"
-        android:text="Nupur Joshi"
         android:textAllCaps="true"
         android:textSize="12sp"
         android:textStyle="bold" />

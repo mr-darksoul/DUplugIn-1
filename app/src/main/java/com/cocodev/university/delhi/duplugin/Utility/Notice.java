@@ -12,22 +12,18 @@ public class Notice {
     private long deadline;
     private String description;
     private String title;
+    private String imageUrl;
     public Notice(){
         //default constructor
     }
 
-//    public Notice(String department, long time, long deadline, String description) {
-//       //this.department = department;
-//        this.time = time;
-//        this.deadline = deadline;
-//        this.description = description;
-//    }
-    public Notice(String title,String department, long time, long deadline, String description) {
+    public Notice(String title,String department, long time, long deadline, String description,String imageUrl) {
         //this.department = department;
         this.title = title;
         this.time = time;
         this.deadline = deadline;
         this.description = description;
+        this.imageUrl = imageUrl;
     }
 
 //    public String getDepartment() {
@@ -77,5 +73,13 @@ public class Notice {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

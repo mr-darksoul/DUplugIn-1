@@ -26,42 +26,39 @@
             android:fontFamily="monospace"
             android:padding="8dp"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            tools:text="Wetland Pool Party Festival" />
+            android:textSize="24sp" />
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:background="#c0c0c0"/>
+
         <TextView
             android:id="@+id/event_detail_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/calendar"
-            tools:text="Sun,2 Jul at 2PM"
-            android:paddingTop="16dp"
-            android:paddingLeft="8dp"
-            android:paddingBottom="16dp"
-            android:textSize="16sp"
             android:drawablePadding="8dp"
-            />
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="16dp"
+            android:textSize="16sp" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:background="#c0c0c0"/>
+
         <TextView
             android:id="@+id/event_detail_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="The Royal Plaza"
-            android:paddingTop="16dp"
-            android:paddingStart="8dp"
             android:layout_marginLeft="8dp"
+            android:drawablePadding="8dp"
             android:drawableStart="@mipmap/place"
             android:paddingBottom="16dp"
-            android:textSize="18sp"
-            android:drawablePadding="8dp"
-            />
+            android:paddingStart="8dp"
+            android:paddingTop="16dp"
+            android:textSize="18sp" />
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
@@ -72,7 +69,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Description Starts from here"
             android:textColor="?android:attr/panelColorForeground"
             android:textSize="18sp" />
 

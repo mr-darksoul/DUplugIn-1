@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -112,10 +113,10 @@ public class ArticleDetails extends AppCompatActivity{
                     return;
                 }
                 timeView.setText(getTimeAgo(ArticleDetails.this,article.getTime()));
-                titleView.setText(Html.fromHtml(article.getTitle()));
+                titleView.setText(fromHtml(article.getTitle()));
                 descriptionView. setMovementMethod(LinkMovementMethod.getInstance());
-                authorView.setText(Html.fromHtml(article.getAuthor()));
-                descriptionView.setText(Html.fromHtml(article.getDescription()));
+                authorView.setText(fromHtml(article.getAuthor()));
+                descriptionView.setText(fromHtml(article.getDescription()));
                 Picasso.with(ArticleDetails.this).load(article.getImageUrl()).fit().into(imageView);
             }
 
@@ -276,4 +277,15 @@ public class ArticleDetails extends AppCompatActivity{
 
     }
 
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
+    }
 }

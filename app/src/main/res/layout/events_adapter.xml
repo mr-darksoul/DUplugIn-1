@@ -44,7 +44,6 @@
                 android:layout_below="@+id/event_image"
                 android:fontFamily="monospace"
                 android:padding="8dp"
-                android:text="Shades audition on 15 August"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
             <View
@@ -65,7 +64,6 @@
                 android:drawableLeft="@mipmap/time"
                 android:drawablePadding="4dp"
                 android:paddingLeft="8dp"
-                android:text="16 Jan 2017"
                 android:textSize="12sp" />
 
             <View
@@ -75,6 +73,7 @@
                 android:background="#c0c0c0"
                 android:layout_below="@id/event_time"
                 android:layout_marginTop="4dp"/>
+
             <TextView
                 android:id="@+id/event_venue"
                 android:layout_width="wrap_content"
@@ -86,7 +85,6 @@
                 android:drawablePadding="4dp"
                 android:paddingBottom="8dp"
                 android:paddingLeft="8dp"
-                android:text="College Auditorium"
                 android:textColor="#505050"
                 android:textSize="12dp" />
         </RelativeLayout>

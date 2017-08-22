@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ImageView;
@@ -73,7 +74,7 @@ public class events_details extends AppCompatActivity {
                 timeView.setText(getTimeAgo(events_details.this,event.getDate()));
                 titleView.setText(event.getTitle());
                 eventPlace.setText(event.getVenue());
-                descriptionView.setText(Html.fromHtml(event.getDescription()));
+                descriptionView.setText(fromHtml(event.getDescription()));
                 if(!event.getUrl().equals("")) {
                     Picasso.with(events_details.this).load(event.getUrl()).placeholder(R.drawable.event_place_holder).fit().centerInside().into(imageView);
                 }
@@ -102,5 +103,23 @@ public class events_details extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(isTaskRoot()){
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        }
+        super.onBackPressed();
+    }
 
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
+    }
 }

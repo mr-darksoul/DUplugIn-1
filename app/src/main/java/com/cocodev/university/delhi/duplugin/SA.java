@@ -112,7 +112,7 @@ public class SA extends AppCompatActivity {
                 ;
 
 
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(getString(R.string.sp_college),false);
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(getString(R.string.sp_college),false).commit();
         }
 
 
@@ -147,7 +147,7 @@ public class SA extends AppCompatActivity {
                                 .setContentTitle("Press Back Button To Begin Action...")
                                 .hideOnTouchOutside()
                                 .build();
-                        PreferenceManager.getDefaultSharedPreferences(SA.this).edit().putBoolean(getString(R.string.sp_backButton),false);
+                        PreferenceManager.getDefaultSharedPreferences(SA.this).edit().putBoolean(getString(R.string.sp_backButton),false).commit();
                     }
                 }
 
@@ -166,7 +166,7 @@ public class SA extends AppCompatActivity {
 
                 }
             });
-            PreferenceManager.getDefaultSharedPreferences(SA.this).edit().putBoolean(getString(R.string.sp_interest),false);
+            PreferenceManager.getDefaultSharedPreferences(SA.this).edit().putBoolean(getString(R.string.sp_interest),false).commit();
         }
     }
 

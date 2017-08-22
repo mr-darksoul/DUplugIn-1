@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,8 @@ public class Notices_ALL extends Fragment  {
         reference = firebaseDatabase.getReference()
                 .child("Notices")
                 .orderByChild("deadline")
-                .startAt(System.currentTimeMillis());
+                .startAt(System.currentTimeMillis()-100000);
+        reference.keepSynced(true);
 
     }
 
@@ -77,7 +79,7 @@ public class Notices_ALL extends Fragment  {
                 if(model==null)
                     return;
                 uid.setText(model.getUid());
-                title.setText(Html.fromHtml(model.getTitle()));
+                title.setText(fromHtml(model.getTitle()));
                 time.setText(getTimeAgo(getContext(),model.getTime()));
                 deadline.setText(getTimeAgo(getContext(),model.getDeadline()));
             }
@@ -129,5 +131,16 @@ public class Notices_ALL extends Fragment  {
     public void onDestroyView() {
         super.onDestroyView();
         mAdapter.removeListener();
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
     }
 }

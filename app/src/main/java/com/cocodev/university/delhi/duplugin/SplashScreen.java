@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cocodev.university.delhi.duplugin.Utility.IntroManager;
@@ -16,10 +19,79 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Iterator;
 
 public class SplashScreen extends AppCompatActivity {
+    private long animDuration = 800;
     private IntroManager session;
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash_screen);
+        final TextView D = (TextView) findViewById(R.id.D);
+        final TextView U = (TextView) findViewById(R.id.U);
+
+        final Animation slide_in_right = AnimationUtils.loadAnimation(this,R.anim.slide_in_right);
+        slide_in_right.setDuration(animDuration);
+
+        Animation slide_in_left = AnimationUtils.loadAnimation(this,R.anim.slide_in_left);
+        slide_in_left.setDuration(animDuration);
+
+        final Animation slide_out_left = AnimationUtils.loadAnimation(SplashScreen.this,R.anim.slide_out_left);
+        slide_out_left.setDuration(animDuration-700);
+
+        final Animation slide_out_right = AnimationUtils.loadAnimation(SplashScreen.this,R.anim.slide_out_right);
+        slide_out_right.setDuration(animDuration-700);
+
+        slide_out_left.setStartOffset(200);
+        slide_out_right.setStartOffset(200);
+
+        slide_in_right.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                D.startAnimation(slide_out_left);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        slide_in_left.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                U.startAnimation(slide_out_right);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        D.startAnimation(slide_in_right);
+        U.startAnimation(slide_in_left);
+//        try {
+//            sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+
+//
+//
+
         session = new IntroManager(this);
         Thread myThread = new Thread()
         {
@@ -31,7 +103,7 @@ public class SplashScreen extends AppCompatActivity {
                     hpDatabaseReference.addListenerForSingleValueEvent(hpValueEventListener);
                     DatabaseReference epDatabaseReference = FirebaseDatabase.getInstance().getReference().child("CategoryList").child("Events");
                     epDatabaseReference.addListenerForSingleValueEvent(epValueEventListener);
-                    sleep(1000);
+                    sleep(1050);
                     //Check if application is launching first time or not
                     //If it is First Time Launch Show IntroSlider
                     if (session.isFirstTimeLaunch()) {
@@ -51,7 +123,7 @@ public class SplashScreen extends AppCompatActivity {
             }
         };
 
-        setContentView(R.layout.activity_splash_screen);
+
         myThread.start();
 
     }

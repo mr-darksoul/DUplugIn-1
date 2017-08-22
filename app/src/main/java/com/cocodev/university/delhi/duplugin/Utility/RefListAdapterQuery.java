@@ -84,11 +84,7 @@ public abstract class RefListAdapterQuery<T> extends ArrayAdapter<T>{
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                T t = dataSnapshot.getValue(modelclass);
-                int position = getPosition(t);
-                remove(t);
-                insert(t,position);
-                notifyDataSetChanged();
+
             }
 
             @Override

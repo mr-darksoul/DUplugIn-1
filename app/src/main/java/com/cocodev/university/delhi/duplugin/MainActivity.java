@@ -147,14 +147,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.events);
         }
 
-        if(PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(getString(R.string.sp_menuButton),true)){
+        if(PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(getString(R.string.sp_detailButton),true)){
             Toast.makeText(this,"Click on any item to open details.",Toast.LENGTH_SHORT).show();
+            PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putBoolean(getString(R.string.sp_detailButton),false).commit();
         }
 
     }
 
     private void showToolbarShowcaseView() {
-        if(true||PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(getString(R.string.sp_menuButton),true)){
+        if(PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(getString(R.string.sp_menuButton),true)){
             new ShowcaseView.Builder(MainActivity.this)
                     .setTarget(new Target() {
                         @Override
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setContentTitle("Press Menu Button To See Articles and Notices.")
                     .hideOnTouchOutside()
                     .build();
-            PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putBoolean(getString(R.string.sp_backButton),false);
+            PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putBoolean(getString(R.string.sp_menuButton),false).commit();
         }
     }
 
@@ -274,7 +275,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mBuilder.setAutoCancel(true);
             mBuilder.setTicker("DUplugIn "+Html.fromHtml(notice.getDescription()));
             mBuilder.setDefaults(Notification.DEFAULT_ALL);
-            Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
+            Intent resultIntent = new Intent(MainActivity.this, NoticeDetails.class);
+            resultIntent.putExtra(NoticeDetails.key,notice.getUid());
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(MainActivity.this);
             stackBuilder.addParentStack(NoticeDetails.class);
 
@@ -499,6 +501,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Home home = new Home();
             Bundle bundle = new Bundle();
             FragmentManager manager = getSupportFragmentManager();
+
             manager.beginTransaction().replace(R.id.fragment_layout,home,TAG_UPDATES).commit();
 
         } else if (id == R.id.notices) {

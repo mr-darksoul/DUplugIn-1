@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,7 +142,10 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                                 viewHolder.authorView.setText(article.getAuthor());
                             }
                             viewHolder.timeView.setText(getTimeAgo(getContext(), article.getTime()));
-                            viewHolder.titleView.setText(Html.fromHtml(article.getTitle()));
+
+
+                            viewHolder.titleView.setText(fromHtml(article.getTitle()));
+
                             viewHolder.UID.setText(article.getUID());
                             Picasso.with(getContext()).load(article.getImageUrl()).placeholder(R.drawable.placeholder).fit().centerCrop().into(viewHolder.imageView);
                         }
@@ -194,7 +198,7 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                                 return;
                             }
                             if (viewHolder.authorView != null) {
-                                viewHolder.authorView.setText(Html.fromHtml(article.getAuthor()));
+                                viewHolder.authorView.setText(fromHtml(article.getAuthor()));
                             }
                             viewHolder.timeView.setText(getTimeAgo(getContext(),article.getTime()));
                             viewHolder.titleView.setText(article.getTitle());
@@ -235,9 +239,9 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
                     if(model==null)
                         Toast.makeText(getContext(), "model null", Toast.LENGTH_SHORT).show();
                     if(viewHolder.authorView!=null){
-                        viewHolder.authorView.setText(Html.fromHtml(model.getAuthor()));
+                        viewHolder.authorView.setText(fromHtml(model.getAuthor()));
                     }
-                    viewHolder.titleView.setText(Html.fromHtml(model.getTitle()));
+                    viewHolder.titleView.setText(fromHtml(model.getTitle()));
                     viewHolder.timeView.setText(getTimeAgo(getContext(),model.getTime()));
                     viewHolder.UID.setText(model.getUID());
                     Picasso.with(getContext()).load(model.getImageUrl()).placeholder(R.drawable.placeholder).fit().centerCrop().into(viewHolder.imageView);
@@ -341,5 +345,16 @@ public class ArticleHolder extends Fragment implements AbsListView.OnScrollListe
             }
         }
 
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
     }
 }

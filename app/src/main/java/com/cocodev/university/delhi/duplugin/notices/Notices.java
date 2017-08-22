@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +90,7 @@ public class Notices extends Fragment  {
                     final TextView deadline = (TextView) v.findViewById(R.id.notice_deadline);
                     deadline.setText(getTimeAgo(getContext(), model.getDeadline()));
                     time.setText(getTimeAgo(getContext(), model.getTime()));
-                    title.setText(Html.fromHtml(model.getTitle()));
+                    title.setText(fromHtml(model.getTitle()));
                     uid.setText(model.getUid());
 
                 }
@@ -155,5 +156,16 @@ public class Notices extends Fragment  {
         if(mAdapter!=null) {
             mAdapter.removeListener();
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
     }
 }

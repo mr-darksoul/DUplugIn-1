@@ -6,22 +6,27 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cocodev.university.delhi.duplugin.Utility.Notice;
+import com.cocodev.university.delhi.duplugin.Utility.TouchImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import static com.cocodev.university.delhi.duplugin.Utility.Utility.getTimeAgo;
 
 public class NoticeDetails extends AppCompatActivity {
     public static final String key = "notice_uid";
     String noticeUid;
+
+
 
     boolean check=true;
     @Override
@@ -39,14 +44,17 @@ public class NoticeDetails extends AppCompatActivity {
         final TextView time = (TextView) findViewById(R.id.notice_deatails_time);
         final TextView deadline = (TextView) findViewById(R.id.notice_details_deadline);
         final TextView uid = (TextView) findViewById(R.id.notice_uid);
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Notices")
-//                .child(noticeUid);
+        final TouchImageView touchImageViewSmall = (TouchImageView) findViewById(R.id.noticeDetails_smallImageView);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Notices")
+                .child(noticeUid);
         DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference()
                 .child("College Content")
                 .child(PreferenceManager.getDefaultSharedPreferences(this).getString(SA.KEY_COLLEGE,null))
                 .child("Notices")
                 .child(noticeUid);
         reference2.keepSynced(true);
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -60,11 +68,13 @@ public class NoticeDetails extends AppCompatActivity {
                     }
                     return;
                 }
-                title.setText(Html.fromHtml(notice.getTitle()));
-                description.setText(Html.fromHtml(notice.getDescription()));
-                time.setText(Html.fromHtml(getTimeAgo(NoticeDetails.this,notice.getTime())));
+                title.setText(fromHtml(notice.getTitle()));
+                description.setText(fromHtml(notice.getDescription()));
+                time.setText(fromHtml(getTimeAgo(NoticeDetails.this,notice.getTime())));
                 deadline.setText(getTimeAgo(NoticeDetails.this,notice.getDeadline()));
-
+                if(!notice.getImageUrl().equals("")) {
+                    Picasso.with(NoticeDetails.this).load(notice.getImageUrl()).fit().into(touchImageViewSmall);
+                }
             }
 
             @Override
@@ -72,7 +82,7 @@ public class NoticeDetails extends AppCompatActivity {
                 //
             }
         };
-        //reference.addListenerForSingleValueEvent(valueEventListener);
+        reference.addListenerForSingleValueEvent(valueEventListener);
         reference2.addListenerForSingleValueEvent(valueEventListener);
 
     }
@@ -104,6 +114,17 @@ public class NoticeDetails extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
     }
 
 }
